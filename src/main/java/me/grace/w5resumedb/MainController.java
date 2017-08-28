@@ -37,7 +37,7 @@ public class MainController {
     {
         if(personRepo.count()>=1)
         {
-            return "welcomeback";
+            return "home";
         }
 
         model.addAttribute("newperson", new Person());
@@ -150,17 +150,17 @@ public class MainController {
     {
         if(personRepo.count()==0)
         {
-            return "error";
+            return "moreinfo";
         }
 
         if(educationRepo.count()==0)
         {
-            return "error";
+            return "moreinfo";
         }
 
         if(skillRepo.count()==0)
         {
-            return "error";
+            return "moreinfo";
         }
 
 
