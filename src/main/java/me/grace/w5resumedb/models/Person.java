@@ -2,13 +2,12 @@ package me.grace.w5resumedb.models;
 
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -32,11 +31,14 @@ public class Person {
     private String email;
 
 
-    private ArrayList<Education> educations;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<Education> educations;
 
-    private ArrayList<Skill> skills;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<Skill> skills;
 
-    private ArrayList<Experience> experiences;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<Experience> experiences;
 
 
     public long getUuid() {
@@ -55,33 +57,6 @@ public class Person {
         this.email = email;
     }
 
-
-
-    public ArrayList<Education> getEducations() {
-        return educations;
-    }
-
-    public void setEducations(ArrayList<Education> educations) {
-        this.educations = educations;
-    }
-
-    public ArrayList<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(ArrayList<Skill> skills) {
-        this.skills = skills;
-    }
-
-    public ArrayList<Experience> getExperiences() {
-        return experiences;
-    }
-
-    public void setExperiences(ArrayList<Experience> experiences) {
-        this.experiences = experiences;
-    }
-
-
     public String getFirstName() {
         return firstName;
     }
@@ -97,4 +72,60 @@ public class Person {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+
+
+    public Set<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(Set<Education> educations) {
+        this.educations = educations;
+    }
+
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public Set<Experience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(Set<Experience> experiences) {
+        this.experiences = experiences;
+    }
+
+    //constructor for person, initialize an empty set of education, skill and exp
+    public Person(){
+        this.educations= new HashSet<Education>();
+        this.skills=new HashSet<Skill>();
+        this.experiences=new HashSet<Experience>();
+    }
+
+    //create add method for education, skill and exp
+    public void addEdu(Education e)
+    {
+        e.setPerson(this);
+        this.educations.add(e);
+    }
+
+
+    public void addSkl(Skill s)
+    {
+        s.setPerson(this);
+        this.skills.add(s);
+    }
+
+
+    public void addExp(Experience ex)
+    {
+        ex.setPerson(this);
+        this.experiences.add(ex);
+    }
+
+
 }
