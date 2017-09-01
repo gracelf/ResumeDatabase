@@ -1,10 +1,7 @@
 package me.grace.w5resumedb;
 
 
-import me.grace.w5resumedb.models.Education;
-import me.grace.w5resumedb.models.Experience;
-import me.grace.w5resumedb.models.Person;
-import me.grace.w5resumedb.models.Skill;
+import me.grace.w5resumedb.models.*;
 import me.grace.w5resumedb.repositories.EducationRepo;
 import me.grace.w5resumedb.repositories.ExperienceRepo;
 import me.grace.w5resumedb.repositories.PersonRepo;
@@ -29,6 +26,12 @@ public class MainController {
     SkillRepo skillRepo;
     @Autowired
     ExperienceRepo experienceRepo;
+
+    @Autowired
+    public SomeIdtoUse personIdReuse;
+
+    @Autowired
+    public SomeIdtoUse test;
 
     //login page
     @GetMapping("/login")
@@ -57,7 +60,14 @@ public class MainController {
             return "addperson";
         }
 
+        System.out.println("when postMapping form, will the auto generated ID show up:    " +person.getUuid());
+
         personRepo.save(person);
+
+
+        //yes the ID show up here!!!!!!!!!!!!!
+        System.out.println("After save the person to database, will the auto generated ID show up:    " +person.getUuid());
+
         return "displayperson";
     }
 
@@ -92,12 +102,35 @@ public class MainController {
 
 
     /// add education method works!!!!!
+
+
     @GetMapping("/addeducationtoperson/{id}")
     public String addEduToPerson(@PathVariable("id") long personId, Model model){
 
         System.out.println("!!!!!" + personId);
 
+//        String filename = uploadResult.get("public_id").toString() + "." + uploadResult.get("format").toString();
+//        model.addAttribute("sizedimageurl", cloudc.createUrl(filename,100,150, "fit"));
+//        shoppingCart.addThings(filename);
+//        model.addAttribute("filesuploaded", shoppingCart.getThings());
+
+//        long num = 3L;
+//        String t=  Long.toString(num);
+//
+//        int numint = 3;
+//        String y = Integer.toString(numint);
+
+
+        // this works.successfully print out the person ID
+        personIdReuse.addThings(Long.toString(personId));
+        System.out.println("===testing session variable:   " + personIdReuse.getThings());
+
+
         Person oneperson= personRepo.findOne(personId);
+//
+//      personIdReuse.addThings(Long.toString(oneperson.getUuid()));
+
+
         model.addAttribute("oneperson", oneperson);
 
         Education education = new Education();
@@ -114,9 +147,16 @@ public class MainController {
 
         System.out.println("==== personID:   " + personId);
 
+        //this works as well, so it can be used in another method as a variable
+        System.out.println("===testing session variable:   " + personIdReuse.getThings());
+
         //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
         //try the following
         education.setPerson(personRepo.findOne(personId));
+
+        //try add it to model and see if it can be printed in HTML
+        model.addAttribute(personIdReuse.getThings());
+
         educationRepo.save(education);
         return "displayeducation";
     }
@@ -302,11 +342,14 @@ public class MainController {
     }
 
 
+    // this two methods work, even without change the connection between edu/person/, skill/person, exp/person
+    // the connection stays the same in database
     @RequestMapping("/updateper/{id}")
     public String updateper(@PathVariable("id") long uuid, Model model){
         model.addAttribute("newperson", personRepo.findOne(uuid));
         return "addperson";
     }
+
 
     @RequestMapping("/deleteper/{id}")
     public String delper(@PathVariable("id") long uuid){
@@ -315,41 +358,91 @@ public class MainController {
     }
 
 
+    //update and remove education, both works!!!
     @RequestMapping("/updateedu/{id}")
     public String updateedu(@PathVariable("id") long educationId, Model model){
-        model.addAttribute("neweducation", educationRepo.findOne(educationId));
-        return "addeducation";
+
+        Education updateedu = educationRepo.findOne(educationId);
+
+        //String pId= Long.toString(updateedu.getPerson().getUuid());
+
+        Person oneperson = updateedu.getPerson();
+
+        model.addAttribute("neweducation", updateedu );
+
+        model.addAttribute("oneperson", oneperson);
+
+//      return "/addeducationtoperson/" + pId;
+        return "addedutopersonform";
     }
 
+
     @RequestMapping("/deleteedu/{id}")
-    public String deledu(@PathVariable("id") long id){
-        educationRepo.delete(id);
+    public String deledu(@PathVariable("id") long educationId, Model model){
+
+        Education deleteedu = educationRepo.findOne(educationId);
+        Person oneperson = deleteedu.getPerson();
+
+        oneperson.removeEdu(deleteedu);
+
+        educationRepo.delete(educationId);
         return "redirect:/displayall";
     }
 
 
+
+    // update and remove skills!!!!!
     @RequestMapping("/updatesk/{id}")
     public String updatesk(@PathVariable("id") long skillId, Model model){
-        model.addAttribute("newskill", skillRepo.findOne(skillId));
-        return "addskill";
+
+        Skill updateskill = skillRepo.findOne(skillId);
+
+        Person oneperson = updateskill.getPerson();
+
+        model.addAttribute("oneperson", oneperson);
+
+        model.addAttribute("newskill", updateskill);
+        return "addskilltopersonform";
     }
 
+    // remove skills, same as edu, remove from person first!!!!!
     @RequestMapping("/deletesk/{id}")
     public String delsk(@PathVariable("id") long skillId){
+
+
+        Skill deleteskil = skillRepo.findOne(skillId);
+        Person oneperson = deleteskil.getPerson();
+
+        oneperson.removeSkl(deleteskil);
+
         skillRepo.delete(skillId);
         return "redirect:/displayall";
     }
 
     @RequestMapping("/updateexp/{id}")
     public String updateexp(@PathVariable("id") long experienceId, Model model){
-        model.addAttribute("newexperience", experienceRepo.findOne(experienceId));
-        return "addexperience";
+
+        Experience updateexp = experienceRepo.findOne(experienceId);
+
+        Person oneperson = updateexp.getPerson();
+
+        model.addAttribute("oneperson", oneperson);
+
+        model.addAttribute("newexperience", updateexp);
+
+        return "addexptopersonform";
     }
 
     @RequestMapping("/deleteexp/{id}")
     public String delexp(@PathVariable("id") long experienceId){
+
+        Experience deleteexp = experienceRepo.findOne(experienceId);
+        Person oneperson = deleteexp.getPerson();
+
+        oneperson.removeExp(deleteexp);
         experienceRepo.delete(experienceId);
         return "redirect:/displayall";
+
     }
 
 }

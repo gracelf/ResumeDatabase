@@ -113,6 +113,11 @@ public class Person {
         this.educations.add(e);
     }
 
+    public void removeEdu(Education e)
+    {
+        this.educations.remove(e);
+    }
+
 
     public void addSkl(Skill s)
     {
@@ -120,12 +125,26 @@ public class Person {
         this.skills.add(s);
     }
 
+    public void removeSkl(Skill s)
+    {
+        this.skills.remove(s);
+    }
 
     public void addExp(Experience ex)
     {
         ex.setPerson(this);
         this.experiences.add(ex);
     }
+
+    public void removeExp(Experience ex)
+    {
+        this.experiences.remove(ex);
+    }
+
+
+
+
+
 
 
 }

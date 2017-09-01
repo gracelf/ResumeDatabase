@@ -55,9 +55,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
-                <h2>Basic information</h2>
+
                 <th:block th:each="oneper:${allperson}">
-                    <p th:text="'Your name: '+ ${oneper.firstName} + ' ' + ${oneper.lastName}"/>
+
+
+                    <h2 th:text="inline">Basic information for [[${oneper.firstName}]]</h2>
+
+                    <p th:text="'Your full name: '+ ${oneper.firstName} + ' ' + ${oneper.lastName}"/>
                     <p th:text="'Your email: '+ ${oneper.email}" />
                     <p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>
                     <p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>
