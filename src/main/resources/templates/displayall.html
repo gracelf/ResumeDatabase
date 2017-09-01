@@ -41,9 +41,10 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="/addeducation">AddEducation</a></li>
-            <li><a href="/addexperience">AddExperience</a></li>
-            <li><a href="/addskill">AddSkill</a></li>
+            <!--<li><a href="/addeducation">AddEducation</a></li>-->
+            <!--<li><a href="/addexperience">AddExperience</a></li>-->
+            <!--<li><a href="/addskill">AddSkill</a></li>-->
+            <a href="/addperson">Add another person</a>
             <li class="active"><a href="/displayall">Profile</a></li>
         </ul>
     </div>
@@ -55,16 +56,16 @@
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
                 <h2>Basic information</h2>
-                <th:block th:each="oneper:${person}">
+                <th:block th:each="oneper:${allperson}">
                     <p th:text="'Your name: '+ ${oneper.firstName} + ' ' + ${oneper.lastName}"/>
                     <p th:text="'Your email: '+ ${oneper.email}" />
                     <p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>
                     <p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>
-                </th:block>
+
 
                 <h2>Education</h2>
 
-                <th:block th:each="edu:${alledu}">
+                <th:block th:each="edu:${oneper.educations}">
                     <p th:text="'Degreee: '+ ${edu.degree}"/>
                     <p th:text="'Your University: '+ ${edu.university}"/>
                     <p th:text="'Your Graduate Year: '+ ${edu.graduationYear}" />
@@ -75,7 +76,7 @@
 
 
                 <h2>Skills</h2>
-                <th:block th:each="sk:${allskill}">
+                <th:block th:each="sk:${oneper.skills}">
                     <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}" />
                     <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
                     <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
@@ -83,7 +84,7 @@
                 </th:block>
 
                 <h2>Expereince</h2>
-                <th:block th:each="exp:${allexp}">
+                <th:block th:each="exp:${oneper.experiences}">
                     <p th:text="'Title: '+ ${exp.title}"/>
                     <p th:text="'Your organization: '+ ${exp.organization}"/>
                     <p th:text="'Your employment time: '+ ${exp.startTime} + ' - ' + ${exp.endTime}" />
@@ -101,7 +102,7 @@
                     <!--<p><a href="/displayall" class="btn btn-dark btn-lg">Show your profile</a></p>-->
                     <!--<br/>-->
                 <!--</div>-->
-
+                </th:block>
 
             </div>
         </div>

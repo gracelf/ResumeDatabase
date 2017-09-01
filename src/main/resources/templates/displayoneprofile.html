@@ -19,12 +19,22 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="../../css/additional.css">
 
 
 </head>
 
 
 <body>
+
+
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+<!--navbar-->
 <div class="navbar-wrapper">
     <div class="container">
 
@@ -53,7 +63,7 @@
                                 <li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>
                                 <li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/displayall">Profile</a></li>
+                                <li><a href="/displayall">Display all Profile</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -63,6 +73,82 @@
 
     </div>
 </div>
+
+<!--Application section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-left">
+                <h1 th:text="'Hello, '+ ${newperson.firstName} + ' ' + ${newperson.lastName} + '!'"/><br/>
+                <h2>Here is your profile in our Database:</h2>
+                <p th:text="'Your Id in our database: ' + ${newperson.uuid}"></p>
+                <p th:text="'Your email: ' + ${newperson.email}"></p>
+
+                <h3>Your Education Achievement:</h3>
+
+
+                <th:block th:each="edu:${newperson.educations}">
+                    <p th:text="'Degreee: '+ ${edu.degree}"/>
+                    <p th:text="'Your University: '+ ${edu.university}"/>
+                    <p th:text="'Your Graduate Year: '+ ${edu.graduationYear}" />
+                    <p><a th:href="@{/updateedu/{id}(id=${edu.educationId})}">Update</a></p>
+                    <p><a th:href="@{/deleteedu/{id}(id=${edu.educationId})}">Delete</a></p>
+                    <br/>
+                    <!--<tr><br/></tr>-->
+                    <!--<tr><br/></tr>-->
+                </th:block>
+
+                <h3>Your Experience: </h3>
+                <th:block th:each="exp:${newperson.experiences}">
+                    <p th:text="'Title: '+ ${exp.title}"/>
+                    <p th:text="'Your organization: '+ ${exp.organization}"/>
+                    <p th:text="'Your employment time: '+ ${exp.startTime} + ' - ' + ${exp.endTime}" />
+                    <p th:text="'Your duty 1: '+ ${exp.duty1}"/>
+                    <p th:text="'Your duty 2: '+ ${exp.duty2}" />
+                    <p><a th:href="@{/updateexp/{id}(id=${exp.experienceId})}">Update</a></p>
+                    <p><a th:href="@{/deleteexp/{id}(id=${exp.experienceId})}">Delete</a></p>
+                    <br/>
+                </th:block>
+
+
+
+                <h3>Your Skill:</h3>
+                <th:block th:each="sk:${newperson.skills}">
+                    <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}" />
+                    <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
+                    <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
+                    <br/>
+                    <br/>
+                </th:block>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- Carousel
@@ -138,6 +224,8 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 
 </body>
 </html>

@@ -45,12 +45,12 @@
                             <div class="intro-message">
                                 <hr class="intro-divider">
                                 <ul class="list-inline intro-social-buttons">
-                                    <form class="well form-horizontal" th:action="@{/}" method="post" th:object="${newperson}">
+                                    <form class="well form-horizontal" th:action="@{/displayperson}" method="post" th:object="${newperson}">
+                                        <!--th:action="@{/displayperson/{uuid}(uuid=${newperson.uuid})}-->
                                         <fieldset>
+                                        <h3>Get Started by adding your name and email first:</h3><br />
 
-                                            <h3>Get Started by adding your name and email first:</h3><br />
-
-                                            <input type="hidden" th:field="*{uuid}" />
+                                            <input type="text" th:field="*{uuid}" />
 
                                             <div class="form-group">
                                                 <label class="col-md-4 control-label">First Name</label>

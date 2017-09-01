@@ -60,6 +60,15 @@
                 <p th:text="'Skill: '+ ${newskill.skillname}"/>
                 <p th:text="'Rating: '+ ${newskill.skillrating}"/></br><br/>
 
+
+                <p><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">Add Education</a></p>
+                <p><a th:href="@{/addexptoperson/{id}(id=${personid})}">Add Experience</a></p>
+                <p><a th:href="@{/addskilltoperson/{id}(id=${personid})}">Add another Skill</a></p>
+                <p><a th:href="@{/displaypersonwithid/{id}(id=${personid})}">Go back to check person inof/Home</a></p>
+                <p><a th:href="@{/displayoneprofile/{id}(id=${personid})}">Go back to person profile</a></p>
+
+
+
             </div>
         </div>
         <!-- /.row -->

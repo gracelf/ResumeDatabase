@@ -30,22 +30,26 @@ public class MainController {
     @Autowired
     ExperienceRepo experienceRepo;
 
+    //login page
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
     //Home page, request the user to enter their name and email first
     //if user has entered the name, welcome he/she back and check history
     @GetMapping("/")
     public String addPersonandHomepage(Model model)
     {
 
-        model.addAttribute("newperson", new Person());
+        Person person = new Person();
+        System.out.println(person.getUuid());
+        model.addAttribute("newperson", person);
         return "addperson";
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    @PostMapping("/")
+    //take person result, display result and allow user to add edu/skill/exp to this person
+    @PostMapping("/displayperson")
     public String postperson(@Valid @ModelAttribute("newperson") Person person, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
@@ -59,32 +63,32 @@ public class MainController {
 
     //prompt the user to enter education information
     //check the entries existed in the database, if greater than 10, not more input
-    @GetMapping("/addeducation")
-    public String addeducationto(Model model)
-    {
-//        System.out.println(educationRepo.count());
-
-//        if(educationRepo.count()>=10)
+//    @GetMapping("/addeducation")
+//    public String addeducationto(Model model)
+//    {
+////        System.out.println(educationRepo.count());
+//
+////        if(educationRepo.count()>=10)
+////        {
+////            return "limit";
+////        }
+//
+//        model.addAttribute("neweducation", new Education());
+//        return "addeducation";
+//
+//    }
+//
+//    @PostMapping("/addeducation")
+//    public String posteducation(@Valid @ModelAttribute("neweducation") Education education, BindingResult bindingResult)
+//    {
+//        if(bindingResult.hasErrors())
 //        {
-//            return "limit";
+//            return "addeducation";
 //        }
-
-        model.addAttribute("neweducation", new Education());
-        return "addeducation";
-
-    }
-
-    @PostMapping("/addeducation")
-    public String posteducation(@Valid @ModelAttribute("neweducation") Education education, BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            return "addeducation";
-        }
-
-        educationRepo.save(education);
-        return "displayeducation";
-    }
+//
+//        educationRepo.save(education);
+//        return "displayeducation";
+//    }
 
 
     /// add education method works!!!!!
@@ -106,7 +110,7 @@ public class MainController {
     }
 
     @PostMapping("/addeducationtoperson/{personid}")
-    public @ResponseBody String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, Model model){
+    public String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, Model model){
 
         System.out.println("==== personID:   " + personId);
 
@@ -114,7 +118,7 @@ public class MainController {
         //try the following
         education.setPerson(personRepo.findOne(personId));
         educationRepo.save(education);
-        return "tested";
+        return "displayeducation";
     }
 
     ///add skill to a person method works
@@ -133,7 +137,7 @@ public class MainController {
     }
 
     @PostMapping("/addskilltoperson/{personid}")
-    public @ResponseBody String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, Model model){
+    public String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, Model model){
 
         System.out.println("==== personID:   " + personId);
 
@@ -141,7 +145,7 @@ public class MainController {
         //try the following
         skill.setPerson(personRepo.findOne(personId));
         skillRepo.save(skill);
-        return "tested";
+        return "displayskill";
     }
 
 
@@ -161,7 +165,7 @@ public class MainController {
     }
 
     @PostMapping("/addexptoperson/{personid}")
-    public @ResponseBody String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, Model model){
+    public String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, Model model){
 
         System.out.println("==== personID:   " + personId);
 
@@ -169,63 +173,82 @@ public class MainController {
         //try the following
         experience.setPerson(personRepo.findOne(personId));
         experienceRepo.save(experience);
-        return "tested";
-    }
-
-
-    //promt the user to enter skill information
-    //check the entries existed in the database, if greater than 20, not more input
-    @GetMapping("/addskill")
-    public String addskill(Model model)
-    {
-
-//        if(skillRepo.count()>=20)
-//        {
-//            return "limit";
-//        }
-
-        model.addAttribute("newskill", new Skill());
-        return "addskill";
-    }
-
-    @PostMapping("/addskill")
-    public String postskill(@Valid @ModelAttribute("newskill") Skill skill, BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            return "addskill";
-        }
-
-        skillRepo.save(skill);
-        return "displayskill";
-    }
-
-    //promt the user to enter experience information
-    //check the entries existed in the database, if greater than 10, not more input
-    @GetMapping("/addexperience")
-    public String addexperience(Model model)
-    {
-
-//        if(experienceRepo.count()>=10)
-//        {
-//            return "limit";
-//        }
-
-        model.addAttribute("newexperience", new Experience());
-        return "addexperience";
-    }
-
-    @PostMapping("/addexperience")
-    public String postexperience(@Valid @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            return "addexperience";
-        }
-
-        experienceRepo.save(experience);
         return "displayexperience";
     }
+
+    @GetMapping("/displaypersonwithid/{id}")
+    public String postpersonwithId(@PathVariable("id") long personId, Model model)
+    {
+
+        model.addAttribute("newperson", personRepo.findOne(personId));
+        return "displayperson";
+    }
+
+    @GetMapping("/displayoneprofile/{id}")
+    public String displayOneProfile(@PathVariable("id") long personId, Model model)
+    {
+
+        System.out.println("=====display one person profile,  person ID:   " + personId);
+
+        model.addAttribute("newperson", personRepo.findOne(personId));
+
+        return "displayoneprofile";
+    }
+
+//
+//    //promt the user to enter skill information
+//    //check the entries existed in the database, if greater than 20, not more input
+//    @GetMapping("/addskill")
+//    public String addskill(Model model)
+//    {
+//
+////        if(skillRepo.count()>=20)
+////        {
+////            return "limit";
+////        }
+//
+//        model.addAttribute("newskill", new Skill());
+//        return "addskill";
+//    }
+//
+//    @PostMapping("/addskill")
+//    public String postskill(@Valid @ModelAttribute("newskill") Skill skill, BindingResult bindingResult)
+//    {
+//        if(bindingResult.hasErrors())
+//        {
+//            return "addskill";
+//        }
+//
+//        skillRepo.save(skill);
+//        return "displayskill";
+//    }
+//
+//    //promt the user to enter experience information
+//    //check the entries existed in the database, if greater than 10, not more input
+//    @GetMapping("/addexperience")
+//    public String addexperience(Model model)
+//    {
+//
+////        if(experienceRepo.count()>=10)
+////        {
+////            return "limit";
+////        }
+//
+//        model.addAttribute("newexperience", new Experience());
+//        return "addexperience";
+//    }
+//
+//    @PostMapping("/addexperience")
+//    public String postexperience(@Valid @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult)
+//    {
+//        if(bindingResult.hasErrors())
+//        {
+//            return "addexperience";
+//        }
+//
+//        experienceRepo.save(experience);
+//        return "displayexperience";
+//    }
 
     //if person, skill or education is blank, will ask the user to input
     @GetMapping("/displayall")
@@ -247,9 +270,13 @@ public class MainController {
 //        }
 
 
-        Person person= new Person();
-        Iterable<Person> allperson= personRepo.findAll();
-        model.addAttribute("person",allperson);
+//        Person person= new Person();
+//        Iterable<Person> allperson= personRepo.findAll();
+//        model.addAttribute("person",allperson);
+
+//        Iterable<Person> allperson= personRepo.findAll();
+
+        model.addAttribute("allperson", personRepo.findAll());
 
 //        //Get information from database, pass on to the person object
 //        Iterable<Education> alledu= educationRepo.findAll();
