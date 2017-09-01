@@ -2,10 +2,7 @@ package me.grace.w5resumedb;
 
 
 import me.grace.w5resumedb.models.*;
-import me.grace.w5resumedb.repositories.EducationRepo;
-import me.grace.w5resumedb.repositories.ExperienceRepo;
-import me.grace.w5resumedb.repositories.PersonRepo;
-import me.grace.w5resumedb.repositories.SkillRepo;
+import me.grace.w5resumedb.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +25,63 @@ public class MainController {
     ExperienceRepo experienceRepo;
 
     @Autowired
+    CourseRepo courseRepo;
+
+    @Autowired
     public SomeIdtoUse personIdReuse;
 
     @Autowired
     public SomeIdtoUse test;
 
     //login page
+
+
+    @GetMapping("/addcourse")
+    public String addcourse()
+    {
+        return "courseform";
+    }
+
+    @PostMapping("/addcourse")
+    public String postCourse()
+    {
+        return "courseconfirm";
+    }
+
+
+    @GetMapping("/loadcourse")
+    public @ResponseBody String loadcourse()
+    {
+
+        Course course1 = new Course();
+        course1.setCourseName("Java001");
+        courseRepo.save(course1);
+
+        Course course2 = new Course();
+        course1.setCourseName("Petrology001");
+        courseRepo.save(course1);
+
+        Course course3 = new Course();
+        course1.setCourseName("Mineralogy001");
+        courseRepo.save(course1);
+
+        Course course4 = new Course();
+        course1.setCourseName("Python001");
+        courseRepo.save(course1);
+
+
+        return "courseloaded";
+    }
+
+    @GetMapping("/listcourse")
+    public String listcourse(Model model)
+    {
+        model.addAttribute(courseRepo.findAll());
+        return "displaycourse";
+    }
+
+
+
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -124,6 +172,12 @@ public class MainController {
         // this works.successfully print out the person ID
         personIdReuse.addThings(Long.toString(personId));
         System.out.println("===testing session variable:   " + personIdReuse.getThings());
+
+
+        //try use this personIdReuse in Html print out
+        String tryprintout = personIdReuse.getThings();
+
+        model.addAttribute("tryprintout", tryprintout);
 
 
         Person oneperson= personRepo.findOne(personId);

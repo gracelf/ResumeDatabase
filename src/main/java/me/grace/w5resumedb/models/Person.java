@@ -41,6 +41,20 @@ public class Person {
     private Set<Experience> experiences;
 
 
+    //add a course list many to many relationship
+    @ManyToMany(mappedBy = "students")
+    private Set<Course> courselist;
+
+
+    public Set<Course> getCourselist() {
+        return courselist;
+    }
+
+    public void setCourselist(Set<Course> courselist) {
+        this.courselist = courselist;
+    }
+
+
     public long getUuid() {
         return uuid;
     }
@@ -104,6 +118,13 @@ public class Person {
         this.educations= new HashSet<Education>();
         this.skills=new HashSet<Skill>();
         this.experiences=new HashSet<Experience>();
+        this.courselist = new HashSet<Course>();
+    }
+
+    //add course to this person
+    public void addCoursetoperson(Course c)
+    {
+        this.courselist.add(c);
     }
 
     //create add method for education, skill and exp
@@ -140,11 +161,5 @@ public class Person {
     {
         this.experiences.remove(ex);
     }
-
-
-
-
-
-
 
 }
