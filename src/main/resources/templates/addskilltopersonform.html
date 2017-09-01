@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+
+                <!--</div><a name="about"></a>-->
+                <div class="intro-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="intro-message">
+                                    <hr class="intro-divider">
+                                    <ul class="list-inline intro-social-buttons">
+                                        <form class="well form-horizontal" th:action="@{/addskilltoperson/{personid}(personid=${oneperson.uuid})}" method="post" th:object="${newskill}">
+                                            <fieldset>
+
+                                                <h3>Add your Skill:</h3><br />
+
+
+                                                <input type="text" th:value="${oneperson.uuid}">
+
+                                                <label th:inline="text">Adding Skill for [[${oneperson.firstName}]]</label>
+
+                                                <input type="hidden" th:field="*{skillId}" />
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Skill</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{skillname}" name="skillname" placeholder=" Enter Your Skill" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('skillname')}"  th:errors="*{skillname}" class="well alert alert-warning" role="alert">Enter a valid Skill</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Rating</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{skillrating}" name="skillrating" placeholder=" Enter the Rating" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('skillrating')}"  th:errors="*{skillrating}" class="well alert alert-warning" role="alert">Enter Your rating</div>
+                                                    </div>
+                                                </div>
+
+
+                                                <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
+                                                    <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>
+
+                                            </fieldset>
+                                        </form>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+</section>
+
+
+
+</body>
+</html>

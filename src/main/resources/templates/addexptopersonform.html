@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+
+                <!--</div><a name="about"></a>-->
+                <div class="intro-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="intro-message">
+                                    <hr class="intro-divider">
+                                    <ul class="list-inline intro-social-buttons">
+                                        <form class="well form-horizontal" th:action="@{/addexptoperson/{personid}(personid=${oneperson.uuid})}" method="post" th:object="${newexperience}">
+                                            <fieldset>
+
+                                                <h3>Add your Experience:</h3><br />
+
+
+                                                <input type="text" th:value="${oneperson.uuid}">
+
+                                                <label th:inline="text">Adding Experience for [[${oneperson.firstName}]]</label>
+
+                                                <input type="hidden" th:field="*{experienceId}" />
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Title</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{title}" name="title" placeholder=" Enter Your title" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('title')}"  th:errors="*{title}" class="well alert alert-warning" role="alert">Enter a valid title</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Organization</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{organization}" name="organization" placeholder=" Enter Your Organization" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('organization')}"  th:errors="*{organization}" class="well alert alert-warning" role="alert">Enter Your organization</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Start time</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{startTime}" name="email" placeholder=" Enter the Start Time" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('startTime')}"  th:errors="*{startTime}" class="well alert alert-warning" role="alert">Enter Your start time</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">End time</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <input  th:field="*{endTime}" name="End time" placeholder=" Enter the End Time" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('endTime')}"  th:errors="*{endTime}" class="well alert alert-warning" role="alert">Enter Your end time</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Duty 1</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <textarea rows="3" th:field="*{duty1}" name="duty1" placeholder=" Enter Your Duty 1" class="form-control"  type="text"></textarea>
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('duty1')}"  th:errors="*{duty1}" class="well alert alert-warning" role="alert">Enter Your duty 1</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Duty 2</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"></span>
+                                                            <textarea rows="3" th:field="*{duty2}" name="email" placeholder=" Enter Your duty 2" class="form-control"  type="text"></textarea>
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('duty2')}"  th:errors="*{duty2}" class="well alert alert-warning" role="alert">Enter Your duty 2</div>
+                                                    </div>
+                                                </div>
+
+
+                                                <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
+                                                    <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>
+
+                                            </fieldset>
+                                        </form>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+</section>
+
+
+
+</body>
+</html>

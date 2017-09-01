@@ -62,7 +62,7 @@ public class MainController {
     @GetMapping("/addeducation")
     public String addeducationto(Model model)
     {
-        System.out.println(educationRepo.count());
+//        System.out.println(educationRepo.count());
 
 //        if(educationRepo.count()>=10)
 //        {
@@ -86,12 +86,91 @@ public class MainController {
         return "displayeducation";
     }
 
-    @GetMapping("/addeducationtoperson/{id}")
-    public String addEduToPerson(){
 
+    /// add education method works!!!!!
+    @GetMapping("/addeducationtoperson/{id}")
+    public String addEduToPerson(@PathVariable("id") long personId, Model model){
+
+        System.out.println("!!!!!" + personId);
+
+        Person oneperson= personRepo.findOne(personId);
+        model.addAttribute("oneperson", oneperson);
+
+        Education education = new Education();
+        //try make an connection with education and person, doesn't work, it has to be right beofore save,
+        // the same code in posting works when save the education right after!!!
+        //education.setPerson(oneperson);
+        //System.out.println(education.getPerson().getUuid());
+        model.addAttribute("neweducation", education);
         return "addedutopersonform";
     }
 
+    @PostMapping("/addeducationtoperson/{personid}")
+    public @ResponseBody String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, Model model){
+
+        System.out.println("==== personID:   " + personId);
+
+        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+        //try the following
+        education.setPerson(personRepo.findOne(personId));
+        educationRepo.save(education);
+        return "tested";
+    }
+
+    ///add skill to a person method works
+    @GetMapping("/addskilltoperson/{id}")
+    public String addSkillToPerson(@PathVariable("id") long personId, Model model){
+
+        System.out.println("!!!!!" + personId);
+
+        Person oneperson= personRepo.findOne(personId);
+        model.addAttribute("oneperson", oneperson);
+
+        Skill skill = new Skill();
+        model.addAttribute("newskill", skill);
+
+        return "addskilltopersonform";
+    }
+
+    @PostMapping("/addskilltoperson/{personid}")
+    public @ResponseBody String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, Model model){
+
+        System.out.println("==== personID:   " + personId);
+
+        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+        //try the following
+        skill.setPerson(personRepo.findOne(personId));
+        skillRepo.save(skill);
+        return "tested";
+    }
+
+
+    //add exptoperson get and post mapping methods!!!  addexptoperson/
+    @GetMapping("/addexptoperson/{id}")
+    public String addExpToPerson(@PathVariable("id") long personId, Model model){
+
+        System.out.println("!!!!!" + personId);
+
+        Person oneperson= personRepo.findOne(personId);
+        model.addAttribute("oneperson", oneperson);
+
+        Experience experience = new Experience();
+        model.addAttribute("newexperience", experience);
+
+        return "addexptopersonform";
+    }
+
+    @PostMapping("/addexptoperson/{personid}")
+    public @ResponseBody String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, Model model){
+
+        System.out.println("==== personID:   " + personId);
+
+        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+        //try the following
+        experience.setPerson(personRepo.findOne(personId));
+        experienceRepo.save(experience);
+        return "tested";
+    }
 
 
     //promt the user to enter skill information
