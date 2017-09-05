@@ -45,6 +45,8 @@
             <!--<li><a href="/addexperience">AddExperience</a></li>-->
             <!--<li><a href="/addskill">AddSkill</a></li>-->
             <li><a href="/addcourse">Add another course</a></li>
+            <li><a href="/listallcourses">List all courses</a></li>
+
         </ul>
     </div>
 </nav>
@@ -60,12 +62,15 @@
 
                     <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
 
-                    <p th:text="'Course Instructor: ' + ${item.courseId}"/>
+                    <p th:text="'Course ID: ' + ${item.courseId}"/>
                     <p th:text="'Course Instructor: ' + ${item.courseCode}"/>
                     <p th:text="'Course credit: '+ ${item.credit}" />
                     <p th:text="'Course description: '+ ${item.description}" />
-                    <p><a href="#"></a>Show detail</p>
-                    <p><a href="#"></a>Register student for the course</p>
+                    <!--<p th:text="'Students registed for the courses:' + "/>-->
+                    <p><a th:href="@{/addstudentstocourse/{id}(id=${item.courseId})}">Register student for the course</a></p>
+
+
+
                     <!--<p><a href="#">Add students to course</a></p>-->
                     <!--<p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>-->
                     <!--<p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>-->

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @Controller
 public class MainController {
@@ -112,11 +113,21 @@ public class MainController {
 
         Iterable<Person> allstudents = personRepo.findAll();
 
+        ArrayList<Person> allstudent = (ArrayList<Person>) allstudents;
+
+
         System.out.println("here==========");
 
-        model.addAttribute("allstudents",allstudents );
+        model.addAttribute("allstudents",allstudent );
+
+        System.out.println(allstudents.iterator().next().getUuid());
+        System.out.println(allstudents.iterator().next().getFirstName());
+        System.out.println(allstudents.iterator().next().getLastName());
+        System.out.println(allstudents.iterator().next().isCourseReg());
 
         System.out.println("here2==========");
+
+//      model.addAllAttributes("checkedstudentsId", long [] checkedstudentsId);
 
         return "addstudenttocourseform";
 
@@ -145,22 +156,40 @@ public class MainController {
     }
 
     @PostMapping("/addstudentstocourse/{id}")
-    public String poststudenttocourse(@PathVariable("id") long courseId, @ModelAttribute ("allstudents") Iterable<Person> allstudents,  Model model)
+    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds") Long[] checkedstudentsId, @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
     {
 
         Course newCourse= courseRepo.findOne(courseId);
 
-        for (Person p:allstudents)
+        System.out.println("Step1=========");
+
+        System.out.println(checkedstudentsId[0]);
+
+        for(long studentId: checkedstudentsId)
         {
-            if (p.getCourseReg()==true){
-                newCourse.addPersontoCourse(p);
-            }
+            System.out.println("+++++++++" + studentId);
+            newCourse.addPersontoCourse(personRepo.findOne(studentId));
 
         }
-
         courseRepo.save(newCourse);
 
-        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
+//        System.out.println(allstudents.iterator().next().getLastName());
+//
+//        System.out.println(allstudents.iterator().next().isCourseReg());
+//
+//        for (Person p:allstudents)
+//        {
+//
+//            System.out.println(p.isCourseReg());
+////            if (p.isCourseReg()==true){
+////                newCourse.addPersontoCourse(p);
+////            }
+//
+//        }
+//
+//        courseRepo.save(newCourse);
+//
+//        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
 
         return "onecourselist";
     }

@@ -44,17 +44,17 @@ public class Person {
     @ManyToMany(mappedBy = "students")
     private Set<Course> courselist;
 
-    private Boolean courseReg;
+    private boolean courseReg;
 
-
-
-    public Boolean getCourseReg() {
+    public boolean isCourseReg() {
         return courseReg;
     }
 
-    public void setCourseReg(Boolean courseReg) {
+    public void setCourseReg(boolean courseReg) {
         this.courseReg = courseReg;
     }
+
+
 
     public Set<Course> getCourselist() {
         return courselist;

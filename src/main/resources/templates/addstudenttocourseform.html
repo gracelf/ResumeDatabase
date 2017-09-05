@@ -47,24 +47,27 @@
         </tr>
         </thead>
 
+        <!---->
         <tbody>
         <th:block th:each="item:${allstudents}">
             <tr>
-                <td>
-                    <select th:field="${item.courseReg}">
-                        <!--<th:block th:each="director:${alldirector}">-->
-                        <option th:value=false>Not Register</option>
-                        <!--<option value="-1">Not a department head</option>-->
+                <!--<td>-->
+                    <!--<select th:field="${item.courseReg}">-->
+                        <!--&lt;!&ndash;<th:block th:each="director:${alldirector}">&ndash;&gt;-->
+                        <!--<option th:value="false" th:text="Not">Not Register</option>-->
+                        <!--&lt;!&ndash;<option value="-1">Not a department head</option>&ndash;&gt;-->
 
-                        <option th:value=true>Register</option>
+                        <!--<option th:value="true" th:text="Reg">Register</option>-->
 
-                        <!--</th:block>-->
-                    </select>
-                </td>
+                        <!--&lt;!&ndash;</th:block>&ndash;&gt;-->
+                    <!--</select>-->
+                <!--</td>-->
                 <!--<td>-->
                     <!--<input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}">Register<br>-->
                 <!--</td>-->
-                <!--<td><input type="checkbox" th:value="${item.uuid}" th:checked="${item.courseReg}" /></td>-->
+                <!--<td><input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}" /></td>-->
+                <td><input type="checkbox" name="studentsIds" th:value="${item.uuid}" unchecked></td>
+                <!--<td><p th:text="${item.courseReg}"></p></td>-->
                 <td><p th:text="${item.uuid}"></p></td>
                 <td><p th:text="${item.firstName}"></p></td>
                 <td><p th:text="${item.lastName}"></p></td>
@@ -74,7 +77,13 @@
 
     </table>
 
-    <p><input type="submit" value="submit" /> <input type="reset" value="Reset" /></p>
+    <!--<div th:each="item:${allstudents}">-->
+
+        <!--<div>-->
+            <!--<>-->
+        <!--</div>-->
+    <!--</div>-->
+    <p><input type="submit" value="submit" /><input type="reset" value="Reset" /></p>
 
 </form>
 
