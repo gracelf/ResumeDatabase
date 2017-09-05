@@ -70,21 +70,25 @@ public class MainController {
 
         Course course1 = new Course();
         course1.setCourseCode("Java001");
+        course1.setInstructor("Dr.Eric Ryan");
         course1.setCredit(3.0);
         courseRepo.save(course1);
 
         Course course2 = new Course();
         course2.setCourseCode("Statistics001");
+        course2.setInstructor("Dr.Carol Levy");
         course2.setCredit(3.5);
         courseRepo.save(course2);
 
         Course course3 = new Course();
         course3.setCourseCode("Mineralogy001");
+        course3.setInstructor("Dr.Ahmed");
         course3.setCredit(3.0);
         courseRepo.save(course3);
 
         Course course4 = new Course();
         course4.setCourseCode("Python001");
+        course4.setInstructor("TBA");
         course4.setCredit(2.5);
         courseRepo.save(course4);
 
