@@ -1,10 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/additional.css">
+
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+
 </head>
+
 <body>
-<p>You have successfully registered students for the course!</p>
+
+
+
+<!-- Header -->
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+<!--navbar-->
+<nav class="navbar navbar-inverse fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <!--<li><a href="/addeducation">AddEducation</a></li>-->
+            <!--<li><a href="/addexperience">AddExperience</a></li>-->
+            <!--<li><a href="/addskill">AddSkill</a></li>-->
+            <li><a href="/addcourse">Add another course</a></li>
+            <li><a href="/listallcourses">List all courses</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<!--Application section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-left">
+
+                <th:block th:each="item:${allcourses}">
+
+                    <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
+
+                    <p th:text="'Course ID: ' + ${item.courseId}"/>
+                    <p th:text="'Course Instructor: ' + ${item.courseCode}"/>
+                    <p th:text="'Course credit: '+ ${item.credit}" />
+                    <p th:text="'Course description: '+ ${item.description}" />
+                    <!--<p th:text="'Students registed for the courses:' + "/>-->
+                    <p><a th:href="@{/addstudentstocourse/{id}(id=${item.courseId})}">Register student for the course</a></p>
+
+
+
+                    <!--<p><a href="#">Add students to course</a></p>-->
+                    <!--<p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>-->
+                    <!--<p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>-->
+
+                    <!--<div>-->
+                    <!--<p><a href="/addeducation" class="btn btn-dark btn-lg">Add an education achievement</a></p>-->
+                    <!--<p><a href="/addexperience" class="btn btn-dark btn-lg">Add an experience</a></p>-->
+                    <!--<p><a href="/addskill" class="btn btn-dark btn-lg">Add a skill</a></p>-->
+                    <!--<p><a href="/displayall" class="btn btn-dark btn-lg">Show your profile</a></p>-->
+                    <!--<br/>-->
+                    <!--</div>-->
+                    <br/>
+                    <br/>
+                </th:block>
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+
+<div class="container">
+    <footer align="left">
+        <h5>&copy; Developed by Grace, 2017</h5>
+    </footer>
+</div>
+
+
 </body>
+
 </html>

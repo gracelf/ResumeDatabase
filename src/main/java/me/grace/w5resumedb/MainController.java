@@ -35,7 +35,6 @@ public class MainController {
 
     //login page
 
-
     @GetMapping("/addcourse")
     public String addcourse(Model model)
     {

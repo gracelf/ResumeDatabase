@@ -68,7 +68,7 @@
                     <p th:text="'Course description: '+ ${item.description}" />
                     <!--<p th:text="'Students registed for the courses:' + "/>-->
                     <p><a th:href="@{/addstudentstocourse/{id}(id=${item.courseId})}">Register student for the course</a></p>
-
+                    <p><a th:href="@{/onecourselist/{id}(id=${item.courseId})}">Register student for the course</a></p>
 
 
                     <!--<p><a href="#">Add students to course</a></p>-->
