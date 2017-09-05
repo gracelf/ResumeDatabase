@@ -20,6 +20,7 @@ public class Course {
     @NotEmpty
     private String courseCode;
 
+    @NotEmpty
     private String instructor;
 
     @NotNull

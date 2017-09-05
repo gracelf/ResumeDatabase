@@ -68,7 +68,7 @@
 
                     <div  th:if="${!course.students.isEmpty()}">
                         <th:block th:each="student:${course.students}">
-                            <p>Student</p>
+                            <p>#Student:</p>
                             <p th:text="'First Name: '+ ${student.firstName}"/>
                             <p th:text="'Last Name: '+ ${student.lastName}"/>
                             <p th:text="'Email: '+ ${student.email}" />

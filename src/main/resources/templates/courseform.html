@@ -57,7 +57,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{courseCode}" name="firstName" placeholder=" Enter the course code" class="form-control"  type="text">
+                                                            <input required th:field="*{courseCode}" name="firstName" placeholder=" Enter the course code" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('courseCode')}"  th:errors="*{courseCode}" class="well alert alert-warning" role="alert">Enter a valid Course Id</div>
                                                     </div>
@@ -69,7 +69,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{instructor}" name="instructor" placeholder=" Enter the instructor" class="form-control"  type="text">
+                                                            <input required th:field="*{instructor}" name="instructor" placeholder=" Enter the instructor" class="form-control"  type="text">
                                                         </div>
                                                     </div>
                                                 </div>
