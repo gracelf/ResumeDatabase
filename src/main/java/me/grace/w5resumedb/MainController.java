@@ -155,22 +155,25 @@ public class MainController {
     }
 
     @PostMapping("/addstudentstocourse/{id}")
-    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds") Long[] checkedstudentsId, @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
+    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds", required=false) Long[] checkedstudentsId, @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
     {
 
         Course newCourse= courseRepo.findOne(courseId);
 
-        System.out.println("Step1=========");
+//        System.out.println("Step1=========");
+//
+//        System.out.println(checkedstudentsId[0]);
 
-        System.out.println(checkedstudentsId[0]);
+        if(checkedstudentsId.length!=0) {
 
-        for(long studentId: checkedstudentsId)
-        {
-            System.out.println("+++++++++" + studentId);
-            newCourse.addPersontoCourse(personRepo.findOne(studentId));
+            for (long studentId : checkedstudentsId) {
+                System.out.println("+++++++++" + studentId);
+                newCourse.addPersontoCourse(personRepo.findOne(studentId));
+
+            }
+            courseRepo.save(newCourse);
 
         }
-        courseRepo.save(newCourse);
 
         long courseToGoTo = newCourse.getCourseId();
 
@@ -192,7 +195,7 @@ public class MainController {
 //
 //        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
 
-        return "redirect:/onecourselist/" + courseToGoTo;
+        return "redirect:/onecourselist/" + courseId;
     }
 
     @GetMapping("/onecourselist/{id}")
