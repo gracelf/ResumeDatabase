@@ -31,20 +31,36 @@ public class MainController {
     public SomeIdtoUse personIdReuse;
 
     @Autowired
-    public SomeIdtoUse test;
+    public SomeIdtoUse courseId;
 
     //login page
 
 
     @GetMapping("/addcourse")
-    public String addcourse()
+    public String addcourse(Model model)
     {
+        Course course = new Course();
+        model.addAttribute("newCourse", course);
         return "courseform";
     }
 
     @PostMapping("/addcourse")
-    public String postCourse()
+    public String postCourse(@Valid @ModelAttribute("newCourse") Course course, BindingResult bindingResult, Model model)
     {
+
+        if(bindingResult.hasErrors())
+        {
+            return "courseform";
+        }
+
+        courseRepo.save(course);
+
+        System.out.println("when postMapping form, will the auto generated ID show up:    " +course.getCourseId());
+
+        courseId.setCourseId(course.getCourseId());
+
+        System.out.println("==========component testing ========" + courseId.getCourseId());
+
         return "courseconfirm";
     }
 
@@ -54,32 +70,110 @@ public class MainController {
     {
 
         Course course1 = new Course();
-        course1.setCourseName("Java001");
+        course1.setCourseCode("Java001");
+        course1.setCredit(3.0);
         courseRepo.save(course1);
 
         Course course2 = new Course();
-        course1.setCourseName("Petrology001");
-        courseRepo.save(course1);
+        course2.setCourseCode("Statistics001");
+        course2.setCredit(3.5);
+        courseRepo.save(course2);
 
         Course course3 = new Course();
-        course1.setCourseName("Mineralogy001");
-        courseRepo.save(course1);
+        course3.setCourseCode("Mineralogy001");
+        course3.setCredit(3.0);
+        courseRepo.save(course3);
 
         Course course4 = new Course();
-        course1.setCourseName("Python001");
-        courseRepo.save(course1);
+        course4.setCourseCode("Python001");
+        course4.setCredit(2.5);
+        courseRepo.save(course4);
 
+//        Person personN= new Person();
+//        personN.setFirstName("Grace");
+//        personN.setCourseReg(true);
+//        personN.setUuid(9L);
 
         return "courseloaded";
     }
 
-    @GetMapping("/listcourse")
-    public String listcourse(Model model)
+    @GetMapping("/addstudentstocourse/{id}")
+    public String addstudentstocourse(@PathVariable("id") long courseId, Model model)
     {
-        model.addAttribute(courseRepo.findAll());
-        return "displaycourse";
+        //try if the session variable will work here
+
+        System.out.println("--------"+courseId);
+//        System.out.println("add studnets to course Id testing =======" + courseId.getCourseId());
+        Course newCourse= courseRepo.findOne(courseId);
+
+
+        model.addAttribute("newCourse",newCourse);
+        System.out.println("here0==========" + newCourse.getCourseId());
+
+
+        Iterable<Person> allstudents = personRepo.findAll();
+
+        System.out.println("here==========");
+
+        model.addAttribute("allstudents",allstudents );
+
+        System.out.println("here2==========");
+
+        return "addstudenttocourseform";
+
+//        long course1Id = 0L;
+//        long course2Id = 0L;
+//        long course3Id = 0L;
+//        long course4Id = 0L;
+//        long course5Id= 0L;
+//
+//        newCourse.getStudents().iterator().next().setUuid(course1Id);
+//        newCourse.getStudents().iterator().next().setUuid(course2Id);
+//        newCourse.getStudents().iterator().next().setUuid(course3Id);
+//        newCourse.getStudents().iterator().next().setUuid(course4Id);
+//        newCourse.getStudents().iterator().next().setUuid(course5Id);
+//
+//        newCourse.setStudents(personRepo.findAll());
+//
+//        System.out.println("////////" + newCourse.getStudents().iterator().next().getUuid());
+//
+//        model.addAttribute("newCourse", newCourse);
+//
+//        courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().next().getUuid();
+
+        //return courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().hasNext();
+
     }
 
+    @PostMapping("/addstudentstocourse/{id}")
+    public String poststudenttocourse(@PathVariable("id") long courseId, @ModelAttribute ("allstudents") Iterable<Person> allstudents,  Model model)
+    {
+
+        Course newCourse= courseRepo.findOne(courseId);
+
+        for (Person p:allstudents)
+        {
+            if (p.getCourseReg()==true){
+                newCourse.addPersontoCourse(p);
+            }
+
+        }
+
+        courseRepo.save(newCourse);
+
+        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
+
+        return "onecourselist";
+    }
+
+
+
+    @GetMapping("/listallcourses")
+    public String listcourse(Model model)
+    {
+        model.addAttribute("allcourses", courseRepo.findAll());
+        return "courselist";
+    }
 
 
     @GetMapping("/login")
@@ -89,7 +183,16 @@ public class MainController {
 
     //Home page, request the user to enter their name and email first
     //if user has entered the name, welcome he/she back and check history
+
+
     @GetMapping("/")
+    public String homepage(){
+
+        return "homepage";
+    }
+
+
+    @GetMapping("/addperson")
     public String addPersonandHomepage(Model model)
     {
 
@@ -118,6 +221,14 @@ public class MainController {
 
         return "displayperson";
     }
+
+//    @GetMapping("/displaypersonwithid/{id}")
+//    public String postpersonwithId(@PathVariable("id") long personId, Model model)
+//    {
+//
+//        model.addAttribute("newperson", personRepo.findOne(personId));
+//        return "displayperson";
+//    }
 
     //prompt the user to enter education information
     //check the entries existed in the database, if greater than 10, not more input
@@ -150,8 +261,6 @@ public class MainController {
 
 
     /// add education method works!!!!!
-
-
     @GetMapping("/addeducationtoperson/{id}")
     public String addEduToPerson(@PathVariable("id") long personId, Model model){
 
@@ -170,14 +279,13 @@ public class MainController {
 
 
         // this works.successfully print out the person ID
-        personIdReuse.addThings(Long.toString(personId));
-        System.out.println("===testing session variable:   " + personIdReuse.getThings());
+        personIdReuse.setPersonId(personId);
+        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
 
 
         //try use this personIdReuse in Html print out
-        String tryprintout = personIdReuse.getThings();
 
-        model.addAttribute("tryprintout", tryprintout);
+        model.addAttribute("tryprintout", personIdReuse.getPersonId());
 
 
         Person oneperson= personRepo.findOne(personId);
@@ -202,14 +310,14 @@ public class MainController {
         System.out.println("==== personID:   " + personId);
 
         //this works as well, so it can be used in another method as a variable
-        System.out.println("===testing session variable:   " + personIdReuse.getThings());
+        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
 
         //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
         //try the following
         education.setPerson(personRepo.findOne(personId));
 
         //try add it to model and see if it can be printed in HTML
-        model.addAttribute(personIdReuse.getThings());
+        model.addAttribute(personIdReuse.getPersonId());
 
         educationRepo.save(education);
         return "displayeducation";
@@ -270,13 +378,7 @@ public class MainController {
         return "displayexperience";
     }
 
-    @GetMapping("/displaypersonwithid/{id}")
-    public String postpersonwithId(@PathVariable("id") long personId, Model model)
-    {
 
-        model.addAttribute("newperson", personRepo.findOne(personId));
-        return "displayperson";
-    }
 
     @GetMapping("/displayoneprofile/{id}")
     public String displayOneProfile(@PathVariable("id") long personId, Model model)
@@ -395,6 +497,12 @@ public class MainController {
 
     }
 
+    @GetMapping("/listnames")
+    public String listNames(Model model){
+
+        model.addAttribute("allperson", personRepo.findAll());
+        return "listnames";
+    }
 
     // this two methods work, even without change the connection between edu/person/, skill/person, exp/person
     // the connection stays the same in database

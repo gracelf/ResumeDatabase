@@ -44,7 +44,7 @@
             <!--<li><a href="/addeducation">AddEducation</a></li>-->
             <!--<li><a href="/addexperience">AddExperience</a></li>-->
             <!--<li><a href="/addskill">AddSkill</a></li>-->
-            <a href="/addperson">Add another person</a>
+            <li><a href="/addperson">Add another person</a></li>
             <li class="active"><a href="/displayall">Profile</a></li>
         </ul>
     </div>
@@ -59,7 +59,7 @@
                 <th:block th:each="oneper:${allperson}">
 
 
-                    <h2 th:text="inline">Basic information for [[${oneper.firstName}]]</h2>
+                    <h2 th:inline="text">Basic information for [[${oneper.firstName}]]</h2>
 
                     <p th:text="'Your full name: '+ ${oneper.firstName} + ' ' + ${oneper.lastName}"/>
                     <p th:text="'Your email: '+ ${oneper.email}" />

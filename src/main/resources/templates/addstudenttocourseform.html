@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+<form action="#" th:action="@{/addstudentstocourse/{id}(id=${newCourse.courseId})}" th:object="${allstudents}" method="post">
+
+    <!--<p><input type="hidden" th:field="*{id}"/></p>-->
+
+    <!--<p><input type="text" th:field="*{director.id}"/></p>-->
+
+
+    <!--<th:block th:each="person:${allstudents}">-->
+
+        <!--<select th:field="${person.courseReg}">-->
+        <!--&lt;!&ndash;<th:block th:each="director:${alldirector}">&ndash;&gt;-->
+            <!--<option th:value=false>Not Register</option>-->
+        <!--&lt;!&ndash;<option value="-1">Not a department head</option>&ndash;&gt;-->
+
+            <!--<option th:value=true>Register</option>-->
+
+        <!--&lt;!&ndash;</th:block>&ndash;&gt;-->
+        <!--</select>-->
+        <!--<p><input type="text" th:field="${person.uuid}"/></p>-->
+        <!--<p><input type="text" th:field="${person.firstName}"/></p>-->
+        <!--<p><input type="text" th:field=${person.lastName}"/></p>-->
+    <!--</th:block>-->
+
+
+
+    <table>
+        <caption>
+            <h2><b>Registered Students for course</b></h2>
+        </caption>
+
+        <thead>
+        <tr>
+            <th>Registration</th>
+            <th>Student ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <th:block th:each="item:${allstudents}">
+            <tr>
+                <td>
+                    <select th:field="${item.courseReg}">
+                        <!--<th:block th:each="director:${alldirector}">-->
+                        <option th:value=false>Not Register</option>
+                        <!--<option value="-1">Not a department head</option>-->
+
+                        <option th:value=true>Register</option>
+
+                        <!--</th:block>-->
+                    </select>
+                </td>
+                <!--<td>-->
+                    <!--<input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}">Register<br>-->
+                <!--</td>-->
+                <!--<td><input type="checkbox" th:value="${item.uuid}" th:checked="${item.courseReg}" /></td>-->
+                <td><p th:text="${item.uuid}"></p></td>
+                <td><p th:text="${item.firstName}"></p></td>
+                <td><p th:text="${item.lastName}"></p></td>
+            </tr>
+        </th:block>
+        </tbody>
+
+    </table>
+
+    <p><input type="submit" value="submit" /> <input type="reset" value="Reset" /></p>
+
+</form>
+
+</body>
+</html>

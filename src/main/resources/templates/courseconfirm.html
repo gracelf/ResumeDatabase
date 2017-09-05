@@ -53,17 +53,23 @@
         <div class="row">
             <div class="col-lg-12 text-center">
 
-                <h3>Your newly added experience:</h3> <br />
+                <h3>Your newly added course:</h3> <br />
 
-                <p th:text="'Title: '+ ${newexperience.title}"/>
-                <p th:text="'Your organization: '+ ${newexperience.organization}"/>
-                <p th:text="'Your start time: '+ ${newexperience.startTime}" />
-                <p th:text="'Your end time: '+ ${newexperience.endTime}"/>
-                <p th:text="'Your duty 1: '+ ${newexperience.duty1}"/>
-                <p th:text="'Your duty 2: '+ ${newexperience.duty2}" /></br><br/>
+                <p th:text="'Course Id: '+ ${newCourse.courseId}"/>
+                <p th:text="'Course Code: '+ ${newCourse.CourseCode}"/>
+                <p th:text="'Instructor: '+ ${newCourse.instructor}"/>
+                <p th:text="'Course Credit: '+ ${newCourse.credit}" />
+                <p th:text="'Course Description: '+ ${newCourse.description}"/>
+                </br><br/>
 
-                <p><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">Add Education</a></p>
-                <p><a th:href="@{/addexptoperson/{id}(id=${personid})}">Add another Experience</a></p>
+
+                <p><a th:href="@{/addstudentstocourse/{id}(id=${courseId})}">Add Students to this Course</a></p>
+                <p><a th:href="@{/listallcourses}"></a></p>
+
+
+
+                <p><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">Add another Education</a></p>
+                <p><a th:href="@{/addexptoperson/{id}(id=${personid})}">Add Experience</a></p>
                 <p><a th:href="@{/addskilltoperson/{id}(id=${personid})}">Add Skill</a></p>
                 <p><a th:href="@{/displaypersonwithid/{id}(id=${personid})}">Go back to check person inof/Home</a></p>
                 <p><a th:href="@{/displayoneprofile/{id}(id=${personid})}">Go back to person profile</a></p>

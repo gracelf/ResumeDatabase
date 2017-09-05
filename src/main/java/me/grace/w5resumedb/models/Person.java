@@ -22,7 +22,6 @@ public class Person {
     @Size(min=2)
     private String firstName;
 
-
     @NotNull
     @Size(min=2)
     private String lastName;
@@ -45,6 +44,17 @@ public class Person {
     @ManyToMany(mappedBy = "students")
     private Set<Course> courselist;
 
+    private Boolean courseReg;
+
+
+
+    public Boolean getCourseReg() {
+        return courseReg;
+    }
+
+    public void setCourseReg(Boolean courseReg) {
+        this.courseReg = courseReg;
+    }
 
     public Set<Course> getCourselist() {
         return courselist;
@@ -119,6 +129,7 @@ public class Person {
         this.skills=new HashSet<Skill>();
         this.experiences=new HashSet<Experience>();
         this.courselist = new HashSet<Course>();
+        this.courseReg=false;
     }
 
     //add course to this person
