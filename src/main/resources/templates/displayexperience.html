@@ -24,12 +24,15 @@
 
 <body>
 
+
+
 <!-- Header -->
 <header class="halfpic">
     <div class="header-vertical-center">
 
     </div>
 </header>
+
 
 <!--navbar-->
 <nav class="navbar navbar-inverse">
@@ -39,10 +42,11 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="/addeducation">AddEducation</a></li>
-            <li class="active"><a href="/addexperience">AddExperience</a></li>
-            <li><a href="/addskill">AddSkill</a></li>
-            <li><a href="/displayall">Profile</a></li>
+            <li><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">AddEducation</a></li>
+            <li class="active"><a th:href="@{/addexptoperson/{id}(id=${personid})}">AddExperience</a></li>
+            <li><a th:href="@{/addskilltoperson/{id}(id=${personid})}">AddSkill</a></li>
+            <li><a th:href="@{/displayoneprofile/{id}(id=${personid})}">CurrentProfile</a></li>
+
         </ul>
     </div>
 </nav>
@@ -53,7 +57,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
 
-                <h3>Your newly added experience:</h3> <br />
+                <h3>Your newly added/updated experience:</h3> <br />
 
                 <p th:text="'Title: '+ ${newexperience.title}"/>
                 <p th:text="'Your organization: '+ ${newexperience.organization}"/>
@@ -62,11 +66,11 @@
                 <p th:text="'Your duty 1: '+ ${newexperience.duty1}"/>
                 <p th:text="'Your duty 2: '+ ${newexperience.duty2}" /></br><br/>
 
-                <p><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">Add Education</a></p>
-                <p><a th:href="@{/addexptoperson/{id}(id=${personid})}">Add another Experience</a></p>
-                <p><a th:href="@{/addskilltoperson/{id}(id=${personid})}">Add Skill</a></p>
-                <p><a th:href="@{/displaypersonwithid/{id}(id=${personid})}">Go back to check person inof/Home</a></p>
-                <p><a th:href="@{/displayoneprofile/{id}(id=${personid})}">Go back to person profile</a></p>
+                <!--<p><a th:href="@{/addeducationtoperson/{id}(id=${personid})}">Add Education</a></p>-->
+                <!--<p><a th:href="@{/addexptoperson/{id}(id=${personid})}">Add another Experience</a></p>-->
+                <!--<p><a th:href="@{/addskilltoperson/{id}(id=${personid})}">Add Skill</a></p>-->
+                <!--<p><a th:href="@{/displaypersonwithid/{id}(id=${personid})}">Go back to check person inof/Home</a></p>-->
+                <!--<p><a th:href="@{/displayoneprofile/{id}(id=${personid})}">Go back to person profile</a></p>-->
 
 
 

@@ -1,11 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="../../css/additional.css">
+
+
 </head>
 <body>
 
+<!--header-->
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+
+<!--navbar-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a th:href="@{/displayoneprofile/{id}(id=${oneperson.uuid})}">Display Profile</a></li>
+            <li><a href="/listnames">AllResumes</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
+
+
+<!--form-->
 <section>
     <div class="container">
         <div class="row">
@@ -22,14 +66,13 @@
                                         <form class="well form-horizontal" th:action="@{/addeducationtoperson/{personid}(personid=${oneperson.uuid})}" method="post" th:object="${neweducation}">
                                             <fieldset>
 
-                                                <h3>Add your education achievement:</h3><br />
+                                                <h3 th:inline="text">Adding education for [[${oneperson.firstName}]]</h3>
+                                                <br/>
+                                                <br/>
 
-                                                <h1 th:text="${tryprintout}">Not printout</h1>
+                                                <!--<h1 th:text="${tryprintout}">Not printout</h1>-->
 
-
-                                                <input type="text" th:value="${oneperson.uuid}">
-
-                                                <label th:inline="text">Adding education for [[${oneperson.firstName}]]</label>
+                                                <input type="hidden" th:value="${oneperson.uuid}">
 
                                                 <input type="hidden" th:field="*{educationId}" />
 
@@ -38,9 +81,9 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{degree}" name="degree" placeholder=" Enter Your degree" class="form-control"  type="text">
+                                                            <input required th:field="*{degree}" name="degree" placeholder=" Enter Your degree" class="form-control"  type="text">
                                                         </div>
-                                                        <div th:if="${#fields.hasErrors('degree')}"  th:errors="*{degree}" class="well alert alert-warning" role="alert">Enter a valid degree</div>
+                                                        <!--<div th:if="${#fields.hasErrors('degree')}"  th:errors="*{degree}" class="well alert alert-warning" role="alert">Enter a valid degree</div>-->
                                                     </div>
                                                 </div>
 
@@ -49,9 +92,9 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{university}" name="email" placeholder=" Enter Your university" class="form-control"  type="text">
+                                                            <input required th:field="*{university}" name="email" placeholder=" Enter Your university" class="form-control"  type="text">
                                                         </div>
-                                                        <div th:if="${#fields.hasErrors('university')}"  th:errors="*{university}" class="well alert alert-warning" role="alert">Enter Your university</div>
+                                                        <!--<div th:if="${#fields.hasErrors('university')}"  th:errors="*{university}" class="well alert alert-warning" role="alert">Enter Your university</div>-->
                                                     </div>
                                                 </div>
 
@@ -60,9 +103,9 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="glyphicon glyphicon-email"></i></span>
-                                                            <input  th:field="*{graduationYear}" name="email" placeholder=" Enter Your Graduate Year" class="form-control"  type="text">
+                                                            <input required th:field="*{graduationYear}" name="email" placeholder=" Enter Your Graduate Year" class="form-control"  type="text">
                                                         </div>
-                                                        <div th:if="${#fields.hasErrors('graduationYear')}"  th:errors="*{graduationYear}" class="well alert alert-warning" role="alert">Enter Your Graduation Year</div>
+                                                        <!--<div th:if="${#fields.hasErrors('graduationYear')}"  th:errors="*{graduationYear}" class="well alert alert-warning" role="alert">Enter Your Graduation Year</div>-->
                                                     </div>
                                                 </div>
 

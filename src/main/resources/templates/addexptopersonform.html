@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="../../css/additional.css">
+
+
 </head>
 <body>
+
+<!--header-->
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+
+<!--navbar-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a th:href="@{/displayoneprofile/{id}(id=${oneperson.uuid})}">Display Profile</a></li>
+            <li><a href="/listnames">AllResumes</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
 
 <section>
     <div class="container">
@@ -22,12 +64,13 @@
                                         <form class="well form-horizontal" th:action="@{/addexptoperson/{personid}(personid=${oneperson.uuid})}" method="post" th:object="${newexperience}">
                                             <fieldset>
 
-                                                <h3>Add your Experience:</h3><br />
+                                                <h3 th:inline="text">Adding Experience for [[${oneperson.firstName}]]</h3>
+                                                <br/>
+                                                <br/>
 
 
-                                                <input type="text" th:value="${oneperson.uuid}">
+                                                <input type="hidden" th:value="${oneperson.uuid}">
 
-                                                <label th:inline="text">Adding Experience for [[${oneperson.firstName}]]</label>
 
                                                 <input type="hidden" th:field="*{experienceId}" />
 
@@ -36,7 +79,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{title}" name="title" placeholder=" Enter Your title" class="form-control"  type="text">
+                                                            <input required th:field="*{title}" name="title" placeholder=" Enter Your title" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('title')}"  th:errors="*{title}" class="well alert alert-warning" role="alert">Enter a valid title</div>
                                                     </div>
@@ -47,7 +90,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{organization}" name="organization" placeholder=" Enter Your Organization" class="form-control"  type="text">
+                                                            <input required th:field="*{organization}" name="organization" placeholder=" Enter Your Organization" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('organization')}"  th:errors="*{organization}" class="well alert alert-warning" role="alert">Enter Your organization</div>
                                                     </div>
@@ -58,7 +101,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{startTime}" name="email" placeholder=" Enter the Start Time" class="form-control"  type="text">
+                                                            <input required th:field="*{startTime}" name="email" placeholder=" Enter the Start Time" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('startTime')}"  th:errors="*{startTime}" class="well alert alert-warning" role="alert">Enter Your start time</div>
                                                     </div>
@@ -69,9 +112,9 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{endTime}" name="End time" placeholder=" Enter the End Time" class="form-control"  type="text">
+                                                            <input th:field="*{endTime}" name="End time" placeholder=" Enter the End Time" class="form-control"  type="text">
                                                         </div>
-                                                        <div th:if="${#fields.hasErrors('endTime')}"  th:errors="*{endTime}" class="well alert alert-warning" role="alert">Enter Your end time</div>
+                                                        <!--<div th:if="${#fields.hasErrors('endTime')}"  th:errors="*{endTime}" class="well alert alert-warning" role="alert">Enter Your end time</div>-->
                                                     </div>
                                                 </div>
 
@@ -80,7 +123,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <textarea rows="3" th:field="*{duty1}" name="duty1" placeholder=" Enter Your Duty 1" class="form-control"  type="text"></textarea>
+                                                            <textarea rows="3" required th:field="*{duty1}" name="duty1" placeholder=" Enter Your Duty 1" class="form-control"  type="text"></textarea>
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('duty1')}"  th:errors="*{duty1}" class="well alert alert-warning" role="alert">Enter Your duty 1</div>
                                                     </div>
@@ -91,7 +134,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <textarea rows="3" th:field="*{duty2}" name="email" placeholder=" Enter Your duty 2" class="form-control"  type="text"></textarea>
+                                                            <textarea rows="3" required th:field="*{duty2}" name="email" placeholder=" Enter Your duty 2" class="form-control"  type="text"></textarea>
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('duty2')}"  th:errors="*{duty2}" class="well alert alert-warning" role="alert">Enter Your duty 2</div>
                                                     </div>

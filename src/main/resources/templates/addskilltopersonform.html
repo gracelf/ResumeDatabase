@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="../../css/additional.css">
+
+
 </head>
 <body>
+
+<!--header-->
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+
+<!--navbar-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a th:href="@{/displayoneprofile/{id}(id=${oneperson.uuid})}">Display Profile</a></li>
+            <li><a href="/listnames">AllResumes</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
 
 <section>
     <div class="container">
@@ -22,12 +64,12 @@
                                         <form class="well form-horizontal" th:action="@{/addskilltoperson/{personid}(personid=${oneperson.uuid})}" method="post" th:object="${newskill}">
                                             <fieldset>
 
-                                                <h3>Add your Skill:</h3><br />
+                                                <h3 th:inline="text">Adding Skill for [[${oneperson.firstName}]]</h3>
+                                                <br/>
+                                                <br/>
 
 
-                                                <input type="text" th:value="${oneperson.uuid}">
-
-                                                <label th:inline="text">Adding Skill for [[${oneperson.firstName}]]</label>
+                                                <input type="hidden" th:value="${oneperson.uuid}">
 
                                                 <input type="hidden" th:field="*{skillId}" />
 
@@ -36,7 +78,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{skillname}" name="skillname" placeholder=" Enter Your Skill" class="form-control"  type="text">
+                                                            <input required th:field="*{skillname}" name="skillname" placeholder=" Enter Your Skill" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('skillname')}"  th:errors="*{skillname}" class="well alert alert-warning" role="alert">Enter a valid Skill</div>
                                                     </div>
@@ -47,7 +89,7 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <input  th:field="*{skillrating}" name="skillrating" placeholder=" Enter the Rating" class="form-control"  type="text">
+                                                            <input required th:field="*{skillrating}" name="skillrating" placeholder=" Enter the Rating" class="form-control"  type="text">
                                                         </div>
                                                         <div th:if="${#fields.hasErrors('skillrating')}"  th:errors="*{skillrating}" class="well alert alert-warning" role="alert">Enter Your rating</div>
                                                     </div>

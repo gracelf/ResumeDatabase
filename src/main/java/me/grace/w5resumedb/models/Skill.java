@@ -1,6 +1,8 @@
 package me.grace.w5resumedb.models;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,12 +14,10 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long skillId;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String skillname;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String skillrating;
 
     @ManyToOne(fetch = FetchType.EAGER)

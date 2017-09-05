@@ -58,13 +58,13 @@
                 <th:block th:each="item:${allcourses}">
 
 
-                    <h2 th:inline="text">Basic information for [[${item.courseCode}]]</h2>
+                    <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
 
                     <p th:text="'Course Instructor: ' + ${item.courseCode}"/>
                     <p th:text="'Course credit: '+ ${item.credit}" />
                     <p th:text="'Course description: '+ ${item.description}" />
 
-                    <p><a href="#">Add students to course</a></p>
+                    <!--<p><a href="#">Add students to course</a></p>-->
                     <!--<p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>-->
                     <!--<p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>-->
 
@@ -75,6 +75,8 @@
                     <!--<p><a href="/displayall" class="btn btn-dark btn-lg">Show your profile</a></p>-->
                     <!--<br/>-->
                     <!--</div>-->
+                    <br/>
+                    <br/>
                 </th:block>
 
             </div>

@@ -1,6 +1,8 @@
 package me.grace.w5resumedb.models;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,26 +14,21 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long experienceId;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String title;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String organization;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String startTime;
 
     private String endTime;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String duty1;
 
-    @NotNull
-    @Size(min=3)
+    @NotEmpty
     private String duty2;
 
     @ManyToOne(fetch = FetchType.EAGER)

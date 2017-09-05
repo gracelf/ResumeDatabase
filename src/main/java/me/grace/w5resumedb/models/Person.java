@@ -1,6 +1,7 @@
 package me.grace.w5resumedb.models;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,15 +19,14 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long uuid;
 
-    @NotNull
-    @Size(min=2)
+    @NotEmpty
     private String firstName;
 
-    @NotNull
-    @Size(min=2)
+    @NotEmpty
     private String lastName;
 
     @Email
+    @NotEmpty
     private String email;
 
 

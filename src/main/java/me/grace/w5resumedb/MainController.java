@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 public class MainController {
@@ -304,8 +303,16 @@ public class MainController {
         return "addedutopersonform";
     }
 
+
+
     @PostMapping("/addeducationtoperson/{personid}")
-    public String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, Model model){
+    public String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult, Model model){
+
+
+        if(bindingResult.hasErrors())
+        {
+            return "/addeducationtoperson/{id}";
+        }
 
         System.out.println("==== personID:   " + personId);
 
@@ -339,7 +346,12 @@ public class MainController {
     }
 
     @PostMapping("/addskilltoperson/{personid}")
-    public String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, Model model){
+    public String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors())
+        {
+            return "/addskilltoperson/{personid}";
+        }
 
         System.out.println("==== personID:   " + personId);
 
@@ -367,7 +379,12 @@ public class MainController {
     }
 
     @PostMapping("/addexptoperson/{personid}")
-    public String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, Model model){
+    public String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors())
+        {
+            return "/addexptoperson/{personid}";
+        }
 
         System.out.println("==== personID:   " + personId);
 
@@ -446,56 +463,57 @@ public class MainController {
 //        return "displayexperience";
 //    }
 
-    //if person, skill or education is blank, will ask the user to input
-    @GetMapping("/displayall")
-    public String getall(Model model)
-    {
-//        if(personRepo.count()==0)
-//        {
-//            return "moreinfo";
-//        }
+//    //if person, skill or education is blank, will ask the user to input
+    // display the whole list with details, not need for this project,, just for testing
+//    @GetMapping("/displayall")
+//    public String getall(Model model)
+//    {
+////        if(personRepo.count()==0)
+////        {
+////            return "moreinfo";
+////        }
+////
+////        if(educationRepo.count()==0)
+////        {
+////            return "moreinfo";
+////        }
+////
+////        if(skillRepo.count()==0)
+////        {
+////            return "moreinfo";
+////        }
 //
-//        if(educationRepo.count()==0)
-//        {
-//            return "moreinfo";
-//        }
 //
-//        if(skillRepo.count()==0)
-//        {
-//            return "moreinfo";
-//        }
-
-
-//        Person person= new Person();
-//        Iterable<Person> allperson= personRepo.findAll();
-//        model.addAttribute("person",allperson);
-
-//        Iterable<Person> allperson= personRepo.findAll();
-
-        model.addAttribute("allperson", personRepo.findAll());
-
-//        //Get information from database, pass on to the person object
-//        Iterable<Education> alledu= educationRepo.findAll();
-//        ArrayList<Education> educa= new ArrayList<>();
-//        educa= (ArrayList<Education>) alledu;
-//        person.setEducations(educa);
-//        model.addAttribute("alledu",person.getEducations());
+////        Person person= new Person();
+////        Iterable<Person> allperson= personRepo.findAll();
+////        model.addAttribute("person",allperson);
 //
-//        Iterable<Skill> allskill= skillRepo.findAll();
-//        ArrayList<Skill> skills= new ArrayList<>();
-//        skills= (ArrayList<Skill>) allskill;
-//        person.setSkills(skills);
-//        model.addAttribute("allskill",person.getSkills());
+////        Iterable<Person> allperson= personRepo.findAll();
 //
-//        Iterable<Experience> allexp= experienceRepo.findAll();
-//        ArrayList<Experience> exps= new ArrayList<>();
-//        exps= (ArrayList<Experience>) allexp;
-//        person.setExperiences(exps);
-//        model.addAttribute("allexp",person.getExperiences());
-
-        return "displayall";
-
-    }
+//        model.addAttribute("allperson", personRepo.findAll());
+//
+////        //Get information from database, pass on to the person object
+////        Iterable<Education> alledu= educationRepo.findAll();
+////        ArrayList<Education> educa= new ArrayList<>();
+////        educa= (ArrayList<Education>) alledu;
+////        person.setEducations(educa);
+////        model.addAttribute("alledu",person.getEducations());
+////
+////        Iterable<Skill> allskill= skillRepo.findAll();
+////        ArrayList<Skill> skills= new ArrayList<>();
+////        skills= (ArrayList<Skill>) allskill;
+////        person.setSkills(skills);
+////        model.addAttribute("allskill",person.getSkills());
+////
+////        Iterable<Experience> allexp= experienceRepo.findAll();
+////        ArrayList<Experience> exps= new ArrayList<>();
+////        exps= (ArrayList<Experience>) allexp;
+////        person.setExperiences(exps);
+////        model.addAttribute("allexp",person.getExperiences());
+//
+//        return "displayall";
+//
+//    }
 
     @GetMapping("/listnames")
     public String listNames(Model model){
@@ -516,7 +534,7 @@ public class MainController {
     @RequestMapping("/deleteper/{id}")
     public String delper(@PathVariable("id") long uuid){
         personRepo.delete(uuid);
-        return "redirect:/displayall";
+        return "redirect:/listnames";
     }
 
 
@@ -544,11 +562,10 @@ public class MainController {
 
         Education deleteedu = educationRepo.findOne(educationId);
         Person oneperson = deleteedu.getPerson();
-
+        long personToGoTo = oneperson.getUuid();
         oneperson.removeEdu(deleteedu);
-
         educationRepo.delete(educationId);
-        return "redirect:/displayall";
+        return "redirect:/displayoneprofile/" + personToGoTo;
     }
 
 
@@ -574,11 +591,12 @@ public class MainController {
 
         Skill deleteskil = skillRepo.findOne(skillId);
         Person oneperson = deleteskil.getPerson();
+        long personToGoTo = oneperson.getUuid();
 
         oneperson.removeSkl(deleteskil);
 
         skillRepo.delete(skillId);
-        return "redirect:/displayall";
+        return "redirect:/displayoneprofile/" + personToGoTo;
     }
 
     @RequestMapping("/updateexp/{id}")
@@ -600,10 +618,11 @@ public class MainController {
 
         Experience deleteexp = experienceRepo.findOne(experienceId);
         Person oneperson = deleteexp.getPerson();
-
+        long personToGoTo = oneperson.getUuid();
         oneperson.removeExp(deleteexp);
         experienceRepo.delete(experienceId);
-        return "redirect:/displayall";
+
+        return "redirect:/displayoneprofile/" + personToGoTo;
 
     }
 

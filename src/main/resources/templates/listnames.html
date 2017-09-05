@@ -45,7 +45,7 @@
             <!--<li><a href="/addexperience">AddExperience</a></li>-->
             <!--<li><a href="/addskill">AddSkill</a></li>-->
             <li><a href="/addperson">Add another person</a></li>
-            <li class="active"><a href="/displayall">Profile</a></li>
+            <li class="active"><a href="/listnames">AllResumes</a></li>
         </ul>
     </div>
 </nav>
@@ -73,8 +73,7 @@
                    <tr>
                         <td><p th:text="${oneper.uuid}"/></td>
                         <td><p th:text="${oneper.firstName} + ' ' + ${oneper.lastName}"/></td>
-                        <td><p th:text="${oneper.firstName} + ' ' + ${oneper.lastName}"/></td>
-                        <td><p th:text="'Your email: '+ ${oneper.email}" /></td>
+                        <td><p th:text="${oneper.email}" /></td>
                         <td><a th:href="@{/displayoneprofile/{id}(id=${oneper.uuid})}">Details</a></td>
                         <td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>
                         <td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>

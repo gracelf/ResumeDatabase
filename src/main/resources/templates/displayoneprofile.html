@@ -34,28 +34,17 @@
     </div>
 </header>
 
+
 <!--navbar-->
-<div class="navbar-wrapper">
-    <div class="container">
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+                        <li><a href="/">Home</a></li>
 
-        <nav class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">ResumeDB</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home</a></li>
-
-                        <li><a href="/displayall">Profile</a></li>
-
-                        <li class="dropdown">
+                        <li class="dropdown" class="active">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>
                             <ul class="dropdown-menu">
 
@@ -63,42 +52,50 @@
                                 <li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>
                                 <li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/displayall">Display all Profile</a></li>
+                                <li><a th:href="@{/displayoneprofile/{id}(id=${newperson.uuid})}">Display Profile</a></li>
                             </ul>
                         </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
+                        <li><a href="/listnames">AllResumes</a></li>
+        </ul>
     </div>
-</div>
-
+    </div>
+</nav>
 <!--Application section-->
 <section>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
-                <h1 th:text="'Hello, '+ ${newperson.firstName} + ' ' + ${newperson.lastName} + '!'"/><br/>
-                <h2>Here is your profile in our Database:</h2>
+                <h2 th:text="'Hello, '+ ${newperson.firstName} + ' ' + ${newperson.lastName} + '!'"/><br/><br/>
                 <p th:text="'Your Id in our database: ' + ${newperson.uuid}"></p>
                 <p th:text="'Your email: ' + ${newperson.email}"></p>
+
 
                 <h3>Your Education Achievement:</h3>
 
 
-                <th:block th:each="edu:${newperson.educations}">
-                    <p th:text="'Degreee: '+ ${edu.degree}"/>
-                    <p th:text="'Your University: '+ ${edu.university}"/>
-                    <p th:text="'Your Graduate Year: '+ ${edu.graduationYear}" />
-                    <p><a th:href="@{/updateedu/{id}(id=${edu.educationId})}">Update</a></p>
-                    <p><a th:href="@{/deleteedu/{id}(id=${edu.educationId})}">Delete</a></p>
-                    <br/>
-                    <!--<tr><br/></tr>-->
-                    <!--<tr><br/></tr>-->
-                </th:block>
+                <div  th:if="${!newperson.educations.isEmpty()}">
+                    <th:block th:each="edu:${newperson.educations}">
+                        <p th:text="'Degreee: '+ ${edu.degree}"/>
+                        <p th:text="'Your University: '+ ${edu.university}"/>
+                        <p th:text="'Your Graduate Year: '+ ${edu.graduationYear}" />
+                        <p><a th:href="@{/updateedu/{id}(id=${edu.educationId})}">Update</a></p>
+                        <p><a th:href="@{/deleteedu/{id}(id=${edu.educationId})}">Delete</a></p>
+                        <br/>
+                        <!--<tr><br/></tr>-->
+                        <!--<tr><br/></tr>-->
+                    </th:block>
+                </div>
+
+                <div th:if="${newperson.educations.isEmpty()}">
+                    No information available. <b>Please add at least one education achievement!</b>
+                </div>
+
+
 
                 <h3>Your Experience: </h3>
+
+                <div  th:if="${!newperson.experiences.isEmpty()}">
                 <th:block th:each="exp:${newperson.experiences}">
                     <p th:text="'Title: '+ ${exp.title}"/>
                     <p th:text="'Your organization: '+ ${exp.organization}"/>
@@ -109,17 +106,28 @@
                     <p><a th:href="@{/deleteexp/{id}(id=${exp.experienceId})}">Delete</a></p>
                     <br/>
                 </th:block>
+                </div>
+                <div th:if="${newperson.experiences.isEmpty()}">
+                    No information available.
+                </div>
 
 
 
                 <h3>Your Skill:</h3>
+
+                <div  th:if="${!newperson.skills.isEmpty()}">
                 <th:block th:each="sk:${newperson.skills}">
-                    <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}" />
+                    <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
                     <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
                     <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
                     <br/>
                     <br/>
                 </th:block>
+                </div>
+                <div th:if="${newperson.skills.isEmpty()}">
+                    No information available. <b>Please add at least one education achievement!</b>
+                </div>
+
 
             </div>
         </div>

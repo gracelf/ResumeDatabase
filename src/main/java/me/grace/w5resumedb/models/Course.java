@@ -4,6 +4,7 @@ package me.grace.w5resumedb.models;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ public class Course {
 
     private String instructor;
 
+    @NotNull
     private double credit;
 
     private String description;

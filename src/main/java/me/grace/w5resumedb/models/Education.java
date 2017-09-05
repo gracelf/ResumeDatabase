@@ -1,6 +1,8 @@
 package me.grace.w5resumedb.models;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,16 +14,19 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long educationId;
 
-    @NotNull
-    @Size(min=3)
+//    @NotNull
+//    @Size(min=3)
+    @NotEmpty
     private String degree;
 
-    @NotNull
-    @Size(min=3)
+//    @NotNull
+//    @Size(min=3)
+    @NotEmpty
     private String university;
 
-    @NotNull
-    @Size(min=2)
+//    @NotNull
+//    @Size(min=2)
+    @NotEmpty
     private String graduationYear;
 
     @ManyToOne(fetch = FetchType.EAGER)
