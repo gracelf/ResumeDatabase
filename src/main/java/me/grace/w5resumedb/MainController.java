@@ -171,7 +171,7 @@ public class MainController {
     public String listcourse(Model model)
     {
         model.addAttribute("allcourses", courseRepo.findAll());
-        return "courselist";
+        return "listallcourses";
     }
 
 

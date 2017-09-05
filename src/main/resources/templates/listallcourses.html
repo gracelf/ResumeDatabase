@@ -60,10 +60,12 @@
 
                     <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
 
+                    <p th:text="'Course Instructor: ' + ${item.courseId}"/>
                     <p th:text="'Course Instructor: ' + ${item.courseCode}"/>
                     <p th:text="'Course credit: '+ ${item.credit}" />
                     <p th:text="'Course description: '+ ${item.description}" />
-
+                    <p><a href="#"></a>Show detail</p>
+                    <p><a href="#"></a>Register student for the course</p>
                     <!--<p><a href="#">Add students to course</a></p>-->
                     <!--<p><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></p>-->
                     <!--<p><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></p>-->
