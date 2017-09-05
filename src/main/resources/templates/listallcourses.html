@@ -59,7 +59,6 @@
 
                 <th:block th:each="item:${allcourses}">
 
-
                     <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
 
                     <p th:text="'Course ID: ' + ${item.courseId}"/>
@@ -68,7 +67,7 @@
                     <p th:text="'Course description: '+ ${item.description}" />
                     <!--<p th:text="'Students registed for the courses:' + "/>-->
                     <p><a th:href="@{/addstudentstocourse/{id}(id=${item.courseId})}">Register student for the course</a></p>
-                    <p><a th:href="@{/onecourselist/{id}(id=${item.courseId})}">Register student for the course</a></p>
+                    <p><a th:href="@{/onecourselist/{id}(id=${item.courseId})}">Show details</a></p>
 
 
                     <!--<p><a href="#">Add students to course</a></p>-->

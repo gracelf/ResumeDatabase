@@ -172,6 +172,8 @@ public class MainController {
         }
         courseRepo.save(newCourse);
 
+        long courseToGoTo = newCourse.getCourseId();
+
 //        System.out.println(allstudents.iterator().next().getLastName());
 //
 //        System.out.println(allstudents.iterator().next().isCourseReg());
@@ -190,7 +192,15 @@ public class MainController {
 //
 //        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
 
+        return "redirect:/onecourselist/" + courseToGoTo;
+    }
+
+    @GetMapping("/onecourselist/{id}")
+    public String listOnecourse(@PathVariable("id") long courseId, Model model)
+    {
+        model.addAttribute("course", courseRepo.findOne(courseId));
         return "onecourselist";
+
     }
 
 

@@ -57,16 +57,32 @@
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
 
-                <th:block th:each="item:${allcourses}">
 
-                    <h2 th:inline="text">Course information for [[${item.courseCode}]]</h2>
 
-                    <p th:text="'Course ID: ' + ${item.courseId}"/>
-                    <p th:text="'Course Instructor: ' + ${item.courseCode}"/>
-                    <p th:text="'Course credit: '+ ${item.credit}" />
-                    <p th:text="'Course description: '+ ${item.description}" />
+                    <h2 th:inline="text">Course information for [[${course.courseCode}]]</h2>
+
+                    <p th:text="'Course ID: ' + ${course.courseId}"/>
+                    <p th:text="'Course Instructor: ' + ${course.courseCode}"/>
+                    <p th:text="'Course credit: '+ ${course.credit}" />
+                    <p th:text="'Course description: '+ ${course.description}" />
+
+                    <div  th:if="${!course.students.isEmpty()}">
+                        <th:block th:each="student:${course.students}">
+                            <p>Student</p>
+                            <p th:text="'First Name: '+ ${student.firstName}"/>
+                            <p th:text="'Last Name: '+ ${student.lastName}"/>
+                            <p th:text="'Email: '+ ${student.email}" />
+                            <br/>
+                            <!--<tr><br/></tr>-->
+                            <!--<tr><br/></tr>-->
+                        </th:block>
+                    </div>
+
+                    <div th:if="${course.students.isEmpty()}">
+                        No Student registered for this course yet.
+                    </div>
                     <!--<p th:text="'Students registed for the courses:' + "/>-->
-                    <p><a th:href="@{/addstudentstocourse/{id}(id=${item.courseId})}">Register student for the course</a></p>
+                    <p><a th:href="@{/addstudentstocourse/{id}(id=${course.courseId})}">Register student for the course</a></p>
 
 
 
@@ -83,7 +99,7 @@
                     <!--</div>-->
                     <br/>
                     <br/>
-                </th:block>
+
 
             </div>
         </div>
