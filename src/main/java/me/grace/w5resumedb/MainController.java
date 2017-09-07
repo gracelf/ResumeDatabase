@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -33,7 +34,29 @@ public class MainController {
     @Autowired
     public SomeIdtoUse courseId;
 
-    //login page
+
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    //Home page, request the user to enter their name and email first
+    //if user has entered the name, welcome he/she back and check history
+
+
+    @GetMapping("/")
+    public String homepage(){
+
+        return "homepage";
+    }
+
+    @RequestMapping("/register")
+
+
+
+
+
 
     @GetMapping("/addcourse")
     public String addcourse(Model model)
@@ -217,22 +240,6 @@ public class MainController {
     {
         model.addAttribute("allcourses", courseRepo.findAll());
         return "listallcourses";
-    }
-
-
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    //Home page, request the user to enter their name and email first
-    //if user has entered the name, welcome he/she back and check history
-
-
-    @GetMapping("/")
-    public String homepage(){
-
-        return "homepage";
     }
 
 
