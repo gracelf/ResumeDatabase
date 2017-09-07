@@ -1,6 +1,9 @@
 # WeekSixChallenge
 
-check update at:
+new reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+
+
+check update at:   
 https://aqueous-beyond-46945.herokuapp.com
 
 
