@@ -9,4 +9,14 @@ public interface PersonRepo extends CrudRepository<Person,Long> {
     Person findByEmail(String email);
     Long countByEmail(String email);
     Long countByUsername(String username);
+
+    Iterable<Person> findAllByFirstName(String firstName);
+
+    Iterable<Person> findAllByFirstNameandAndLastName(String firstName, String lastName);
+
+    Iterable<Person> findAllByUniversity(String firstName);
+
+    Iterable<Person> findAllByExperiences_organization(String organizationName);
+
+
 }

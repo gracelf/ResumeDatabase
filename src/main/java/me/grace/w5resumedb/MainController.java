@@ -76,6 +76,22 @@ public class MainController {
     }
 
 
+    //testing search method
+    @GetMapping("/findjobbyskill")
+    public @ResponseBody String findjobthroughskill()
+
+    {
+
+        jobRepo.findAllByRSkills_rSkillName("Java");
+        System.out.println(">>>>>>>>" + jobRepo.findAllByRSkills_rSkillName("Java").iterator().next().getJobId() );
+
+        Iterable<Person> find = personRepo.findAllByFirstNameandAndLastName("Jim", "Berkerly");
+        System.out.println("////" + find.iterator().next().getUuid());
+
+
+        return "find job by skill";
+    }
+
     //register as a job seeker role
     @RequestMapping(value = "/registerS", method = RequestMethod.GET)
     public String registerasjobseeker(Model model)
@@ -146,10 +162,10 @@ public class MainController {
 
         model.addAttribute("arr", arr);
         model.addAttribute("skill1", skill1);
-//        model.addAttribute("skill2", skill2);
-//        model.addAttribute("skill3", skill3);
-//        model.addAttribute("skill4", skill4);
-//        model.addAttribute("skill5", skill5);
+        model.addAttribute("skill2", skill2);
+        model.addAttribute("skill3", skill3);
+        model.addAttribute("skill4", skill4);
+        model.addAttribute("skill5", skill5);
 
         return "jobform";
 
