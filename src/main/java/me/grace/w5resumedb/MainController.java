@@ -24,6 +24,11 @@ public class MainController {
     SkillRepo skillRepo;
     @Autowired
     ExperienceRepo experienceRepo;
+    @Autowired
+    JobRepo jobRepo;
+    @Autowired
+    SkillRQDRepo skillRQDRepo;
+
 
     @Autowired
     CourseRepo courseRepo;
@@ -51,10 +56,113 @@ public class MainController {
         return "homepage";
     }
 
-    @RequestMapping("/register")
+
+    //register as a job seeker role
+    @RequestMapping("/registerasjobseeker")
+    public String registerasjobseeker()
+    {
+        return "registerasseeker";
+    }
+
+    //register as a recruiter role
+    @RequestMapping("/registerasrecruiter")
+    public String registerasrecruiter()
+    {
+        return "registerasrecruiter";
+    }
+
+
+    @GetMapping("/addjob")
+    public String addjob(Model model)
+    {
+        Job job = new Job();
+        model.addAttribute("newJob", job);
+        model.addAttribute("allrqdskills", skillRQDRepo.findAll());
+
+        SkillRQD skill1= new SkillRQD();
+        SkillRQD skill2= new SkillRQD();
+        SkillRQD skill3= new SkillRQD();
+        SkillRQD skill4= new SkillRQD();
+        SkillRQD skill5= new SkillRQD();
+        ArrayList<SkillRQD> arr = new ArrayList<SkillRQD>();
+        arr.add(skill1);
+        arr.add(skill2);
+        arr.add(skill3);
+        arr.add(skill4);
+        arr.add(skill5);
+
+        model.addAttribute("arr", arr);
+        model.addAttribute("skill1", skill1);
+        model.addAttribute("skill2", skill2);
+        model.addAttribute("skill3", skill3);
+        model.addAttribute("skill4", skill4);
+        model.addAttribute("skill5", skill5);
+
+        return "jobform";
+
+    }
+
+
+    // if not checked try catch java.lang.NullPointerException: null
+
+    @PostMapping("/postjob")
+    public @ResponseBody String postJob(@Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
+                                        @ModelAttribute ("skills") ArrayList<SkillRQD> arr, Model mode)
+    {
+
+        //System.out.print(arr.iterator().hasNext());
+
+        if(skillIdchecked.length!=0) {
+
+            for (long skillId : skillIdchecked) {
+                System.out.println("+++++++++" + skillId);
+                job.addskilltojob(skillRQDRepo.findOne(skillId));
+
+            }
+
+        }
+
+
+        for (SkillRQD item: arr)
+        {
+            if (item.toString()!=null) {
+                System.out.println("===== if it is empty or not" +item.toString());
+                skillRQDRepo.save(item);
+                job.addskilltojob(item);
+            }
+        }
+        jobRepo.save(job);
 
 
 
+        return "jobconfirmation";
+    }
+
+    @GetMapping("/loadrqdskills")
+    public @ResponseBody String loadrqdskills()
+    {
+        SkillRQD skill1 = new SkillRQD();
+        skill1.setrSkillName("Java");
+        skill1.setSkillDescription("proficient");
+        skillRQDRepo.save(skill1);
+
+        SkillRQD skill2 = new SkillRQD();
+        skill2.setrSkillName("Python");
+        skill2.setSkillDescription("Intermediate level");
+        skillRQDRepo.save(skill2);
+
+        SkillRQD skill3 = new SkillRQD();
+        skill3.setrSkillName("NoSQL database");
+        skill3.setSkillDescription("Entry level");
+        skillRQDRepo.save(skill3);
+
+        SkillRQD skill4 = new SkillRQD();
+        skill4.setrSkillName("MVCSpring");
+        skill4.setSkillDescription("highly skilled");
+        skillRQDRepo.save(skill4);
+
+        return "successfully load required skills";
+    }
 
 
 
@@ -182,7 +290,8 @@ public class MainController {
     }
 
     @PostMapping("/addstudentstocourse/{id}")
-    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds", required=false) Long[] checkedstudentsId, @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
+    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds", required=false) Long[] checkedstudentsId,
+                                      @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
     {
 
         Course newCourse= courseRepo.findOne(courseId);

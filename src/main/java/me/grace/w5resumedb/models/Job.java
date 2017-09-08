@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,22 +29,24 @@ public class Job {
     private String jobDescriprtion;
 
     //testing different string ArrayList and new skill class
-    @NotEmpty
-    private ArrayList<String> skillList;
+//    @NotEmpty
+//    private ArrayList<String> skillList;
+//
+//    @NotEmpty
+//    private String[] skillSlist;
 
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
     private Set<SkillRQD> rSkills;
 
-    @NotEmpty
-    private String[] skillSlist;
-
-
-    public ArrayList<String> getSkillList() {
-        return skillList;
+    //constructor for jobs
+    public Job(){
+        this.rSkills=new HashSet<SkillRQD>();
     }
 
-    public void setSkillList(ArrayList<String> skillList) {
-        this.skillList = skillList;
+    //
+    public void addskilltojob(SkillRQD s)
+    {
+        this.getrSkills().add(s);
     }
 
     public long getJobId() {

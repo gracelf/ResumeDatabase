@@ -4,6 +4,7 @@ package me.grace.w5resumedb.models;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class SkillRQD {
@@ -17,16 +18,15 @@ public class SkillRQD {
 
     private String skillDescription;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="job_id")
-    private Job job;
+    @ManyToMany(mappedBy = "rSkills", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Job> jobs;
 
-    public Job getJob() {
-        return job;
+    public Set<Job> getJob() {
+        return jobs;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public void setJob(Set<Job> job) {
+        this.jobs = job;
     }
 
     public long getrSkillId() {
