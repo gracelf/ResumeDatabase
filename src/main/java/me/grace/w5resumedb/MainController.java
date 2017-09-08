@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.security.Principal;
+
 
 @Controller
 public class MainController {
@@ -27,8 +29,12 @@ public class MainController {
     @Autowired
     JobRepo jobRepo;
     @Autowired
+    RoleRepo roleRepo;
+    @Autowired
     SkillRQDRepo skillRQDRepo;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     CourseRepo courseRepo;
@@ -40,6 +46,18 @@ public class MainController {
     public SomeIdtoUse courseId;
 
 
+    @GetMapping("/loadroles")
+    public @ResponseBody String loadroles()
+    {
+        Role newrole = new Role();
+        newrole.setRoleName("JOBSEEKER");
+        roleRepo.save(newrole);
+        Role newrole2 = new Role();
+        newrole2.setRoleName("RECRUITER");
+        roleRepo.save(newrole2);
+
+        return "roles loaded";
+    }
 
     @GetMapping("/login")
     public String login(){
@@ -50,6 +68,7 @@ public class MainController {
     //if user has entered the name, welcome he/she back and check history
 
 
+    // TODO: add href for 1:login option or register for (jobseeker/recruiter roles)
     @GetMapping("/")
     public String homepage(){
 
@@ -58,17 +77,50 @@ public class MainController {
 
 
     //register as a job seeker role
-    @RequestMapping("/registerasjobseeker")
-    public String registerasjobseeker()
+    @RequestMapping(value = "/registerS", method = RequestMethod.GET)
+    public String registerasjobseeker(Model model)
     {
-        return "registerasseeker";
+        model.addAttribute("jobSeeker", new Person());
+        return "registerSform";
     }
 
-    //register as a recruiter role
-    @RequestMapping("/registerasrecruiter")
-    public String registerasrecruiter()
+    @RequestMapping(value = "/registerS", method = RequestMethod.POST)
+    public String regSpost(@Valid @ModelAttribute("jobSeeker") Person person,BindingResult bResult, Model model)
     {
-        return "registerasrecruiter";
+
+        if (bResult.hasErrors())
+        {
+            return "registerSform";
+        }
+        else{
+            userService.saveJobSeeker(person);
+            model.addAttribute("message", "JobSeeker Account Successfully Created");
+        }
+        return "homepage";
+    }
+
+
+    //register as a job seeker role
+    @RequestMapping(value = "/registerR", method = RequestMethod.GET)
+    public String registerasR(Model model)
+    {
+        model.addAttribute("recruiter", new Person());
+        return "registerRform";
+    }
+
+    @RequestMapping(value = "/registerR", method = RequestMethod.POST)
+    public String regRpost(@Valid @ModelAttribute("recruiter") Person person,BindingResult bResult, Model model)
+    {
+
+        if (bResult.hasErrors())
+        {
+            return "registerRform";
+        }
+        else{
+            userService.saveJobSeeker(person);
+            model.addAttribute("message", "JobSeeker Account Successfully Created");
+        }
+        return "homepage";
     }
 
 
@@ -79,6 +131,7 @@ public class MainController {
         model.addAttribute("newJob", job);
         model.addAttribute("allrqdskills", skillRQDRepo.findAll());
 
+        //try add upto 5 skills on the same page
         SkillRQD skill1= new SkillRQD();
         SkillRQD skill2= new SkillRQD();
         SkillRQD skill3= new SkillRQD();
@@ -93,10 +146,10 @@ public class MainController {
 
         model.addAttribute("arr", arr);
         model.addAttribute("skill1", skill1);
-        model.addAttribute("skill2", skill2);
-        model.addAttribute("skill3", skill3);
-        model.addAttribute("skill4", skill4);
-        model.addAttribute("skill5", skill5);
+//        model.addAttribute("skill2", skill2);
+//        model.addAttribute("skill3", skill3);
+//        model.addAttribute("skill4", skill4);
+//        model.addAttribute("skill5", skill5);
 
         return "jobform";
 
@@ -124,8 +177,6 @@ public class MainController {
         }catch (Exception e){
                 System.out.println("You didn't check any from db");
             }
-
-
 
 
         for (SkillRQD item: arr)

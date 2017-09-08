@@ -43,7 +43,7 @@ public class Job {
         this.rSkills=new HashSet<SkillRQD>();
     }
 
-    //
+    //add a new required skill to the job
     public void addskilltojob(SkillRQD s)
     {
         this.getrSkills().add(s);
