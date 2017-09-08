@@ -107,20 +107,25 @@ public class MainController {
 
     @PostMapping("/postjob")
     public @ResponseBody String postJob(@Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @ModelAttribute ("skills") ArrayList<SkillRQD> arr, Model mode)
+                                        @ModelAttribute ("arr") ArrayList<SkillRQD> arr, @ModelAttribute("skill1") SkillRQD skill1,  Model mode)
     {
 
         //System.out.print(arr.iterator().hasNext());
 
-        if(skillIdchecked.length!=0) {
 
-            for (long skillId : skillIdchecked) {
-                System.out.println("+++++++++" + skillId);
-                job.addskilltojob(skillRQDRepo.findOne(skillId));
+        try {
+            for (Long skillId : skillIdchecked) {
+                if (skillId != null) {
+                    System.out.println("+++++++++" + skillId);
+                    job.addskilltojob(skillRQDRepo.findOne(skillId));
+                }
 
             }
+        }catch (Exception e){
+                System.out.println("You didn't check any from db");
+            }
 
-        }
+
 
 
         for (SkillRQD item: arr)
@@ -131,8 +136,15 @@ public class MainController {
                 job.addskilltojob(item);
             }
         }
-        jobRepo.save(job);
 
+
+        if (skill1.toString()!=null)
+        {
+            skillRQDRepo.save(skill1);
+            job.addskilltojob(skill1);
+        }
+
+        jobRepo.save(job);
 
 
         return "jobconfirmation";
