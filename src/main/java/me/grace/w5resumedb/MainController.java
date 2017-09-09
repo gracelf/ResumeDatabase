@@ -30,8 +30,6 @@ public class MainController {
     JobRepo jobRepo;
     @Autowired
     RoleRepo roleRepo;
-    @Autowired
-    SkillRQDRepo skillRQDRepo;
 
     @Autowired
     private UserService userService;
@@ -82,10 +80,10 @@ public class MainController {
 
     {
 
-        jobRepo.findAllByRSkills_rSkillName("Java");
-        System.out.println(">>>>>>>>" + jobRepo.findAllByRSkills_rSkillName("Java").iterator().next().getJobId() );
+        jobRepo.findAllBySkills_skillname("Java");
+        System.out.println(">>>>>>>>" + jobRepo.findAllBySkills_skillname("Java").iterator().next().getJobId() );
 
-        Iterable<Person> find = personRepo.findAllByFirstNameandAndLastName("Jim", "Berkerly");
+        Iterable<Person> find = personRepo.findAllByFirstNameAndLastName("Jim", "Berkerly");
         System.out.println("////" + find.iterator().next().getUuid());
 
 
@@ -141,31 +139,35 @@ public class MainController {
 
 
     @GetMapping("/addjob")
-    public String addjob(Model model)
+    public String addjob(Principal p, Model model)
     {
+
+        System.out.println("======WHO is the principal/user now? =========" + p.getName());
+
         Job job = new Job();
         model.addAttribute("newJob", job);
-        model.addAttribute("allrqdskills", skillRQDRepo.findAll());
+        model.addAttribute("allskills", skillRepo.findAll());
 
         //try add upto 5 skills on the same page
-        SkillRQD skill1= new SkillRQD();
-        SkillRQD skill2= new SkillRQD();
-        SkillRQD skill3= new SkillRQD();
-        SkillRQD skill4= new SkillRQD();
-        SkillRQD skill5= new SkillRQD();
-        ArrayList<SkillRQD> arr = new ArrayList<SkillRQD>();
-        arr.add(skill1);
-        arr.add(skill2);
-        arr.add(skill3);
-        arr.add(skill4);
-        arr.add(skill5);
-
-        model.addAttribute("arr", arr);
-        model.addAttribute("skill1", skill1);
-        model.addAttribute("skill2", skill2);
-        model.addAttribute("skill3", skill3);
-        model.addAttribute("skill4", skill4);
-        model.addAttribute("skill5", skill5);
+        Skill otherskill = new Skill();
+//        Skill otherskill2 = new Skill();
+//        Skill otherskill3 = new Skill();
+//        Skill skill1= new Skill();
+//        Skill skill2= new Skill();
+//        Skill skill3= new Skill();
+//        Skill skill4= new Skill();
+//        Skill skill5= new Skill();
+//        ArrayList<Skill> arr = new ArrayList<Skill>();
+//        arr.add(skill1);
+//        arr.add(skill2);
+//        arr.add(skill3);
+//        arr.add(skill4);
+//        arr.add(skill5);
+//
+//        model.addAttribute("arr", arr);
+        model.addAttribute("otherskill", otherskill);
+//        model.addAttribute("otherskill2", otherskill2);
+//        model.addAttribute("otherskill3", otherskill3);
 
         return "jobform";
 
@@ -176,7 +178,8 @@ public class MainController {
 
     @PostMapping("/postjob")
     public @ResponseBody String postJob(@Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @ModelAttribute ("arr") ArrayList<SkillRQD> arr, @ModelAttribute("skill1") SkillRQD skill1,  Model mode)
+                                        @ModelAttribute ("arr") ArrayList<Skill> arr, @ModelAttribute("otherskill") Skill otherskill,
+                                        Model model)
     {
 
         //System.out.print(arr.iterator().hasNext());
@@ -186,29 +189,29 @@ public class MainController {
             for (Long skillId : skillIdchecked) {
                 if (skillId != null) {
                     System.out.println("+++++++++" + skillId);
-                    job.addskilltojob(skillRQDRepo.findOne(skillId));
+                    job.addskilltojob(skillRepo.findOne(skillId));
                 }
 
             }
         }catch (Exception e){
-                System.out.println("You didn't check any from db");
+                System.out.println("User didn't check any option from db");
             }
 
 
-        for (SkillRQD item: arr)
+        for (Skill item: arr)
         {
             if (item.toString()!=null) {
                 System.out.println("===== if it is empty or not" +item.toString());
-                skillRQDRepo.save(item);
+                skillRepo.save(item);
                 job.addskilltojob(item);
             }
         }
 
 
-        if (skill1.toString()!=null)
+        if (otherskill.toString()!=null)
         {
-            skillRQDRepo.save(skill1);
-            job.addskilltojob(skill1);
+            skillRepo.save(otherskill);
+            job.addskilltojob(otherskill);
         }
 
         jobRepo.save(job);
@@ -217,30 +220,20 @@ public class MainController {
         return "jobconfirmation";
     }
 
-    @GetMapping("/loadrqdskills")
+    @GetMapping("/loadskills")
     public @ResponseBody String loadrqdskills()
     {
-        SkillRQD skill1 = new SkillRQD();
-        skill1.setrSkillName("Java");
-        skill1.setSkillDescription("proficient");
-        skillRQDRepo.save(skill1);
+        Skill skill1 = new Skill();
+        skill1.setSkillname("Java");
+        skill1.setSkillrating("proficient");
+        skillRepo.save(skill1);
 
-        SkillRQD skill2 = new SkillRQD();
-        skill2.setrSkillName("Python");
-        skill2.setSkillDescription("Intermediate level");
-        skillRQDRepo.save(skill2);
+        Skill skill2 = new Skill();
+        skill2.setSkillname("Python");
+        skill2.setSkillrating("Intermediate level");
+        skillRepo.save(skill2);
 
-        SkillRQD skill3 = new SkillRQD();
-        skill3.setrSkillName("NoSQL database");
-        skill3.setSkillDescription("Entry level");
-        skillRQDRepo.save(skill3);
-
-        SkillRQD skill4 = new SkillRQD();
-        skill4.setrSkillName("MVCSpring");
-        skill4.setSkillDescription("highly skilled");
-        skillRQDRepo.save(skill4);
-
-        return "successfully load required skills";
+        return "successfully load some skills";
     }
 
 

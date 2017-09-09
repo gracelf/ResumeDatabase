@@ -88,14 +88,14 @@
                                                     <div class="col-md-4 inputGroupContainer">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"></span>
-                                                            <textarea rows="5" th:field="*{jobDescriprtion}" name="jobDescriprtion" placeholder="Enter the Job description" class="form-control"  type="text"></textarea>
+                                                            <textarea rows="5" th:field="*{jobDescription}" name="jobDescription" placeholder="Enter the Job description" class="form-control"  type="text"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div>
                                                     <table align="center">
-                                                <th:block th:each="item:${allrqdskills}">
+                                                <th:block th:each="item:${allskills}">
                                                     <tr>
                                                         <!--<td>-->
                                                         <!--<select th:field="${item.courseReg}">-->
@@ -112,61 +112,62 @@
                                                         <!--<input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}">Register<br>-->
                                                         <!--</td>-->
                                                         <!--<td><input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}" /></td>-->
-                                                        <td><input type="checkbox" name="skillIds" th:value="${item.rSkillId}" unchecked></td>
+                                                        <td><input type="checkbox" name="skillIds" th:value="${item.skillId}" unchecked></td>
                                                         <!--<td><p th:text="${item.courseReg}"></p></td>-->
-                                                        <td><p th:text="${item.rSkillName}"></p></td>
-                                                        <td><p th:text="${item.skillDescription}"></p></td>
+                                                        <td><p th:text="${item.skillname}"></p></td>
+                                                        <td><p th:text="${item.skillrating}"></p></td>
                                                     </tr>
                                                 </th:block>
 
+                                                        <!--<th:block th:each="item:${arr}">-->
+
+                                                            <!--<tr>-->
+                                                                <!--<td style="padding-bottom: 10px">Other:</td>-->
+                                                                <!--<td><input type="text" name="skillname" th:value="${item.skillname}" style="padding-right: 20px"></td>-->
+                                                                <!--<td><input type="text" name="skillrating" th:value="${item.skillrating}"></td>-->
+
+                                                            <!--</tr>-->
+
+                                                        <!--</th:block>-->
+
+                                                        <tr>
+                                                            <td style="padding-bottom: 10px">Other skill:</td>
+                                                            <td><input type="text" name="skillname1" th:value="${otherskill.skillname}" style="padding-right: 20px"></td>
+                                                            <td><input type="text" name="skillrating1" th:value="${otherskill.skillrating}"></td>
+                                                        </tr>
+                                                        <!--<tr>-->
+                                                            <!--<td style="padding-bottom: 10px">Other skill2:</td>-->
+                                                            <!--<td><input type="text" name="skillname" th:value="${otherskill2.skillname}" style="padding-right: 20px"></td>-->
+                                                            <!--<td><input type="text" name="skillrating" th:value="${otherskill2.skillrating}"></td>-->
+                                                        <!--</tr>-->
+                                                        <!--<tr>-->
+                                                            <!--<td style="padding-bottom: 10px">Other skill3:</td>-->
+                                                            <!--<td><input type="text" name="skillname" th:value="${otherskill3.skillname}" style="padding-right: 20px"></td>-->
+                                                            <!--<td><input type="text" name="skillrating" th:value="${otherskill3.skillrating}"></td>-->
+                                                        <!--</tr>-->
 
 
                                                     </table>
 
-                                                    <div>
-                                                        <table align="center">
-                                                            <th:block th:each="item:${arr}">
-
-                                                                <tr>
-                                                                    <td style="padding-bottom: 10px">Other:</td>
-                                                                    <td><input type="text" name="rSkillName" th:value="${item.rSkillName}" style="padding-right: 20px"></td>
-                                                                    <td><input type="text" name="skillDescription" th:value="${item.skillDescription}"></td>
-
-                                                                </tr>
-                                                            </th:block>
-                                                        <tr>
-                                                            <td style="padding-bottom: 10px">Other 1:</td>
-                                                            <td><input type="text" name="rSkillName" th:value="${skill1.rSkillName}" style="padding-right: 20px"></td>
-                                                            <td><input type="text" name="skillDescription" th:value="${skill1.skillDescription}"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td style="padding-bottom: 10px">Other 2:</td>
-                                                            <td><input type="text" name="rSkillName" th:value="${skill2.rSkillName}" style="padding-right: 25px"></td>
-                                                            <td><input type="text" name="skillDescription" th:value="${skill2.skillDescription}"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td style="padding-bottom: 10px">Other 3:</td>
-                                                            <td><input type="text" name="rSkillName" th:value="${skill3.rSkillName}" style="padding-right: 25px"></td>
-                                                            <td><input type="text" name="skillDescription" th:value="${skill3.skillDescription}"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td style="padding-bottom: 10px">Other 4:</td>
-                                                            <td><input type="text" name="rSkillName" th:value="${skill4.rSkillName}" style="padding-right: 25px"></td>
-                                                            <td><input type="text" name="skillDescription" th:value="${skill4.skillDescription}"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td style="padding-bottom: 10px">Other 5:</td>
-                                                            <td><input type="text" name="rSkillName" th:value="${skill5.rSkillName}" style="padding-right: 25px"></td>
-                                                            <td><input type="text" name="skillDescription" th:value="${skill5.skillDescription}"></td>
-                                                        </tr>
-
-                                                    </table>
                                                     </div>
-                                                </div>
+                                                        <!--<table align="center">-->
+                                                            <!--<th:block th:each="item:${arr}">-->
+
+                                                                <!--<tr>-->
+                                                                    <!--<td style="padding-bottom: 10px">Other:</td>-->
+                                                                    <!--<td><input type="text" name="skillname" th:value="${item.skillname}" style="padding-right: 20px"></td>-->
+                                                                    <!--<td><input type="text" name="skillrating" th:value="${item.skillrating}"></td>-->
+
+                                                                <!--</tr>-->
+                                                            <!--</th:block>-->
+                                                        <!--<tr>-->
+                                                            <!--<td style="padding-bottom: 10px">Other skill:</td>-->
+                                                            <!--<td><input type="text" name="skillname" th:value="${otherskill.skillname}" style="padding-right: 20px"></td>-->
+                                                            <!--<td><input type="text" name="skillrating" th:value="${otherskill.skillrating}"></td>-->
+                                                        <!--</tr>-->
+                                                        <!--</table>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
 
                                                 <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
                                                     <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>

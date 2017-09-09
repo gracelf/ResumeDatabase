@@ -12,9 +12,9 @@ public interface PersonRepo extends CrudRepository<Person,Long> {
 
     Iterable<Person> findAllByFirstName(String firstName);
 
-    Iterable<Person> findAllByFirstNameandAndLastName(String firstName, String lastName);
+    Iterable<Person> findAllByFirstNameAndLastName(String firstName, String lastName);
 
-    Iterable<Person> findAllByUniversity(String firstName);
+    Iterable<Person> findAllByEducations_university(String university);
 
     Iterable<Person> findAllByExperiences_organization(String organizationName);
 

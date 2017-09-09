@@ -26,7 +26,7 @@ public class Job {
     private String salaryRange;
 
     @NotEmpty
-    private String jobDescriprtion;
+    private String jobDescription;
 
     //testing different string ArrayList and new skill class
 //    @NotEmpty
@@ -36,17 +36,19 @@ public class Job {
 //    private String[] skillSlist;
 
     @ManyToMany(fetch=FetchType.EAGER)
-    private Set<SkillRQD> rSkills;
+    private Set<Skill> skills;
+
+
 
     //constructor for jobs
     public Job(){
-        this.rSkills=new HashSet<SkillRQD>();
+        this.skills=new HashSet<Skill>();
     }
 
     //add a new required skill to the job
-    public void addskilltojob(SkillRQD s)
+    public void addskilltojob(Skill s)
     {
-        this.getrSkills().add(s);
+        this.skills.add(s);
     }
 
     public long getJobId() {
@@ -81,19 +83,19 @@ public class Job {
         this.salaryRange = salaryRange;
     }
 
-    public String getJobDescriprtion() {
-        return jobDescriprtion;
+    public String getJobDescription() {
+        return jobDescription;
     }
 
-    public void setJobDescriprtion(String jobDescriprtion) {
-        this.jobDescriprtion = jobDescriprtion;
+    public void setJobDescription(String jobDescription) {
+        this.jobDescription = jobDescription;
     }
 
-    public Set<SkillRQD> getrSkills() {
-        return rSkills;
+    public Set<Skill> getSkills() {
+        return skills;
     }
 
-    public void setrSkills(Set<SkillRQD> rSkills) {
-        this.rSkills = rSkills;
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
     }
 }

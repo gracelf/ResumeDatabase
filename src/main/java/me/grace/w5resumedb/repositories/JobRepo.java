@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface JobRepo extends CrudRepository<Job, Long>{
 
-    Iterable<Job> findAllByRSkills_rSkillName(String skillname);
+    Iterable<Job> findAllBySkills_skillname(String skillname);
 
     Iterable<Job> findAllByEmployer(String partialString);
 

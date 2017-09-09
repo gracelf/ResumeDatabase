@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 public class Skill {
@@ -23,6 +24,19 @@ public class Skill {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="sklofperson_id")
     private Person person;
+
+
+    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Job> jobs;
+
+    public Set<Job> getJob() {
+        return jobs;
+    }
+
+    public void setJob(Set<Job> job) {
+        this.jobs = job;
+    }
+
 
     public Person getPerson() {
         return person;
