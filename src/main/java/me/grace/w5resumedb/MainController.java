@@ -299,7 +299,7 @@ public class MainController {
 
 
     @GetMapping("/search")
-    public String searchbycompanyform()
+    public String oneSearchlinkforall()
     {
 
         return "searchform";
@@ -307,7 +307,7 @@ public class MainController {
 
 
     //to accept a string from input in PostMapping, @RequestParam is required
-    @PostMapping("/searchbyname")
+    @PostMapping("/searchbyConame")
     public String searchbyname(@RequestParam("searchCoName") String searchCoName, Model model){
 
         System.out.println(searchCoName);
