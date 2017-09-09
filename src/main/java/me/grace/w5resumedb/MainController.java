@@ -178,7 +178,7 @@ public class MainController {
 
     @PostMapping("/postjob")
     public @ResponseBody String postJob(@Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @ModelAttribute ("arr") ArrayList<Skill> arr, @ModelAttribute("otherskill") Skill otherskill,
+                                        @ModelAttribute("otherskill") Skill otherskill,
                                         Model model)
     {
 
@@ -198,14 +198,14 @@ public class MainController {
             }
 
 
-        for (Skill item: arr)
-        {
-            if (item.toString()!=null) {
-                System.out.println("===== if it is empty or not" +item.toString());
-                skillRepo.save(item);
-                job.addskilltojob(item);
-            }
-        }
+//        for (Skill item: arr)
+//        {
+//            if (item.toString()!=null) {
+//                System.out.println("===== if it is empty or not" +item.toString());
+//                skillRepo.save(item);
+//                job.addskilltojob(item);
+//            }
+//        }
 
 
         if (otherskill.toString()!=null)
