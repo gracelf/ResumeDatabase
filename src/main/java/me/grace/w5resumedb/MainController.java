@@ -149,7 +149,7 @@ public class MainController {
         model.addAttribute("allskills", skillRepo.findAll());
 
         //try add upto 5 skills on the same page
-        Skill otherskill = new Skill();
+//        Skill otherskill = new Skill();
 //        Skill otherskill2 = new Skill();
 //        Skill otherskill3 = new Skill();
 //        Skill skill1= new Skill();
@@ -165,7 +165,7 @@ public class MainController {
 //        arr.add(skill5);
 //
 //        model.addAttribute("arr", arr);
-        model.addAttribute("otherskill", otherskill);
+//        model.addAttribute("otherskill", otherskill);
 //        model.addAttribute("otherskill2", otherskill2);
 //        model.addAttribute("otherskill3", otherskill3);
 
@@ -177,9 +177,9 @@ public class MainController {
     // if not checked try catch java.lang.NullPointerException: null
 
     @PostMapping("/postjob")
-    public @ResponseBody String postJob(@Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @ModelAttribute("otherskill") Skill otherskill,
-                                        Model model)
+    public String postJob(Principal p, @Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
+                                        @RequestParam(value="skillname1", required=false) String skillname1,
+                                        @RequestParam(value="skillrating1", required=false) String skillrating1, Model model)
     {
 
         //System.out.print(arr.iterator().hasNext());
@@ -208,17 +208,116 @@ public class MainController {
 //        }
 
 
-        if (otherskill.toString()!=null)
-        {
-            skillRepo.save(otherskill);
-            job.addskilltojob(otherskill);
+        try {
+            if (skillname1.toString() != null && skillrating1.toString() != null) {
+
+                Skill skill1 = new Skill();
+                skill1.setSkillname(skillname1);
+                skill1.setSkillrating(skillrating1);
+
+                skillRepo.save(skill1);
+                job.addskilltojob(skill1);
+            }
+        }catch (Exception e){
+            System.out.println("User didn't input other skills");
         }
 
         jobRepo.save(job);
 
+        model.addAttribute("newJob", job);
+        model.addAttribute(("pName"), p.getName());
+
 
         return "jobconfirmation";
     }
+
+    @GetMapping("/addskillstojob/{id}")
+    public String addskillstojob(@PathVariable("id") long jobId,Model model)
+    {
+
+        Job job= jobRepo.findOne(jobId);
+        model.addAttribute("newJob", job);
+
+        System.out.println("====" + jobId);
+        model.addAttribute("allskills", skillRepo.findAll());
+
+        return "addskillstojob";
+    }
+
+    @PostMapping("/addskillstojob/{id}")
+    public String postskilltojob(Principal p, @PathVariable("id") long jobId, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
+                                        @RequestParam(value="skillname1", required=false) String skillname1,
+                                 @RequestParam(value="skillrating1", required=false) String skillrating1, Model model)
+    {
+
+        //System.out.print(arr.iterator().hasNext());
+
+        Job jobtemp = jobRepo.findOne(jobId);
+
+        try {
+            for (Long skillId : skillIdchecked) {
+                if (skillId != null) {
+                    System.out.println("+++++++++" + skillId);
+                    jobtemp.addskilltojob(skillRepo.findOne(skillId));
+                }
+
+            }
+        }catch (Exception e){
+            System.out.println("User didn't check any option from db");
+        }
+
+
+//        for (Skill item: arr)
+//        {
+//            if (item.toString()!=null) {
+//                System.out.println("===== if it is empty or not" +item.toString());
+//                skillRepo.save(item);
+//                job.addskilltojob(item);
+//            }
+//        }
+        try {
+            if (skillname1.toString() != null && skillrating1.toString() != null) {
+
+                Skill skill1 = new Skill();
+                skill1.setSkillname(skillname1);
+                skill1.setSkillrating(skillrating1);
+
+                skillRepo.save(skill1);
+                jobtemp.addskilltojob(skill1);
+            }
+        }catch (Exception e){
+            System.out.println("User didn't input other skills");
+        }
+
+        jobRepo.save(jobtemp);
+
+        model.addAttribute("newJob", jobtemp);
+        model.addAttribute(("pName"), p.getName());
+
+        return "jobconfirmation";
+    }
+
+
+    @GetMapping("/search")
+    public String searchbycompanyform()
+    {
+
+        return "searchform";
+    }
+
+
+    //to accept a string from input in PostMapping, @RequestParam is required
+    @PostMapping("/searchbyname")
+    public String searchbyname(@RequestParam("searchCoName") String searchCoName, Model model){
+
+        System.out.println(searchCoName);
+
+        Iterable<Job> searchResult= jobRepo.findAllByEmployer(searchCoName);
+        model.addAttribute("searchResult", searchResult);
+        return "listbycompanyname";
+    }
+
+
 
     @GetMapping("/loadskills")
     public @ResponseBody String loadrqdskills()
@@ -511,8 +610,8 @@ public class MainController {
 
 
         // this works.successfully print out the person ID
-        personIdReuse.setPersonId(personId);
-        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
+//        personIdReuse.setPersonId(personId);
+//        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
 
 
         //try use this personIdReuse in Html print out

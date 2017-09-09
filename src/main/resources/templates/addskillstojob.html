@@ -43,75 +43,16 @@
                                 <div class="intro-message">
                                     <hr class="intro-divider">
                                     <ul class="list-inline intro-social-buttons">
-                                        <form class="well form-horizontal" th:action="@{/postjob}" method="post" th:object="${newJob}">
+                                        <form class="well form-horizontal" th:action="@{/addskillstojob/{id}(id=${newJob.jobId})}" method="post">
 
                                             <fieldset>
-                                                <h3>Post a new job to our database:</h3><br />
+                                                <h3>Add a skill to our database:</h3><br />
 
-                                                <input type="hidden" th:field="*{jobId}" />
-
-                                                <div class="form-group">
-                                                    <label class="col-md-4 control-label">Titlee</label>
-                                                    <div class="col-md-4 inputGroupContainer">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"></span>
-                                                            <input required th:field="*{title}" name="title" placeholder="Enter the job title" class="form-control"  type="text">
-                                                        </div>
-                                                        <!--<div th:if="${#fields.hasErrors('title')}"  th:errors="*{title}" class="well alert alert-warning" role="alert">Enter a valid title</div>-->
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <label class="col-md-4 control-label">Employer</label>
-                                                    <div class="col-md-4 inputGroupContainer">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"></span>
-                                                            <input required th:field="*{employer}" name="employer" placeholder=" Enter the employer" class="form-control"  type="text">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <label class="col-md-4 control-label">Salary Range</label>
-                                                    <div class="col-md-4 inputGroupContainer">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"></span>
-                                                            <input required th:field="*{salaryRange}" name="salaryRange" placeholder="Enter Your Salary Range" class="form-control"  type="text">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="col-md-4 control-label">Job Description</label>
-                                                    <div class="col-md-4 inputGroupContainer">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"></span>
-                                                            <textarea rows="5" th:field="*{jobDescription}" name="jobDescription" placeholder="Enter the Job description" class="form-control"  type="text"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 <div>
                                                     <table align="center">
                                                 <th:block th:each="item:${allskills}">
                                                     <tr>
-                                                        <!--<td>-->
-                                                        <!--<select th:field="${item.courseReg}">-->
-                                                        <!--&lt;!&ndash;<th:block th:each="director:${alldirector}">&ndash;&gt;-->
-                                                        <!--<option th:value="false" th:text="Not">Not Register</option>-->
-                                                        <!--&lt;!&ndash;<option value="-1">Not a department head</option>&ndash;&gt;-->
-
-                                                        <!--<option th:value="true" th:text="Reg">Register</option>-->
-
-                                                        <!--&lt;!&ndash;</th:block>&ndash;&gt;-->
-                                                        <!--</select>-->
-                                                        <!--</td>-->
-                                                        <!--<td>-->
-                                                        <!--<input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}">Register<br>-->
-                                                        <!--</td>-->
-                                                        <!--<td><input type="checkbox" th:field="${item.courseReg}" th:value=true th:checked="${item.courseReg}" /></td>-->
                                                         <td><input type="checkbox" name="skillIds" th:value="${item.skillId}" unchecked></td>
                                                         <!--<td><p th:text="${item.courseReg}"></p></td>-->
                                                         <td><p th:text="${item.skillname}"></p></td>
@@ -131,8 +72,8 @@
                                                         <!--</th:block>-->
 
                                                         <tr>
-                                                            <td style="padding-bottom: 10px">Other skill:</td>
-                                                            <td><input type="text" name="skillname1" ></td>
+                                                            <td style="padding-bottom: 10px">Other(optional):</td>
+                                                            <td><input type="text" name="skillname1" style="padding-right: 20px"></td>
                                                             <td><input type="text" name="skillrating1" ></td>
                                                         </tr>
                                                         <!--<tr>-->

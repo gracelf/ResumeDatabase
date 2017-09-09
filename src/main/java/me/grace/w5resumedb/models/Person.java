@@ -77,6 +77,18 @@ public class Person {
     private Collection<Role> roles;
 
 
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<Job> jobs;
+
+    public Set<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(Set<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+
     public Collection<Role> getRoles() {
         return roles;
     }

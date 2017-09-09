@@ -38,7 +38,17 @@ public class Job {
     @ManyToMany(fetch=FetchType.EAGER)
     private Set<Skill> skills;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="recruiter_id")
+    private Person person;
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     //constructor for jobs
     public Job(){
