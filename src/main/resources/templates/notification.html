@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h3 th:text="${message}"></h3>
+
+<div>
+<table class="table table-striped">
+
+    <caption> <h2><b>Notification</b></h2></caption>
+    <thead>
+    <tr>
+        <th>Job Id</th>
+        <th>Title</th>
+        <th>Employer</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <th:block th:each="onejob:${matchingJob}">
+
+        <tr>
+            <td><p th:text="${onejob.jobId}"/></td>
+            <td><p th:text="${onejob.title}"/></td>
+            <td><p th:text="${onejob.employer}" /></td>
+            <td><a th:href="@{/displayonejob/{id}(id=${onejob.jobId})}">Details</a></td>
+            <!--<td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>-->
+            <!--<td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>-->
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</div>
+
+
+</body>
+</html>

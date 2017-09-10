@@ -22,7 +22,7 @@
     <form th:action="@{/searchbySchoolname}" method="post">
         <div class="form-group">
             <label>Search By School:</label>
-            <input type="text" class="form-control" placeholder="Enter publisher name" name="searchName"/>
+            <input type="text" class="form-control" placeholder="Enter school name" name="searchScName"/>
         </div>
 
         <button type="submit" class="btn btn-default" value="Submit">Submit</button>
@@ -34,7 +34,7 @@
     <form th:action="@{/searchbyfirstname}" method="post">
         <div class="form-group">
             <label>Search By First Name:</label>
-            <input type="text" class="form-control" placeholder="Enter publisher name" name="searchName"/>
+            <input type="text" class="form-control" placeholder="Enter first name" name="searchFirstName"/>
         </div>
 
         <button type="submit" class="btn btn-default" value="Submit">Submit</button>
@@ -45,8 +45,9 @@
 <div class="container">
     <form th:action="@{/searchbyfullname}" method="post">
         <div class="form-group">
-            <label>Search By Name:</label>
-            <input type="text" class="form-control" placeholder="Enter publisher name" name="searchName"/>
+            <label>Search By Full Name:</label>
+            <input type="text" class="form-control" placeholder="Enter first name" name="searchFName"/>
+            <input type="text" class="form-control" placeholder="Enter last name" name="searchLName"/>
         </div>
 
         <button type="submit" class="btn btn-default" value="Submit">Submit</button>

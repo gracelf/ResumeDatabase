@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="../../css/additional.css">
+
+
+</head>
+
+
+<body>
+
+
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+
+<!--navbar-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+
+            <!--<li class="dropdown" class="active">-->
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>-->
+            <!--<ul class="dropdown-menu">-->
+
+            <!--<li><a th:href="@{/addeducationtoperson/{id}(id=${newperson.uuid})}">Add Education</a></li>-->
+            <!--<li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>-->
+            <!--<li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>-->
+            <!--<li role="separator" class="divider"></li>-->
+            <!--<li><a th:href="@{/displayoneprofile/{id}(id=${newperson.uuid})}">Display Profile</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+
+            <li><a href="/listnames">AllResumes</a></li>
+            <li><a th:href="@{/addskillstojob/{id}(id=newJob.jobId)}"></a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
+<!--Application section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-left">
+
+
+
+                <h3>Detailed information about the Job:</h3>
+
+                <p th:text="'Job Title: '+ ${newJob.title}"/>
+                <p th:text="'The Employer: '+ ${newJob.employer}"/>
+                <p th:text="'Salary Range: '+ ${newJob.salaryRange}" />
+                <p th:text="'Job Description: '+ ${newJob.jobDescription}"/>
+                <!--<p><a th:href="@{/updatejob/{id}(id=${newJob.jobId})}">Update</a></p>-->
+
+
+                <h3>Skill required for the Job</h3>
+
+                <div  th:if="${!newJob.skills.isEmpty()}">
+                    <th:block th:each="sk:${newJob.skills}">
+                        <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
+                        <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
+                        <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
+                        <br/>
+                        <!--<tr><br/></tr>-->
+                        <!--<tr><br/></tr>-->
+                    </th:block>
+                </div>
+
+
+                <div th:if="${newJob.skills.isEmpty()}">
+                    No information available.
+                </div>
+
+                <!--<li><a href="/listnames">AllResumes</a></li>-->
+                <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="container">
+    <footer align="left">
+        <h5>&copy; Developed by Grace, 2017</h5>
+    </footer>
+</div>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>

@@ -45,8 +45,8 @@ public class MainController {
 
 
     @GetMapping("/loadroles")
-    public @ResponseBody String loadroles()
-    {
+    public @ResponseBody
+    String loadroles() {
         Role newrole = new Role();
         newrole.setRoleName("JOBSEEKER");
         roleRepo.save(newrole);
@@ -58,7 +58,7 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 
@@ -68,7 +68,7 @@ public class MainController {
 
     // TODO: add href for 1:login option or register for (jobseeker/recruiter roles)
     @GetMapping("/")
-    public String homepage(){
+    public String homepage() {
 
         return "homepage";
     }
@@ -76,12 +76,13 @@ public class MainController {
 
     //testing search method
     @GetMapping("/findjobbyskill")
-    public @ResponseBody String findjobthroughskill()
+    public @ResponseBody
+    String findjobthroughskill()
 
     {
 
         jobRepo.findAllBySkills_skillname("Java");
-        System.out.println(">>>>>>>>" + jobRepo.findAllBySkills_skillname("Java").iterator().next().getJobId() );
+        System.out.println(">>>>>>>>" + jobRepo.findAllBySkills_skillname("Java").iterator().next().getJobId());
 
         Iterable<Person> find = personRepo.findAllByFirstNameAndLastName("Jim", "Berkerly");
         System.out.println("////" + find.iterator().next().getUuid());
@@ -92,21 +93,17 @@ public class MainController {
 
     //register as a job seeker role
     @RequestMapping(value = "/registerS", method = RequestMethod.GET)
-    public String registerasjobseeker(Model model)
-    {
+    public String registerasjobseeker(Model model) {
         model.addAttribute("jobSeeker", new Person());
         return "registerSform";
     }
 
     @RequestMapping(value = "/registerS", method = RequestMethod.POST)
-    public String regSpost(@Valid @ModelAttribute("jobSeeker") Person person,BindingResult bResult, Model model)
-    {
+    public String regSpost(@Valid @ModelAttribute("jobSeeker") Person person, BindingResult bResult, Model model) {
 
-        if (bResult.hasErrors())
-        {
+        if (bResult.hasErrors()) {
             return "registerSform";
-        }
-        else{
+        } else {
             userService.saveJobSeeker(person);
             model.addAttribute("message", "JobSeeker Account Successfully Created");
         }
@@ -116,21 +113,17 @@ public class MainController {
 
     //register as a job seeker role
     @RequestMapping(value = "/registerR", method = RequestMethod.GET)
-    public String registerasR(Model model)
-    {
+    public String registerasR(Model model) {
         model.addAttribute("recruiter", new Person());
         return "registerRform";
     }
 
     @RequestMapping(value = "/registerR", method = RequestMethod.POST)
-    public String regRpost(@Valid @ModelAttribute("recruiter") Person person,BindingResult bResult, Model model)
-    {
+    public String regRpost(@Valid @ModelAttribute("recruiter") Person person, BindingResult bResult, Model model) {
 
-        if (bResult.hasErrors())
-        {
+        if (bResult.hasErrors()) {
             return "registerRform";
-        }
-        else{
+        } else {
             userService.saveJobSeeker(person);
             model.addAttribute("message", "JobSeeker Account Successfully Created");
         }
@@ -139,8 +132,7 @@ public class MainController {
 
 
     @GetMapping("/addjob")
-    public String addjob(Principal p, Model model)
-    {
+    public String addjob(Principal p, Model model) {
 
         System.out.println("======WHO is the principal/user now? =========" + p.getName());
 
@@ -177,10 +169,9 @@ public class MainController {
     // if not checked try catch java.lang.NullPointerException: null
 
     @PostMapping("/postjob")
-    public String postJob(Principal p, @Valid @ModelAttribute("newJob") Job job, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @RequestParam(value="skillname1", required=false) String skillname1,
-                                        @RequestParam(value="skillrating1", required=false) String skillrating1, Model model)
-    {
+    public String postJob(Principal p, @Valid @ModelAttribute("newJob") Job job, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
+                          @RequestParam(value = "skillname1", required = false) String skillname1,
+                          @RequestParam(value = "skillrating1", required = false) String skillrating1, Model model) {
 
         //System.out.print(arr.iterator().hasNext());
 
@@ -193,9 +184,9 @@ public class MainController {
                 }
 
             }
-        }catch (Exception e){
-                System.out.println("User didn't check any option from db");
-            }
+        } catch (Exception e) {
+            System.out.println("User didn't check any option from db");
+        }
 
 
 //        for (Skill item: arr)
@@ -218,7 +209,7 @@ public class MainController {
                 skillRepo.save(skill1);
                 job.addskilltojob(skill1);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("User didn't input other skills");
         }
 
@@ -232,10 +223,9 @@ public class MainController {
     }
 
     @GetMapping("/addskillstojob/{id}")
-    public String addskillstojob(@PathVariable("id") long jobId,Model model)
-    {
+    public String addskillstojob(@PathVariable("id") long jobId, Model model) {
 
-        Job job= jobRepo.findOne(jobId);
+        Job job = jobRepo.findOne(jobId);
         model.addAttribute("newJob", job);
 
         System.out.println("====" + jobId);
@@ -245,10 +235,9 @@ public class MainController {
     }
 
     @PostMapping("/addskillstojob/{id}")
-    public String postskilltojob(Principal p, @PathVariable("id") long jobId, @RequestParam(value="skillIds", required=false) Long[] skillIdchecked,
-                                        @RequestParam(value="skillname1", required=false) String skillname1,
-                                 @RequestParam(value="skillrating1", required=false) String skillrating1, Model model)
-    {
+    public String postskilltojob(Principal p, @PathVariable("id") long jobId, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
+                                 @RequestParam(value = "skillname1", required = false) String skillname1,
+                                 @RequestParam(value = "skillrating1", required = false) String skillrating1, Model model) {
 
         //System.out.print(arr.iterator().hasNext());
 
@@ -262,7 +251,7 @@ public class MainController {
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("User didn't check any option from db");
         }
 
@@ -285,7 +274,7 @@ public class MainController {
                 skillRepo.save(skill1);
                 jobtemp.addskilltojob(skill1);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("User didn't input other skills");
         }
 
@@ -295,6 +284,60 @@ public class MainController {
         model.addAttribute(("pName"), p.getName());
 
         return "jobconfirmation";
+    }
+
+    @GetMapping("/displayonejob/{id}")
+    public String displayonejob(@PathVariable("id") long jobId, Model model) {
+        System.out.println("=====display one job,  Job ID:   " + jobId);
+
+        model.addAttribute("newJob", jobRepo.findOne(jobId));
+
+        return "displayonejob";
+    }
+
+    //for testing notification method on student side
+    @GetMapping("/notification")
+    public String notification(Principal p, Model model) {
+
+        System.out.println("------" + p.getName());
+
+        Person person = userService.findByUsername(p.getName());
+
+        ArrayList<Job> matchingJob =  new ArrayList<Job>();
+
+        if (person.getSkills().isEmpty())
+        {
+            model.addAttribute("message", "Please enter your skills to your resume!");
+            return "message";
+        }
+
+        else{
+
+            for (Skill s : person.getSkills()) {
+
+                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
+                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+
+                    for(Job item:alljobs)
+                    {
+                        matchingJob.add(item);
+                    }
+
+                }
+            }
+            if (matchingJob.isEmpty())
+            {
+                model.addAttribute("message", "No job matches your the skill you entered, come back later!");
+                return "message";
+            }
+            else{
+                model.addAttribute("message", "We find some job postings that match your skill");
+                model.addAttribute("matchingJob", matchingJob);
+                return "notification";
+            }
+        }
+
+
     }
 
 
@@ -308,15 +351,46 @@ public class MainController {
 
     //to accept a string from input in PostMapping, @RequestParam is required
     @PostMapping("/searchbyConame")
-    public String searchbyname(@RequestParam("searchCoName") String searchCoName, Model model){
+    public String searchbyConame(@RequestParam("searchCoName") String searchCoName, Model model){
 
         System.out.println(searchCoName);
 
         Iterable<Job> searchResult= jobRepo.findAllByEmployer(searchCoName);
         model.addAttribute("searchResult", searchResult);
-        return "listbycompanyname";
+        return "jobsearchresult";
     }
 
+
+    @PostMapping("/searchbySchoolname")
+    public String searchbyschoolname(@RequestParam("searchScName") String searchScName, Model model){
+
+        System.out.println(searchScName);
+
+        Iterable<Person> searchResult= personRepo.findAllByEducations_university(searchScName);
+        model.addAttribute("searchResult", searchResult);
+        return "personsearchresult";
+    }
+
+    @PostMapping("/searchbyfirstname")
+    public String searchbyfirstname(@RequestParam("searchFirstName") String searchFirstName, Model model){
+
+        System.out.println(searchFirstName);
+
+        Iterable<Person> searchResult= personRepo.findAllByFirstName(searchFirstName);
+        model.addAttribute("searchResult", searchResult);
+        return "personsearchresult";
+    }
+
+    @PostMapping("/searchbyfullname")
+    public String searchbyfullname(@RequestParam("searchFName") String searchFName,
+                                   @RequestParam("searchLName") String searchLName,Model model){
+
+        System.out.println(searchFName + "  " + searchLName);
+
+        Iterable<Person> searchResult= personRepo.findAllByFirstNameAndLastName(searchFName, searchLName);
+        model.addAttribute("searchResult", searchResult);
+        return "personsearchresult";
+    }
 
 
     @GetMapping("/loadskills")

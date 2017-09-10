@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/additional.css">
+
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+
+<!-- Header -->
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+<!--navbar-->
+<nav class="navbar navbar-inverse fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <!--<li><a href="/addeducation">AddEducation</a></li>-->
+            <!--<li><a href="/addexperience">AddExperience</a></li>-->
+            <!--<li><a href="/addskill">AddSkill</a></li>-->
+            <li><a href="/addperson">Add another person</a></li>
+            <li class="active"><a href="/listnames">AllResumes</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!--Application section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-left">
+
+
+                <div  th:if="${!searchResult.isEmpty()}">
+                <table class="table table-striped">
+
+                    <caption> <h2><b>Search result in our Database</b></h2></caption>
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <th:block th:each="oneper:${searchResult}">
+
+                        <tr>
+                            <td><p th:text="${oneper.uuid}"/></td>
+                            <td><p th:text="${oneper.firstName} + ' ' + ${oneper.lastName}"/></td>
+                            <td><p th:text="${oneper.email}" /></td>
+                            <td><a th:href="@{/displayoneprofile/{id}(id=${oneper.uuid})}">Details</a></td>
+                            <!--<td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>-->
+                            <!--<td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>-->
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+                </div>
+
+                <div  th:if="${searchResult.isEmpty()}">
+                    <h3>No matching result found in our database, come back and check later. </h3>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+
+<div class="container">
+    <footer align="left">
+        <h5>&copy; Developed by Grace, 2017</h5>
+    </footer>
+</div>
+
+
+</body>
+
+</html>
