@@ -136,6 +136,8 @@ public class MainController {
 
         System.out.println("======WHO is the principal/user now? =========" + p.getName());
 
+        // link person and the job they posted
+
         Job job = new Job();
         model.addAttribute("newJob", job);
         model.addAttribute("allskills", skillRepo.findAll());
@@ -167,14 +169,19 @@ public class MainController {
 
 
     // if not checked try catch java.lang.NullPointerException: null
-
+    //changed to use @RequestParam to pass skillname and skillrating from the HTML input, this way, null values are allowed.
+    // If set as an instance of Skill class, which has constraints on skillname and rating variable, null values are not allowed.
     @PostMapping("/postjob")
     public String postJob(Principal p, @Valid @ModelAttribute("newJob") Job job, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
                           @RequestParam(value = "skillname1", required = false) String skillname1,
-                          @RequestParam(value = "skillrating1", required = false) String skillrating1, Model model) {
+                          @RequestParam(value = "skillrating1", required = false) String skillrating1, BindingResult bindingResult, Model model) {
 
         //System.out.print(arr.iterator().hasNext());
 
+        if(bindingResult.hasErrors())
+        {
+            return "/jobform";
+        }
 
         try {
             for (Long skillId : skillIdchecked) {
@@ -213,6 +220,11 @@ public class MainController {
             System.out.println("User didn't input other skills");
         }
 
+
+
+        //link recruiter and their job postings
+        job.setPerson(personRepo.findByUsername(p.getName()));
+
         jobRepo.save(job);
 
         model.addAttribute("newJob", job);
@@ -221,6 +233,7 @@ public class MainController {
 
         return "jobconfirmation";
     }
+
 
     @GetMapping("/addskillstojob/{id}")
     public String addskillstojob(@PathVariable("id") long jobId, Model model) {
@@ -285,6 +298,73 @@ public class MainController {
 
         return "jobconfirmation";
     }
+
+    //new add skill to person methods (based on manytomany relationship)
+    @GetMapping("/addskilltoperson")
+    public String addskillstopersonnew(Principal p, Model model) {
+
+
+        System.out.println("====" + p.getName());
+        model.addAttribute("allskills", skillRepo.findAll());
+
+        return "addskillstopersonnew";
+    }
+
+    @PostMapping("/addskillstoperson")
+    public String postskilltopernew(Principal p, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
+                                 @RequestParam(value = "skillname1", required = false) String skillname1,
+                                 @RequestParam(value = "skillrating1", required = false) String skillrating1, Model model) {
+
+        //System.out.print(arr.iterator().hasNext());
+
+
+        //if choose from exsiting skills, not need to add to repo, just set the person for that skill
+        Person pperson = personRepo.findByUsername(p.getName());
+
+        try {
+            for (Long skillId : skillIdchecked) {
+                if (skillId != null) {
+                    System.out.println("+++++++++" + skillId);
+                    skillRepo.findOne(skillId).addperson(pperson);
+                }
+
+            }
+        } catch (Exception e) {
+            System.out.println("User didn't check any option from db");
+        }
+
+
+//        for (Skill item: arr)
+//        {
+//            if (item.toString()!=null) {
+//                System.out.println("===== if it is empty or not" +item.toString());
+//                skillRepo.save(item);
+//                job.addskilltojob(item);
+//            }
+//        }
+        try {
+            if (skillname1.toString() != null && skillrating1.toString() != null) {
+
+                Skill skill1 = new Skill();
+                skill1.setSkillname(skillname1);
+                skill1.setSkillrating(skillrating1);
+
+                skill1.addperson(pperson);
+                skillRepo.save(skill1);
+            }
+        } catch (Exception e) {
+            System.out.println("User didn't input other skills");
+        }
+
+
+        model.addAttribute("pperson", pperson);
+
+        return "displayallskillsofp";
+    }
+
+
+
+
 
     @GetMapping("/displayonejob/{id}")
     public String displayonejob(@PathVariable("id") long jobId, Model model) {
@@ -737,36 +817,36 @@ public class MainController {
     }
 
     ///add skill to a person method works
-    @GetMapping("/addskilltoperson/{id}")
-    public String addSkillToPerson(@PathVariable("id") long personId, Model model){
-
-        System.out.println("!!!!!" + personId);
-
-        Person oneperson= personRepo.findOne(personId);
-        model.addAttribute("oneperson", oneperson);
-
-        Skill skill = new Skill();
-        model.addAttribute("newskill", skill);
-
-        return "addskilltopersonform";
-    }
-
-    @PostMapping("/addskilltoperson/{personid}")
-    public String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, BindingResult bindingResult, Model model){
-
-        if(bindingResult.hasErrors())
-        {
-            return "/addskilltoperson/{personid}";
-        }
-
-        System.out.println("==== personID:   " + personId);
-
-        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
-        //try the following
-        skill.setPerson(personRepo.findOne(personId));
-        skillRepo.save(skill);
-        return "displayskill";
-    }
+//    @GetMapping("/addskilltoperson/{id}")
+//    public String addSkillToPerson(@PathVariable("id") long personId, Model model){
+//
+//        System.out.println("!!!!!" + personId);
+//
+//        Person oneperson= personRepo.findOne(personId);
+//        model.addAttribute("oneperson", oneperson);
+//
+//        Skill skill = new Skill();
+//        model.addAttribute("newskill", skill);
+//
+//        return "addskilltopersonform";
+//    }
+//
+//    @PostMapping("/addskilltoperson/{personid}")
+//    public String postskilltoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newskill") Skill skill, BindingResult bindingResult, Model model){
+//
+//        if(bindingResult.hasErrors())
+//        {
+//            return "/addskilltoperson/{personid}";
+//        }
+//
+//        System.out.println("==== personID:   " + personId);
+//
+//        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+//        //try the following
+//        skill.setPerson(personRepo.findOne(personId));
+//        skillRepo.save(skill);
+//        return "displayskill";
+//    }
 
 
     //add exptoperson get and post mapping methods!!!  addexptoperson/
@@ -977,33 +1057,33 @@ public class MainController {
 
 
     // update and remove skills!!!!!
-    @RequestMapping("/updatesk/{id}")
-    public String updatesk(@PathVariable("id") long skillId, Model model){
-
-        Skill updateskill = skillRepo.findOne(skillId);
-
-        Person oneperson = updateskill.getPerson();
-
-        model.addAttribute("oneperson", oneperson);
-
-        model.addAttribute("newskill", updateskill);
-        return "addskilltopersonform";
-    }
-
-    // remove skills, same as edu, remove from person first!!!!!
-    @RequestMapping("/deletesk/{id}")
-    public String delsk(@PathVariable("id") long skillId){
-
-
-        Skill deleteskil = skillRepo.findOne(skillId);
-        Person oneperson = deleteskil.getPerson();
-        long personToGoTo = oneperson.getUuid();
-
-        oneperson.removeSkl(deleteskil);
-
-        skillRepo.delete(skillId);
-        return "redirect:/displayoneprofile/" + personToGoTo;
-    }
+//    @RequestMapping("/updatesk/{id}")
+//    public String updatesk(@PathVariable("id") long skillId, Model model){
+//
+//        Skill updateskill = skillRepo.findOne(skillId);
+//
+//        Person oneperson = updateskill.getPerson();
+//
+//        model.addAttribute("oneperson", oneperson);
+//
+//        model.addAttribute("newskill", updateskill);
+//        return "addskilltopersonform";
+//    }
+//
+//    // remove skills, same as edu, remove from person first!!!!!
+//    @RequestMapping("/deletesk/{id}")
+//    public String delsk(@PathVariable("id") long skillId){
+//
+//
+//        Skill deleteskil = skillRepo.findOne(skillId);
+//        Person oneperson = deleteskil.getPerson();
+//        long personToGoTo = oneperson.getUuid();
+//
+//        oneperson.removeSkl(deleteskil);
+//
+//        skillRepo.delete(skillId);
+//        return "redirect:/displayoneprofile/" + personToGoTo;
+//    }
 
     @RequestMapping("/updateexp/{id}")
     public String updateexp(@PathVariable("id") long experienceId, Model model){

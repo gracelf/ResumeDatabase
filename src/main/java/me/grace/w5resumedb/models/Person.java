@@ -65,7 +65,7 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<Education> educations;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<Skill> skills;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -191,6 +191,12 @@ public class Person {
         this.courselist = new HashSet<Course>();
         this.courseReg=false;
         this.roles=new HashSet<Role>();
+        this.skills=new HashSet<Skill>();
+    }
+
+    public void addSkl(Skill s)
+    {
+        this.skills.add(s);
     }
 
     //add a new role
@@ -217,12 +223,6 @@ public class Person {
         this.educations.remove(e);
     }
 
-
-    public void addSkl(Skill s)
-    {
-        s.setPerson(this);
-        this.skills.add(s);
-    }
 
     public void removeSkl(Skill s)
     {
