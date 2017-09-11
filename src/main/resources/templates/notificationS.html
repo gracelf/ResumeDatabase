@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/additional.css">
+
+
+</head>
+
+
+<body>
+
+
+<header class="halfpic">
+    <div class="header-vertical-center">
+
+    </div>
+</header>
+
+<!--navbar-->
+<nav class="navbar navbar-inverse fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+
+            <li class="active"><a href="/">Home</a></li>
+
+            <li class="dropdown" class="active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+
+                    <li><a href="/addeducationtoperson">Add Education</a></li>
+                    <li><a href="/addexptoperson">Add Experience</a></li>
+                    <li><a href="/addskilltoperson">Add Skill</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/displayoneprofile">Display Profile</a></li>
+                </ul>
+            </li>
+
+            <li><a href="/listnames">AllResumes</a></li>
+
+            <li><a href="/listallposting">AllJobPost</a></li>
+
+            <li><a href="/search">Search</a></li>
+
+            <li style="float: right"><a href="/logout">Logout</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+<h1>Welcome to our Linked Resume database!</h1>
+
+<p><b>Notification</b></p>
+
+<div  th:if="${!matchingJob.isEmpty()}">
+
+    <h3 th:text="${message}"></h3>
+
+<table class="table table-striped">
+
+    <caption> <h2><b>Notification</b></h2></caption>
+    <thead>
+    <tr>
+        <th>Job Id</th>
+        <th>Title</th>
+        <th>Employer</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <th:block th:each="onejob:${matchingJob}">
+
+        <tr>
+            <td><p th:text="${onejob.jobId}"/></td>
+            <td><p th:text="${onejob.title}"/></td>
+            <td><p th:text="${onejob.employer}" /></td>
+            <td><a th:href="@{/displayonejob/{id}(id=${onejob.jobId})}">Details</a></td>
+            <!--<td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>-->
+            <!--<td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>-->
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</div>
+
+<div  th:if="${matchingJob.isEmpty()}">
+    <h3 th:text="${message}"></h3>
+
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

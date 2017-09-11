@@ -1,47 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-US-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Spring Security Example</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resume Database</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/additional.css">
+
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+
 </head>
+
 <body>
-<h4>New User Registration</h4>
-<form autocomplete="off" action="#" th:action="@{/registerS}" th:object="${jobSeeker}" method="post">
-    First Name <mark><strong>
-    <span th:if="${#fields.hasErrors('firstName')}"
-          th:errors="*{firstName}">First Name Error</span></strong></mark>
-    <input type="text" id="firstName" placeholder="First Name"
-           th:field="*{firstName}"/><br/>
 
-    Last Name <mark><strong>
-    <span th:if="${#fields.hasErrors('lastName')}"
-          th:errors="*{lastName}">Last Name Error</span></strong></mark>
-    <input type="text" id="lastName" placeholder="Last Name"
-           th:field="*{lastName}"/><br/>
+<header class="halfpic">
+    <div class="header-vertical-center">
+        <h1>Welcome to the Resume database</h1>
 
-    Email <mark><strong>
-    <span th:if="${#fields.hasErrors('email')}"
-          th:errors="*{email}">Email Error</span></strong></mark>
-    <input type="text" id="email" placeholder="Email"
-           th:field="*{email}"/><br/>
+    </div>
+</header>
 
-    Username<mark><strong>
-    <span th:if="${#fields.hasErrors('username')}"
-          th:errors="*{username}">Username Error</span></strong></mark>
-    <input type="text" id="username" placeholder="Username"
-           th:field="*{username}"/><br/>
+<!--Application section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
 
-    Password<mark><strong>
-    <span th:if="${#fields.hasErrors('password')}"
-          th:errors="*{password}">Password Error</span></strong></mark>
-    <input type="text" id="password" placeholder="Password"
-           th:field="*{password}"/><br/>
+                <!--</div><a name="about"></a>-->
+                <div class="intro-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="intro-message">
+                                    <hr class="intro-divider">
+                                    <ul class="list-inline intro-social-buttons">
 
-    <button type="submit" class="btn btn-default">Submit</button>
+                                        <h4>New User Registration</h4>
+                                        <form class="well form-horizontal" autocomplete="off" action="#" th:action="@{/registerS}" th:object="${jobSeeker}" method="post">
+                                            <!--th:action="@{/displayperson/{uuid}(uuid=${newperson.uuid})}-->
+                                            <fieldset>
 
-</form>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">First Name</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                            <input  th:field="*{firstName}" id="firstName" name="firstName" placeholder=" Enter Your First Name" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('firstName')}"  th:errors="*{firstName}" class="well alert alert-warning" role="alert">Enter a valid first name</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Last Name</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                            <input  th:field="*{lastName}" id="lastName" name="lastName" placeholder=" Enter Your Last Name" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('lastName')}"  th:errors="*{lastName}" class="well alert alert-warning" role="alert">Enter a valid last name</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Email</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                            <input  th:field="*{email}" id="email" name="email" placeholder=" Enter Your email" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" class="well alert alert-warning" role="alert">Enter a valid email</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Username</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                            <input  th:field="*{username}" id="username" name="username" placeholder=" Enter Your username" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('username')}"  th:errors="*{username}" class="well alert alert-warning" role="alert">Enter a valid username</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Password</label>
+                                                    <div class="col-md-4 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                            <input  th:field="*{password}" id="password" name="password" placeholder=" Enter Your password" class="form-control"  type="text">
+                                                        </div>
+                                                        <div th:if="${#fields.hasErrors('password')}"  th:errors="*{password}" class="well alert alert-warning" role="alert">Enter a valid password</div>
+                                                    </div>
+                                                </div>
+
+
+                                                <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
+                                                    <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>
+
+                                            </fieldset>
+                                        </form>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+</section>
+
+
+<div class="container">
+    <footer align="left">
+        <h5>&copy; Developed by Grace, 2017</h5>
+    </footer>
+</div>
 
 </body>
+
 </html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+    <!--<meta charset="utf-8"/>-->
+    <!--<meta http-equiv="X-US-Compatible" content="IE=edge"/>-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+    <!--<title>Spring Security Example</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h4>New User Registration</h4>-->
+<!--<form autocomplete="off" action="#" th:action="@{/registerS}" th:object="${jobSeeker}" method="post">-->
+    <!--First Name <mark><strong>-->
+    <!--<span th:if="${#fields.hasErrors('firstName')}"-->
+          <!--th:errors="*{firstName}">First Name Error</span></strong></mark>-->
+    <!--<input type="text" id="firstName" placeholder="First Name"-->
+           <!--th:field="*{firstName}"/><br/>-->
+
+    <!--Last Name <mark><strong>-->
+    <!--<span th:if="${#fields.hasErrors('lastName')}"-->
+          <!--th:errors="*{lastName}">Last Name Error</span></strong></mark>-->
+    <!--<input type="text" id="lastName" placeholder="Last Name"-->
+           <!--th:field="*{lastName}"/><br/>-->
+
+    <!--Email <mark><strong>-->
+    <!--<span th:if="${#fields.hasErrors('email')}"-->
+          <!--th:errors="*{email}">Email Error</span></strong></mark>-->
+    <!--<input type="text" id="email" placeholder="Email"-->
+           <!--th:field="*{email}"/><br/>-->
+
+    <!--Username<mark><strong>-->
+    <!--<span th:if="${#fields.hasErrors('username')}"-->
+          <!--th:errors="*{username}">Username Error</span></strong></mark>-->
+    <!--<input type="text" id="username" placeholder="Username"-->
+           <!--th:field="*{username}"/><br/>-->
+
+    <!--Password<mark><strong>-->
+    <!--<span th:if="${#fields.hasErrors('password')}"-->
+          <!--th:errors="*{password}">Password Error</span></strong></mark>-->
+    <!--<input type="text" id="password" placeholder="Password"-->
+           <!--th:field="*{password}"/><br/>-->
+
+    <!--<button type="submit" class="btn btn-default">Submit</button>-->
+
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->

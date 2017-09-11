@@ -46,29 +46,41 @@
             <li><a href="/">Home</a></li>
 
             <!--<li class="dropdown" class="active">-->
-                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>-->
-                <!--<ul class="dropdown-menu">-->
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>-->
+            <!--<ul class="dropdown-menu">-->
 
-                    <!--<li><a th:href="@{/addeducationtoperson/{id}(id=${newperson.uuid})}">Add Education</a></li>-->
-                    <!--<li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>-->
-                    <!--<li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>-->
-                    <!--<li role="separator" class="divider"></li>-->
-                    <!--<li><a th:href="@{/displayoneprofile/{id}(id=${newperson.uuid})}">Display Profile</a></li>-->
-                <!--</ul>-->
+            <!--<li><a th:href="@{/addeducationtoperson/{id}(id=${newperson.uuid})}">Add Education</a></li>-->
+            <!--<li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>-->
+            <!--<li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>-->
+            <!--<li role="separator" class="divider"></li>-->
+            <!--<li><a th:href="@{/displayoneprofile/{id}(id=${newperson.uuid})}">Display Profile</a></li>-->
+            <!--</ul>-->
             <!--</li>-->
 
-            <li><a href="/listnames">AllResumes</a></li>
-            <li><a th:href="@{/addskillstojob/{id}(id=newJob.jobId)}"></a></li>
+            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+
+            <li><a href="/displaypersonalposting">YourPostings</a></li>
+
+            <li><a href="/listnames">DisplayAllResumes</a></li>
+
+            <li><a href="/displaypersonalposting">AllPostings</a></li>
+
+            <li><a href="/listallposting">AllPostings</a></li>
+
+            <li><a href="/search">Search</a></li>
+
+            <li style="float: right"><a href="/logout">Logout</a></li>
         </ul>
     </div>
     </div>
 </nav>
+
 <!--Application section-->
 <section>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
-                <h2 th:text="'Hello, '+ ${pperson.username} + '!'"/><br/><br/>
+                <h2 th:text="'Hello, '+ ${pName} + '!'"/><br/><br/>
 
 
 
@@ -78,7 +90,7 @@
                 <p th:text="'The Employer: '+ ${newJob.employer}"/>
                 <p th:text="'Salary Range: '+ ${newJob.salaryRange}" />
                 <p th:text="'Job Description: '+ ${newJob.jobDescription}"/>
-                <p><a th:href="@{/updatejob/{id}(id=${newJob.jobId})}">Update</a></p>
+                <!--<p><a th:href="@{/updatejob/{id}(id=${newJob.jobId})}">Update</a></p>-->
 
 
                 <h3>Skill needed for the Job</h3>
@@ -86,9 +98,9 @@
                 <div  th:if="${!newJob.skills.isEmpty()}">
                     <th:block th:each="sk:${newJob.skills}">
                         <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
-                        <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
-                        <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
-                        <br/>
+                        <!--<p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>-->
+                        <!--<p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>-->
+                        <!--<br/>-->
                         <!--<tr><br/></tr>-->
                         <!--<tr><br/></tr>-->
                     </th:block>
@@ -96,11 +108,8 @@
 
 
                 <div th:if="${newJob.skills.isEmpty()}">
-                    No information available.
+                    No information available. Please add some required skills!
                 </div>
-
-                <li><a href="/listnames">AllResumes</a></li>
-                <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
 
 
             </div>

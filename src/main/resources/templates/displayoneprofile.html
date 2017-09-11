@@ -36,42 +36,43 @@
 
 
 <!--navbar-->
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">ResumeDB</a>
-        </div>
-        <ul class="nav navbar-nav">
-                        <li><a href="/">Home</a></li>
+<ul class="nav navbar-nav">
 
-                        <li class="dropdown" class="active">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
+    <li class="active"><a href="/">Home</a></li>
 
-                                <li><a th:href="@{/addeducationtoperson/{id}(id=${newperson.uuid})}">Add Education</a></li>
-                                <li><a th:href="@{/addexptoperson/{id}(id=${newperson.uuid})}">Add Experience</a></li>
-                                <li><a th:href="@{/addskilltoperson/{id}(id=${newperson.uuid})}">Add Skill</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a th:href="@{/displayoneprofile/{id}(id=${newperson.uuid})}">Display Profile</a></li>
-                            </ul>
-                        </li>
+    <li class="dropdown" class="active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>
+        <ul class="dropdown-menu">
 
-                        <li><a href="/listnames">AllResumes</a></li>
+            <li><a href="/addeducationtoperson">Add Education</a></li>
+            <li><a href="/addexptoperson">Add Experience</a></li>
+            <li><a href="/addskilltoperson">Add Skill</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/displayoneprofile">Display Profile</a></li>
         </ul>
-    </div>
-    </div>
-</nav>
+    </li>
+
+    <li><a href="/listnames">AllResumes</a></li>
+
+    <li><a href="/listallposting">AllJobPost</a></li>
+
+    <li><a href="/search">Search</a></li>
+
+    <li style="float: right"><a href="/logout">Logout</a></li>
+
+</ul>
+
 <!--Application section-->
 <section>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-left">
-                <h2 th:text="'Hello, '+ ${newperson.firstName} + ' ' + ${newperson.lastName} + '!'"/><br/><br/>
-                <p th:text="'Your Id in our database: ' + ${newperson.uuid}"></p>
-                <p th:text="'Your email: ' + ${newperson.email}"></p>
+                <h2 th:text="'User: '+ ${newperson.firstName} + ' ' + ${newperson.lastName} + ' :' "/><br/><br/>
+                <!--<p th:text="'Your Id in our database: ' + ${newperson.uuid}"></p>-->
+                <p th:text="'Email: ' + ${newperson.email}"></p>
 
 
-                <h3>Your Education Achievement:</h3>
+                <h3>Education Achievement:</h3>
 
 
                 <div  th:if="${!newperson.educations.isEmpty()}">
@@ -93,7 +94,7 @@
 
 
 
-                <h3>Your Experience: </h3>
+                <h3>Experience: </h3>
 
                 <div  th:if="${!newperson.experiences.isEmpty()}">
                 <th:block th:each="exp:${newperson.experiences}">
@@ -113,13 +114,13 @@
 
 
 
-                <h3>Your Skill:</h3>
+                <h3>Skill:</h3>
 
                 <div  th:if="${!newperson.skills.isEmpty()}">
                 <th:block th:each="sk:${newperson.skills}">
                     <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
-                    <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
-                    <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
+                    <!--<p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>-->
+                    <!--<p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>-->
                     <br/>
                     <br/>
                 </th:block>

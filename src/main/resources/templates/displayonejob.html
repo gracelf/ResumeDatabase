@@ -57,8 +57,19 @@
             <!--</ul>-->
             <!--</li>-->
 
-            <li><a href="/listnames">AllResumes</a></li>
-            <li><a th:href="@{/addskillstojob/{id}(id=newJob.jobId)}"></a></li>
+            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+
+            <li><a href="/displaypersonalposting">YourPostings</a></li>
+
+            <li><a href="/listnames">DisplayAllResumes</a></li>
+
+            <li><a href="/displaypersonalposting">AllPostings</a></li>
+
+            <li><a href="/listallposting">AllPostings</a></li>
+
+            <li><a href="/search">Search</a></li>
+
+            <li style="float: right"><a href="/logout">Logout</a></li>
         </ul>
     </div>
     </div>
@@ -85,9 +96,9 @@
                 <div  th:if="${!newJob.skills.isEmpty()}">
                     <th:block th:each="sk:${newJob.skills}">
                         <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
-                        <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
-                        <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
-                        <br/>
+                        <!--<p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>-->
+                        <!--<p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>-->
+                        <!--<br/>-->
                         <!--<tr><br/></tr>-->
                         <!--<tr><br/></tr>-->
                     </th:block>
@@ -95,11 +106,11 @@
 
 
                 <div th:if="${newJob.skills.isEmpty()}">
-                    No information available.
+                    No skills information available. Please add your skill requirement!
                 </div>
 
                 <!--<li><a href="/listnames">AllResumes</a></li>-->
-                <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+
 
 
             </div>

@@ -64,32 +64,104 @@ public class MainController {
 
     //Home page, request the user to enter their name and email first
     //if user has entered the name, welcome he/she back and check history
-
-
     // TODO: add href for 1:login option or register for (jobseeker/recruiter roles)
-    @GetMapping("/")
-    public String homepage() {
 
-        return "homepage";
+
+    // on the homepage, when the person's role is A job Seeker, check if there is a job matching the skills this person have
+    @GetMapping("/")
+    public String homepage(Principal p, Model model) {
+
+        //in oder to use old route, will fix later
+        model.addAttribute("newperson", personRepo.findByUsername(p.getName()));
+
+         // if the person has a role of jobseek, check if there are jobs matches the skill, and send out notification!!!!
+        if (personRepo.findByUsername(p.getName()).getRoles().iterator().next().getRoleName().equalsIgnoreCase("JOBSEEKER")) {
+
+        System.out.println("------" + p.getName());
+
+        System.out.println("---------role:" + personRepo.findByUsername(p.getName()).getRoles().iterator().next().getRoleName());
+
+        Person person = userService.findByUsername(p.getName());
+
+        ArrayList<Job> matchingJob =  new ArrayList<Job>();
+
+        if (person.getSkills().isEmpty())
+        {
+            model.addAttribute("message", "Welcome to our Resume database. Please enter your skills to your resume, and we will check for the matching job for you!");
+            model.addAttribute("matchingJob", matchingJob);
+        }
+
+        else{
+
+            for (Skill s : person.getSkills()) {
+
+                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
+                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+
+                    for(Job item:alljobs)
+                    {
+                        matchingJob.add(item);
+                    }
+
+                }
+            }
+            if (matchingJob.isEmpty())
+            {
+                model.addAttribute("message", "No job matches your the skill you have, come back later!");
+                model.addAttribute("matchingJob", matchingJob);
+            }
+            else{
+                model.addAttribute("message", "We find some job postings that match your skill");
+                model.addAttribute("matchingJob", matchingJob);
+
+            }
+        }
+
+            return "notificationS";
+        }
+
+        //for recruiter, will have a notification method like the above later!
+        else {
+            return "homepage";
+        }
+
+        //return "homepage";
     }
 
+    @GetMapping("displaypersonalposting")
+    public String displaypersonalposting(Principal p, Model model)
+    {
+        Person pperson = personRepo.findByUsername(p.getName());
 
-    //testing search method
-    @GetMapping("/findjobbyskill")
-    public @ResponseBody
-    String findjobthroughskill()
+        model.addAttribute("jobs", pperson.getJobs());
 
+        return "displaypersonalposting";
+    }
+
+    @GetMapping("listallposting")
+    public String listallposting( Model model)
     {
 
-        jobRepo.findAllBySkills_skillname("Java");
-        System.out.println(">>>>>>>>" + jobRepo.findAllBySkills_skillname("Java").iterator().next().getJobId());
-
-        Iterable<Person> find = personRepo.findAllByFirstNameAndLastName("Jim", "Berkerly");
-        System.out.println("////" + find.iterator().next().getUuid());
-
-
-        return "find job by skill";
+        model.addAttribute("alljobs", jobRepo.findAll());
+        return "listallposting";
     }
+
+    //testing search method
+//    @GetMapping("/findjobbyskill")
+//    public @ResponseBody
+//    String findjobthroughskill()
+//
+//    {
+//
+//        jobRepo.findAllBySkills_skillname("Java");
+//        System.out.println(">>>>>>>>" + jobRepo.findAllBySkills_skillname("Java").iterator().next().getJobId());
+//
+//        Iterable<Person> find = personRepo.findAllByFirstNameAndLastName("Jim", "Berkerly");
+//        System.out.println("////" + find.iterator().next().getUuid());
+//
+//
+//        return "find job by skill";
+//    }
 
     //register as a job seeker role
     @RequestMapping(value = "/registerS", method = RequestMethod.GET)
@@ -107,9 +179,54 @@ public class MainController {
             userService.saveJobSeeker(person);
             model.addAttribute("message", "JobSeeker Account Successfully Created");
         }
-        return "homepage";
+        return "login";
     }
 
+//    //welcome and notification, and narvbars as well
+//    @GetMapping("/homepageS")
+//    public String homepageforseeker(Principal p, Model model)
+//    {
+//
+//
+//        System.out.println("------" + p.getName());
+//
+//        Person person = userService.findByUsername(p.getName());
+//
+//        ArrayList<Job> matchingJob =  new ArrayList<Job>();
+//
+//        if (person.getSkills().isEmpty())
+//        {
+//            model.addAttribute("message", "Welcome to our Resume database. Please enter your skills to your resume, and we will check for the matching job for you!");
+//        }
+//
+//        else{
+//
+//            for (Skill s : person.getSkills()) {
+//
+//                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
+//                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+//
+//                    for(Job item:alljobs)
+//                    {
+//                        matchingJob.add(item);
+//                    }
+//
+//                }
+//            }
+//            if (matchingJob.isEmpty())
+//            {
+//                model.addAttribute("message", "No job matches your the skill you have, come back later!");
+//            }
+//            else{
+//                model.addAttribute("message", "We find some job postings that match your skill");
+//                model.addAttribute("matchingJob", matchingJob);
+//
+//            }
+//        }
+//
+//        return "notification";
+//
+//    }
 
     //register as a job seeker role
     @RequestMapping(value = "/registerR", method = RequestMethod.GET)
@@ -124,10 +241,10 @@ public class MainController {
         if (bResult.hasErrors()) {
             return "registerRform";
         } else {
-            userService.saveJobSeeker(person);
+            userService.saveRecruiter(person);
             model.addAttribute("message", "JobSeeker Account Successfully Created");
         }
-        return "homepage";
+        return "login";
     }
 
 
@@ -180,7 +297,7 @@ public class MainController {
 
         if(bindingResult.hasErrors())
         {
-            return "/jobform";
+            return "jobform";
         }
 
         try {
@@ -307,7 +424,7 @@ public class MainController {
         System.out.println("====" + p.getName());
         model.addAttribute("allskills", skillRepo.findAll());
 
-        return "addskillstopersonnew";
+        return "addskillstopersonformP";
     }
 
     @PostMapping("/addskillstoperson")
@@ -677,35 +794,35 @@ public class MainController {
     }
 
 
-    @GetMapping("/addperson")
-    public String addPersonandHomepage(Model model)
-    {
-
-        Person person = new Person();
-        System.out.println(person.getUuid());
-        model.addAttribute("newperson", person);
-        return "addperson";
-    }
+//    @GetMapping("/addperson")
+//    public String addPersonandHomepage(Model model)
+//    {
+//
+//        Person person = new Person();
+//        System.out.println(person.getUuid());
+//        model.addAttribute("newperson", person);
+//        return "addperson";
+//    }
 
     //take person result, display result and allow user to add edu/skill/exp to this person
-    @PostMapping("/displayperson")
-    public String postperson(@Valid @ModelAttribute("newperson") Person person, BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            return "addperson";
-        }
-
-        System.out.println("when postMapping form, will the auto generated ID show up:    " +person.getUuid());
-
-        personRepo.save(person);
-
-
-        //yes the ID show up here!!!!!!!!!!!!!
-        System.out.println("After save the person to database, will the auto generated ID show up:    " +person.getUuid());
-
-        return "displayperson";
-    }
+//    @PostMapping("/displayperson")
+//    public String postperson(@Valid @ModelAttribute("newperson") Person person, BindingResult bindingResult)
+//    {
+//        if(bindingResult.hasErrors())
+//        {
+//            return "addperson";
+//        }
+//
+//        System.out.println("when postMapping form, will the auto generated ID show up:    " +person.getUuid());
+//
+//        personRepo.save(person);
+//
+//
+//        //yes the ID show up here!!!!!!!!!!!!!
+//        System.out.println("After save the person to database, will the auto generated ID show up:    " +person.getUuid());
+//
+//        return "displayperson";
+//    }
 
 //    @GetMapping("/displaypersonwithid/{id}")
 //    public String postpersonwithId(@PathVariable("id") long personId, Model model)
@@ -746,75 +863,107 @@ public class MainController {
 
 
     /// add education method works!!!!!
-    @GetMapping("/addeducationtoperson/{id}")
-    public String addEduToPerson(@PathVariable("id") long personId, Model model){
-
-        System.out.println("!!!!!" + personId);
-
-//        String filename = uploadResult.get("public_id").toString() + "." + uploadResult.get("format").toString();
-//        model.addAttribute("sizedimageurl", cloudc.createUrl(filename,100,150, "fit"));
-//        shoppingCart.addThings(filename);
-//        model.addAttribute("filesuploaded", shoppingCart.getThings());
-
-//        long num = 3L;
-//        String t=  Long.toString(num);
+//    @GetMapping("/addeducationtoperson/{id}")
+//    public String addEduToPerson(@PathVariable("id") long personId, Model model){
 //
-//        int numint = 3;
-//        String y = Integer.toString(numint);
-
-
-        // this works.successfully print out the person ID
-//        personIdReuse.setPersonId(personId);
-//        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
-
-
-        //try use this personIdReuse in Html print out
-
-        model.addAttribute("tryprintout", personIdReuse.getPersonId());
-
-
-        Person oneperson= personRepo.findOne(personId);
+//        System.out.println("!!!!!" + personId);
 //
-//      personIdReuse.addThings(Long.toString(oneperson.getUuid()));
+////        String filename = uploadResult.get("public_id").toString() + "." + uploadResult.get("format").toString();
+////        model.addAttribute("sizedimageurl", cloudc.createUrl(filename,100,150, "fit"));
+////        shoppingCart.addThings(filename);
+////        model.addAttribute("filesuploaded", shoppingCart.getThings());
+//
+////        long num = 3L;
+////        String t=  Long.toString(num);
+////
+////        int numint = 3;
+////        String y = Integer.toString(numint);
+//
+//
+//        // this works.successfully print out the person ID
+////        personIdReuse.setPersonId(personId);
+////        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
+//
+//
+//        //try use this personIdReuse in Html print out
+//
+//        model.addAttribute("tryprintout", personIdReuse.getPersonId());
+//
+//
+//        Person oneperson= personRepo.findOne(personId);
+////
+////      personIdReuse.addThings(Long.toString(oneperson.getUuid()));
+//
+//
+//        model.addAttribute("oneperson", oneperson);
+//
+//        Education education = new Education();
+//        //try make an connection with education and person, doesn't work, it has to be right beofore save,
+//        // the same code in posting works when save the education right after!!!
+//        //education.setPerson(oneperson);
+//        //System.out.println(education.getPerson().getUuid());
+//        model.addAttribute("neweducation", education);
+//        return "addedutopersonform";
+//    }
 
-
+    @GetMapping("/addeducationtoperson")
+    public String addedutopersonpricipal(Principal p, Model model)
+    {
+        Person oneperson= personRepo.findByUsername(p.getName());
         model.addAttribute("oneperson", oneperson);
 
         Education education = new Education();
-        //try make an connection with education and person, doesn't work, it has to be right beofore save,
-        // the same code in posting works when save the education right after!!!
-        //education.setPerson(oneperson);
-        //System.out.println(education.getPerson().getUuid());
         model.addAttribute("neweducation", education);
-        return "addedutopersonform";
+        return "addedutopersonformP";
+
     }
 
+    @PostMapping("/addeducationtoperson")
+    public String postEdutoPersonP(Principal p,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult, Model model) {
 
 
-    @PostMapping("/addeducationtoperson/{personid}")
-    public String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult, Model model){
-
-
-        if(bindingResult.hasErrors())
-        {
-            return "/addeducationtoperson/{id}";
+        if (bindingResult.hasErrors()) {
+            return "addedutopersonformP";
         }
 
-        System.out.println("==== personID:   " + personId);
+        Person oneperson = personRepo.findByUsername(p.getName());
 
-        //this works as well, so it can be used in another method as a variable
-        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
-
-        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
-        //try the following
-        education.setPerson(personRepo.findOne(personId));
+        education.setPerson(oneperson);
 
         //try add it to model and see if it can be printed in HTML
-        model.addAttribute(personIdReuse.getPersonId());
 
         educationRepo.save(education);
         return "displayeducation";
     }
+
+
+
+
+//
+//        @PostMapping("/addeducationtoperson/{personid}")
+//    public String postEdutoPerson(@PathVariable("personid") long personId,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult, Model model){
+//
+//
+//        if(bindingResult.hasErrors())
+//        {
+//            return "/addeducationtoperson/{id}";
+//        }
+//
+//        System.out.println("==== personID:   " + personId);
+//
+//        //this works as well, so it can be used in another method as a variable
+//        System.out.println("===testing session variable:   " + personIdReuse.getPersonId());
+//
+//        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+//        //try the following
+//        education.setPerson(personRepo.findOne(personId));
+//
+//        //try add it to model and see if it can be printed in HTML
+//        model.addAttribute(personIdReuse.getPersonId());
+//
+//        educationRepo.save(education);
+//        return "displayeducation";
+//    }
 
     ///add skill to a person method works
 //    @GetMapping("/addskilltoperson/{id}")
@@ -849,38 +998,77 @@ public class MainController {
 //    }
 
 
-    //add exptoperson get and post mapping methods!!!  addexptoperson/
-    @GetMapping("/addexptoperson/{id}")
-    public String addExpToPerson(@PathVariable("id") long personId, Model model){
+    @GetMapping("/addexptoperson")
+    public String addExpToPerson(Principal p, Model model) {
 
-        System.out.println("!!!!!" + personId);
 
-        Person oneperson= personRepo.findOne(personId);
+        Person oneperson = personRepo.findByUsername(p.getName());
         model.addAttribute("oneperson", oneperson);
 
         Experience experience = new Experience();
         model.addAttribute("newexperience", experience);
 
-        return "addexptopersonform";
+        return "addexptopersonformP";
     }
 
-    @PostMapping("/addexptoperson/{personid}")
-    public String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult, Model model){
+
+//    //add exptoperson get and post mapping methods!!!  addexptoperson/
+//    @GetMapping("/addexptoperson/{id}")
+//    public String addExpToPerson(@PathVariable("id") long personId, Model model){
+//
+//        System.out.println("!!!!!" + personId);
+//
+//        Person oneperson= personRepo.findOne(personId);
+//        model.addAttribute("oneperson", oneperson);
+//
+//        Experience experience = new Experience();
+//        model.addAttribute("newexperience", experience);
+//
+//        return "addexptopersonform";
+//    }
+
+    @PostMapping("/addexptoperson")
+    public String postExptoPerson(Principal p,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult, Model model){
 
         if(bindingResult.hasErrors())
         {
-            return "/addexptoperson/{personid}";
+            return "addexptopersonformP";
         }
-
-        System.out.println("==== personID:   " + personId);
 
         //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
         //try the following
-        experience.setPerson(personRepo.findOne(personId));
+        experience.setPerson(personRepo.findByUsername(p.getName()));
         experienceRepo.save(experience);
         return "displayexperience";
     }
 
+
+//    @PostMapping("/addexptoperson/{personid}")
+//    public String postExptoPerson(@PathVariable("personid") long personId,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult, Model model){
+//
+//        if(bindingResult.hasErrors())
+//        {
+//            return "addexptopersonform";
+//        }
+//
+//        System.out.println("==== personID:   " + personId);
+//
+//        //personRepo.findOne(personId).addEdu(education); this doesn't create the relationship, maybe because person is being mapped!!
+//        //try the following
+//        experience.setPerson(personRepo.findOne(personId));
+//        experienceRepo.save(experience);
+//        return "displayexperience";
+//    }
+
+    @GetMapping("/displayoneprofile")
+    public String displayOneProfile(Principal p, Model model)
+    {
+
+
+        model.addAttribute("newperson", personRepo.findByUsername(p.getName()));
+
+        return "displayoneprofile";
+    }
 
 
     @GetMapping("/displayoneprofile/{id}")
@@ -1039,7 +1227,7 @@ public class MainController {
         model.addAttribute("oneperson", oneperson);
 
 //      return "/addeducationtoperson/" + pId;
-        return "addedutopersonform";
+        return "addedutopersonformP";
     }
 
 
@@ -1096,7 +1284,7 @@ public class MainController {
 
         model.addAttribute("newexperience", updateexp);
 
-        return "addexptopersonform";
+        return "addexptopersonformP";
     }
 
     @RequestMapping("/deleteexp/{id}")

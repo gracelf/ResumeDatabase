@@ -6,9 +6,13 @@
 </head>
 <body>
 
-<h3 th:text="${message}"></h3>
 
-<div>
+<p><b>Notification</b></p>
+
+<div  th:if="${!matching.isEmpty()}">
+
+    <h3 th:text="${message}"></h3>
+
 <table class="table table-striped">
 
     <caption> <h2><b>Notification</b></h2></caption>
@@ -34,6 +38,11 @@
     </th:block>
     </tbody>
 </table>
+</div>
+
+<div  th:if="${matching.isEmpty()}">
+    <h3 th:text="${message}"></h3>
+
 </div>
 
 

@@ -29,6 +29,30 @@
     </div>
 </header>
 
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ResumeDB</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+
+            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+
+            <li><a href="/displaypersonalposting">YourPostings</a></li>
+
+            <li><a href="/listnames">DisplayAllResumes</a></li>
+
+            <li><a href="/listallposting">AllPostings</a></li>
+
+            <li><a href="/search">Search</a></li>
+
+            <li style="float: right"><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
+
 <!--Application section-->
 <section>
     <div class="container">
@@ -92,6 +116,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Skills</label>
 
                                                 <div>
                                                     <table align="center">
@@ -168,6 +196,7 @@
                                                         <!--</table>-->
                                                     <!--</div>-->
                                                 <!--</div>-->
+                                                </div>
 
                                                 <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
                                                     <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>

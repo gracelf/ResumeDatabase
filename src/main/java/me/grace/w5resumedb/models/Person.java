@@ -97,9 +97,6 @@ public class Person {
         this.roles = roles;
     }
 
-
-
-
     //add a course list many to many relationship
     @ManyToMany(mappedBy = "students")
     private Set<Course> courselist;

@@ -44,11 +44,18 @@
             <!--<li><a href="/addeducation">AddEducation</a></li>-->
             <!--<li><a href="/addexperience">AddExperience</a></li>-->
             <!--<li><a href="/addskill">AddSkill</a></li>-->
-            <li><a href="/addperson">Add another person</a></li>
-            <li class="active"><a href="/listnames">AllResumes</a></li>
+            <li><a href="/listnames">AllResumes</a></li>
+            <li><a href="/listallposting">AllPostings</a></li>
+            <li><a href="/search">Search</a></li>
+
+            <li style="float: right"><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
+
+
+
+
 
 <!--Application section-->
 <section>
@@ -71,12 +78,15 @@
                     <th:block th:each="oneper:${allperson}">
 
                    <tr>
+
+
+
                         <td><p th:text="${oneper.uuid}"/></td>
                         <td><p th:text="${oneper.firstName} + ' ' + ${oneper.lastName}"/></td>
                         <td><p th:text="${oneper.email}" /></td>
                         <td><a th:href="@{/displayoneprofile/{id}(id=${oneper.uuid})}">Details</a></td>
-                        <td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>
-                        <td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>
+                        <!--<td><a th:href="@{/updateper/{id}(id=${oneper.uuid})}">Update</a></td>-->
+                        <!--<td><a th:href="@{/deleteper/{id}(id=${oneper.uuid})}">Delete</a></td>-->
                    </tr>
                     </th:block>
                     </tbody>
