@@ -44,7 +44,7 @@
         </div>
         <ul class="nav navbar-nav">
 
-            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
 
             <li class="dropdown" class="active">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">AddToProfile<span class="caret"></span></a>
@@ -127,11 +127,9 @@
 
                 <div  th:if="${!newperson.skills.isEmpty()}">
                 <th:block th:each="sk:${newperson.skills}">
-                    <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
+                    <p th:text="'Skill: '+ ${sk.skillname} + ', Rating: ' + ${sk.skillrating}">No information available</p>
                     <!--<p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>-->
                     <!--<p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>-->
-                    <br/>
-                    <br/>
                 </th:block>
                 </div>
                 <div th:if="${newperson.skills.isEmpty()}">

@@ -57,13 +57,13 @@
             <!--</ul>-->
             <!--</li>-->
 
-            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
+            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">AddSkills</a></li>
 
             <li><a href="/displaypersonalposting">YourPostings</a></li>
 
             <li><a href="/listnames">DisplayAllResumes</a></li>
 
-            <li><a href="/displaypersonalposting">AllPostings</a></li>
+            <li class="active"><a href="/displaypersonalposting">YourPostings</a></li>
 
             <li><a href="/listallposting">AllPostings</a></li>
 
@@ -108,7 +108,7 @@
 
 
                 <div th:if="${newJob.skills.isEmpty()}">
-                    No information available. Please add some required skills!
+                    No information available. Please add some the skills required for the job!
                 </div>
 
 

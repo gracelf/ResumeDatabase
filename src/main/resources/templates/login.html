@@ -25,6 +25,9 @@
 </div>
 
 <div class="container">
+    <label>Already has an account with us? Sign in here:</label>
+    <br/>
+    <br/>
 
     <div th:if="${param.error}">
         Invalid username and password.
@@ -46,19 +49,25 @@
         <div class="checkbox">
             <label><input type="checkbox" name="remember"> Remember me</label>
         </div>
-        <button type="submit" class="btn btn-default" value="Sign In">Sign in</button>
+        <button type="submit" value="Sign In">Sign in</button>
 
     </form>
+    <br/>
+    <br/>
 
 </div>
 
 
 <div class="container">
-    <h3>New to our database? </h3>
+    <lable><b>New to our database? Sign up here:</b></lable>
+    <br/>
 
-    <h3><a href="/registerS">Register as Job Seeker</a></h3>
+    <p></p><a class="btn btn-primary btn-lg" href="/registerS" role="button">For Job Seeker</a>
+    <a class="btn btn-primary btn-lg" href="/registerR" role="button">For Recruiter</a></p>
 
-    <h3><a href="/registerR">Register as Recruiter</a></h3>
+    <!--<h3><a href="/registerS">Register as Job Seeker</a></h3>-->
+
+    <!--<h3><a href="/registerR">Register as Recruiter</a></h3>-->
 </div>
 
 <div class="container">

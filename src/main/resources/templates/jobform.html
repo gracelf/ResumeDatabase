@@ -37,9 +37,7 @@
         <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
 
-            <li><a th:href="@{/addskillstojob/{id}(id=${newJob.jobId})}">Add more skills</a></li>
-
-            <li><a href="/displaypersonalposting">YourPostings</a></li>
+            <li class="active"><a href="/displaypersonalposting">YourPostings</a></li>
 
             <li><a href="/listnames">DisplayAllResumes</a></li>
 
@@ -120,6 +118,7 @@
 
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Skills</label>
+                                                </div>
 
                                                 <div>
                                                     <table align="center">
@@ -160,8 +159,8 @@
 
                                                         <tr>
                                                             <td style="padding-bottom: 10px">Other skill:</td>
-                                                            <td><input type="text" name="skillname1" ></td>
-                                                            <td><input type="text" name="skillrating1" ></td>
+                                                            <td><input type="text" name="skillname1" placeholder="Enter the skill name"></td>
+                                                            <td><input type="text" name="skillrating1" placeholder="Enter the skill rating"></td>
                                                         </tr>
                                                         <!--<tr>-->
                                                             <!--<td style="padding-bottom: 10px">Other skill2:</td>-->
@@ -196,7 +195,6 @@
                                                         <!--</table>-->
                                                     <!--</div>-->
                                                 <!--</div>-->
-                                                </div>
 
                                                 <p><input type="submit" class="btn btn-default navbar-btn" value="Add to profile" />
                                                     <input type="reset" class="btn btn-default navbar-btn" value="Reset" /></p>

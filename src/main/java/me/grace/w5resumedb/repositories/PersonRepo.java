@@ -18,5 +18,7 @@ public interface PersonRepo extends CrudRepository<Person,Long> {
 
     Iterable<Person> findAllByExperiences_organization(String organizationName);
 
+    Iterable<Person> findAllByRoles_roleName(String roleName);
+
 
 }

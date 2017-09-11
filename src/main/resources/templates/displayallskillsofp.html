@@ -82,8 +82,8 @@
                 <div  th:if="${!pperson.skills.isEmpty()}">
                     <th:block th:each="sk:${pperson.skills}">
                         <p th:text="'Skill: '+ ${sk.skillname} + ', ' + ${sk.skillrating}">No information available</p>
-                        <p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>
-                        <p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>
+                        <!--<p><a th:href="@{/updatesk/{id}(id=${sk.skillId})}">Update</a></p>-->
+                        <!--<p><a th:href="@{/deletesk/{id}(id=${sk.skillId})}">Delete</a></p>-->
                         <br/>
                         <!--<tr><br/></tr>-->
                         <!--<tr><br/></tr>-->

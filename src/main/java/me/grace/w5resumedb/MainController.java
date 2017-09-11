@@ -72,7 +72,12 @@ public class MainController {
     public String homepage(Principal p, Model model) {
 
         //in oder to use old route, will fix later
-        model.addAttribute("newperson", personRepo.findByUsername(p.getName()));
+        try {
+            model.addAttribute("newperson", personRepo.findByUsername(p.getName()));
+        } catch (Exception e)
+        {
+            System.out.println("User didn't sign in");
+        }
 
          // if the person has a role of jobseek, check if there are jobs matches the skill, and send out notification!!!!
         if (personRepo.findByUsername(p.getName()).getRoles().iterator().next().getRoleName().equalsIgnoreCase("JOBSEEKER")) {
@@ -87,7 +92,7 @@ public class MainController {
 
         if (person.getSkills().isEmpty())
         {
-            model.addAttribute("message", "Welcome to our Resume database. Please enter your skills to your resume, and we will check for the matching job for you!");
+            model.addAttribute("message", "Please add your skills to your resume, and we will check for the matching job for you!");
             model.addAttribute("matchingJob", matchingJob);
         }
 
@@ -107,11 +112,11 @@ public class MainController {
             }
             if (matchingJob.isEmpty())
             {
-                model.addAttribute("message", "No job matches your the skill you have, come back later!");
+                model.addAttribute("message", "No job matches the skills you have, come back and check later!");
                 model.addAttribute("matchingJob", matchingJob);
             }
             else{
-                model.addAttribute("message", "We find some job postings that match your skill");
+                model.addAttribute("message", "We find some job postings that match your skills: ");
                 model.addAttribute("matchingJob", matchingJob);
 
             }
@@ -122,7 +127,7 @@ public class MainController {
 
         //for recruiter, will have a notification method like the above later!
         else {
-            return "homepage";
+            return "homepageR";
         }
 
         //return "homepage";
@@ -467,6 +472,7 @@ public class MainController {
                 skill1.setSkillrating(skillrating1);
 
                 skill1.addperson(pperson);
+                pperson.addSkl(skill1);
                 skillRepo.save(skill1);
             }
         } catch (Exception e) {
@@ -493,49 +499,49 @@ public class MainController {
     }
 
     //for testing notification method on student side
-    @GetMapping("/notification")
-    public String notification(Principal p, Model model) {
-
-        System.out.println("------" + p.getName());
-
-        Person person = userService.findByUsername(p.getName());
-
-        ArrayList<Job> matchingJob =  new ArrayList<Job>();
-
-        if (person.getSkills().isEmpty())
-        {
-            model.addAttribute("message", "Please enter your skills to your resume!");
-            return "message";
-        }
-
-        else{
-
-            for (Skill s : person.getSkills()) {
-
-                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
-                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
-
-                    for(Job item:alljobs)
-                    {
-                        matchingJob.add(item);
-                    }
-
-                }
-            }
-            if (matchingJob.isEmpty())
-            {
-                model.addAttribute("message", "No job matches your the skill you entered, come back later!");
-                return "message";
-            }
-            else{
-                model.addAttribute("message", "We find some job postings that match your skill");
-                model.addAttribute("matchingJob", matchingJob);
-                return "notification";
-            }
-        }
-
-
-    }
+//    @GetMapping("/notification")
+//    public String notification(Principal p, Model model) {
+//
+//        System.out.println("------" + p.getName());
+//
+//        Person person = userService.findByUsername(p.getName());
+//
+//        ArrayList<Job> matchingJob =  new ArrayList<Job>();
+//
+//        if (person.getSkills().isEmpty())
+//        {
+//            model.addAttribute("message", "Please enter your skills to your resume!");
+//            return "message";
+//        }
+//
+//        else{
+//
+//            for (Skill s : person.getSkills()) {
+//
+//                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
+//                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+//
+//                    for(Job item:alljobs)
+//                    {
+//                        matchingJob.add(item);
+//                    }
+//
+//                }
+//            }
+//            if (matchingJob.isEmpty())
+//            {
+//                model.addAttribute("message", "No job matches your the skill you entered, come back later!");
+//                return "message";
+//            }
+//            else{
+//                model.addAttribute("message", "We find some job postings that match your skill");
+//                model.addAttribute("matchingJob", matchingJob);
+//                return "notification";
+//            }
+//        }
+//
+//
+//    }
 
 
     @GetMapping("/search")
@@ -1192,7 +1198,9 @@ public class MainController {
     @GetMapping("/listnames")
     public String listNames(Model model){
 
-        model.addAttribute("allperson", personRepo.findAll());
+        Iterable<Person> allperson = personRepo.findAllByRoles_roleName("JOBSEEKER");
+
+        model.addAttribute("allperson", allperson);
         return "listnames";
     }
 
