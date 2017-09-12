@@ -89,4 +89,9 @@ public class Skill {
     public void setSkillrating(String skillrating) {
         this.skillrating = skillrating;
     }
+
+    public void removePerson (Person p){
+        this.person.remove(p);
+
+    }
 }

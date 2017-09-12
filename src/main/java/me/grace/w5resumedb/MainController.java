@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 import java.security.Principal;
 
 
@@ -37,11 +36,12 @@ public class MainController {
     @Autowired
     CourseRepo courseRepo;
 
-    @Autowired
-    public SomeIdtoUse personIdReuse;
-
-    @Autowired
-    public SomeIdtoUse courseId;
+//    session variables
+//    @Autowired
+//    public SomeIdtoUse personIdReuse;
+//
+//    @Autowired
+//    public SomeIdtoUse courseId;
 
 
     @GetMapping("/loadroles")
@@ -62,16 +62,12 @@ public class MainController {
         return "login";
     }
 
-    //Home page, request the user to enter their name and email first
-    //if user has entered the name, welcome he/she back and check history
-    // TODO: add href for 1:login option or register for (jobseeker/recruiter roles)
 
-
-    // on the homepage, when the person's role is A job Seeker, check if there is a job matching the skills this person have
+    // on the homepage, when the person's role is A job Seeker, check if there are a job postings matching the skills this person have
     @GetMapping("/")
     public String homepage(Principal p, Model model) {
 
-        //in oder to use old route, will fix later
+        //this fix the bug when user is not sign in with the right username and password
         try {
             model.addAttribute("newperson", personRepo.findByUsername(p.getName()));
         } catch (Exception e)
@@ -79,7 +75,7 @@ public class MainController {
             System.out.println("User didn't sign in");
         }
 
-         // if the person has a role of jobseek, check if there are jobs matches the skill, and send out notification!!!!
+         // if the person has a role of jobseeker, check if there are jobs matches the skill, and send out notification!!!!
         if (personRepo.findByUsername(p.getName()).getRoles().iterator().next().getRoleName().equalsIgnoreCase("JOBSEEKER")) {
 
         System.out.println("------" + p.getName());
@@ -88,29 +84,35 @@ public class MainController {
 
         Person person = userService.findByUsername(p.getName());
 
-        ArrayList<Job> matchingJob =  new ArrayList<Job>();
+        ArrayList<Job> matchingJob =  new ArrayList<>();
 
+        //when no skill has been entered, prompt user for input
         if (person.getSkills().isEmpty())
         {
             model.addAttribute("message", "Please add your skills to your resume, and we will check for the matching job for you!");
             model.addAttribute("matchingJob", matchingJob);
         }
 
-        else{
+        // when this person has some skills, find all the jobs that need the skills and
+        else {
 
-            for (Skill s : person.getSkills()) {
+//            for (Skill s : person.getSkills()) {
 
-                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
-                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+//                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
+//                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
+//
+//                    for(Job item:alljobs)
+//                    {
+//                        matchingJob.add(item);
+//                    }
+//                }
+//
+//             }
 
-                    for(Job item:alljobs)
-                    {
-                        matchingJob.add(item);
-                    }
+            //much easier than my previous method--iterate through skills and try find the matching jobs for each skill
+            ArrayList<Job> matchingJobs = (ArrayList<Job>) jobRepo.findAllBySkillsIn(person.getSkills());
 
-                }
-            }
-            if (matchingJob.isEmpty())
+            if (matchingJobs.isEmpty())
             {
                 model.addAttribute("message", "No job matches the skills you have, come back and check later!");
                 model.addAttribute("matchingJob", matchingJob);
@@ -125,14 +127,13 @@ public class MainController {
             return "notificationS";
         }
 
-        //for recruiter, will have a notification method like the above later!
+        //for recruiter, can also have a notification method like the later!
         else {
             return "homepageR";
         }
-
-        //return "homepage";
     }
 
+    // display current user's/principal's Job postings
     @GetMapping("displaypersonalposting")
     public String displaypersonalposting(Principal p, Model model)
     {
@@ -143,6 +144,7 @@ public class MainController {
         return "displaypersonalposting";
     }
 
+    // display all
     @GetMapping("listallposting")
     public String listallposting( Model model)
     {
@@ -152,7 +154,7 @@ public class MainController {
     }
 
     //testing search method
-//    @GetMapping("/findjobbyskill")
+//    @GetMapping("/searchmethods")
 //    public @ResponseBody
 //    String findjobthroughskill()
 //
@@ -187,53 +189,8 @@ public class MainController {
         return "login";
     }
 
-//    //welcome and notification, and narvbars as well
-//    @GetMapping("/homepageS")
-//    public String homepageforseeker(Principal p, Model model)
-//    {
-//
-//
-//        System.out.println("------" + p.getName());
-//
-//        Person person = userService.findByUsername(p.getName());
-//
-//        ArrayList<Job> matchingJob =  new ArrayList<Job>();
-//
-//        if (person.getSkills().isEmpty())
-//        {
-//            model.addAttribute("message", "Welcome to our Resume database. Please enter your skills to your resume, and we will check for the matching job for you!");
-//        }
-//
-//        else{
-//
-//            for (Skill s : person.getSkills()) {
-//
-//                if (jobRepo.findAllBySkills_skillname(s.getSkillname()) != null) {
-//                    ArrayList<Job> alljobs = (ArrayList<Job>) jobRepo.findAllBySkills_skillname(s.getSkillname());
-//
-//                    for(Job item:alljobs)
-//                    {
-//                        matchingJob.add(item);
-//                    }
-//
-//                }
-//            }
-//            if (matchingJob.isEmpty())
-//            {
-//                model.addAttribute("message", "No job matches your the skill you have, come back later!");
-//            }
-//            else{
-//                model.addAttribute("message", "We find some job postings that match your skill");
-//                model.addAttribute("matchingJob", matchingJob);
-//
-//            }
-//        }
-//
-//        return "notification";
-//
-//    }
 
-    //register as a job seeker role
+    //register as a recruiter role (ToDo:the two registration routes can be combined for efficiency)
     @RequestMapping(value = "/registerR", method = RequestMethod.GET)
     public String registerasR(Model model) {
         model.addAttribute("recruiter", new Person());
@@ -264,35 +221,15 @@ public class MainController {
         model.addAttribute("newJob", job);
         model.addAttribute("allskills", skillRepo.findAll());
 
-        //try add upto 5 skills on the same page
-//        Skill otherskill = new Skill();
-//        Skill otherskill2 = new Skill();
-//        Skill otherskill3 = new Skill();
-//        Skill skill1= new Skill();
-//        Skill skill2= new Skill();
-//        Skill skill3= new Skill();
-//        Skill skill4= new Skill();
-//        Skill skill5= new Skill();
-//        ArrayList<Skill> arr = new ArrayList<Skill>();
-//        arr.add(skill1);
-//        arr.add(skill2);
-//        arr.add(skill3);
-//        arr.add(skill4);
-//        arr.add(skill5);
-//
-//        model.addAttribute("arr", arr);
-//        model.addAttribute("otherskill", otherskill);
-//        model.addAttribute("otherskill2", otherskill2);
-//        model.addAttribute("otherskill3", otherskill3);
-
         return "jobform";
 
     }
 
 
-    // if not checked try catch java.lang.NullPointerException: null
-    //changed to use @RequestParam to pass skillname and skillrating from the HTML input, this way, null values are allowed.
-    // If set as an instance of Skill class, which has constraints on skillname and rating variable, null values are not allowed.
+    // Error to catch: java.lang.NullPointerException: null
+    //changed to use @RequestParam to pass skillname and skillrating from the HTML input, this way, null input are allowed.
+    // It is not an efficient way but temporately solve the problem
+    // If in the form, set variable as an instance of Skill class, which has constraints on skillname and rating variable (@NotEmpty), null values are not allowed.
     @PostMapping("/postjob")
     public String postJob(Principal p, @Valid @ModelAttribute("newJob") Job job, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
                           @RequestParam(value = "skillname1", required = false) String skillname1,
@@ -317,15 +254,6 @@ public class MainController {
             System.out.println("User didn't check any option from db");
         }
 
-
-//        for (Skill item: arr)
-//        {
-//            if (item.toString()!=null) {
-//                System.out.println("===== if it is empty or not" +item.toString());
-//                skillRepo.save(item);
-//                job.addskilltojob(item);
-//            }
-//        }
 
 
         try {
@@ -369,6 +297,7 @@ public class MainController {
         return "addskillstojob";
     }
 
+    //again, as in the job form, use two string variable to hold the input rather than a object of Skill class
     @PostMapping("/addskillstojob/{id}")
     public String postskilltojob(Principal p, @PathVariable("id") long jobId, @RequestParam(value = "skillIds", required = false) Long[] skillIdchecked,
                                  @RequestParam(value = "skillname1", required = false) String skillname1,
@@ -487,8 +416,7 @@ public class MainController {
 
 
 
-
-
+    //for displaying details for each job in the "list all job postings" page
     @GetMapping("/displayonejob/{id}")
     public String displayonejob(@PathVariable("id") long jobId, Model model) {
         System.out.println("=====display one job,  Job ID:   " + jobId);
@@ -498,7 +426,7 @@ public class MainController {
         return "displayonejob";
     }
 
-    //for testing notification method on student side
+    //for testing notification method on job seeker side
 //    @GetMapping("/notification")
 //    public String notification(Principal p, Model model) {
 //
@@ -544,6 +472,7 @@ public class MainController {
 //    }
 
 
+    // four search options on the same HTML page
     @GetMapping("/search")
     public String oneSearchlinkforall()
     {
@@ -552,7 +481,7 @@ public class MainController {
     }
 
 
-    //to accept a string from input in PostMapping, @RequestParam is required
+    //search using a company's name
     @PostMapping("/searchbyConame")
     public String searchbyConame(@RequestParam("searchCoName") String searchCoName, Model model){
 
@@ -596,6 +525,7 @@ public class MainController {
     }
 
 
+    // load some skills so that use has something to choose from in the checkbox
     @GetMapping("/loadskills")
     public @ResponseBody String loadrqdskills()
     {
@@ -614,190 +544,190 @@ public class MainController {
 
 
 
-    @GetMapping("/addcourse")
-    public String addcourse(Model model)
-    {
-        Course course = new Course();
-        model.addAttribute("newCourse", course);
-        return "courseform";
-    }
-
-    @PostMapping("/addcourse")
-    public String postCourse(@Valid @ModelAttribute("newCourse") Course course, BindingResult bindingResult, Model model)
-    {
-
-        if(bindingResult.hasErrors())
-        {
-            return "courseform";
-        }
-
-        courseRepo.save(course);
-
-        System.out.println("when postMapping form, will the auto generated ID show up:    " +course.getCourseId());
-
-        courseId.setCourseId(course.getCourseId());
-
-        System.out.println("==========component testing ========" + courseId.getCourseId());
-
-        return "courseconfirm";
-    }
-
-
-    @GetMapping("/loadcourse")
-    public @ResponseBody String loadcourse()
-    {
-
-        Course course1 = new Course();
-        course1.setCourseCode("Java001");
-        course1.setInstructor("Dr.Eric Ryan");
-        course1.setCredit(3.0);
-        courseRepo.save(course1);
-
-        Course course2 = new Course();
-        course2.setCourseCode("Statistics001");
-        course2.setInstructor("Dr.Carol Levy");
-        course2.setCredit(3.5);
-        courseRepo.save(course2);
-
-        Course course3 = new Course();
-        course3.setCourseCode("Mineralogy001");
-        course3.setInstructor("Dr.Ahmed");
-        course3.setCredit(3.0);
-        courseRepo.save(course3);
-
-        Course course4 = new Course();
-        course4.setCourseCode("Python001");
-        course4.setInstructor("TBA");
-        course4.setCredit(2.5);
-        courseRepo.save(course4);
-
-//        Person personN= new Person();
-//        personN.setFirstName("Grace");
-//        personN.setCourseReg(true);
-//        personN.setUuid(9L);
-
-        return "courseloaded";
-    }
-
-    @GetMapping("/addstudentstocourse/{id}")
-    public String addstudentstocourse(@PathVariable("id") long courseId, Model model)
-    {
-        //try if the session variable will work here
-
-        System.out.println("--------"+courseId);
-//        System.out.println("add studnets to course Id testing =======" + courseId.getCourseId());
-        Course newCourse= courseRepo.findOne(courseId);
-
-
-        model.addAttribute("newCourse",newCourse);
-        System.out.println("here0==========" + newCourse.getCourseId());
-
-
-        Iterable<Person> allstudents = personRepo.findAll();
-
-        ArrayList<Person> allstudent = (ArrayList<Person>) allstudents;
-
-
-        System.out.println("here==========");
-
-        model.addAttribute("allstudents",allstudent );
-
-        System.out.println(allstudents.iterator().next().getUuid());
-        System.out.println(allstudents.iterator().next().getFirstName());
-        System.out.println(allstudents.iterator().next().getLastName());
-        System.out.println(allstudents.iterator().next().isCourseReg());
-
-        System.out.println("here2==========");
-
-//      model.addAllAttributes("checkedstudentsId", long [] checkedstudentsId);
-
-        return "addstudenttocourseform";
-
-//        long course1Id = 0L;
-//        long course2Id = 0L;
-//        long course3Id = 0L;
-//        long course4Id = 0L;
-//        long course5Id= 0L;
+//    @GetMapping("/addcourse")
+//    public String addcourse(Model model)
+//    {
+//        Course course = new Course();
+//        model.addAttribute("newCourse", course);
+//        return "courseform";
+//    }
 //
-//        newCourse.getStudents().iterator().next().setUuid(course1Id);
-//        newCourse.getStudents().iterator().next().setUuid(course2Id);
-//        newCourse.getStudents().iterator().next().setUuid(course3Id);
-//        newCourse.getStudents().iterator().next().setUuid(course4Id);
-//        newCourse.getStudents().iterator().next().setUuid(course5Id);
+//    @PostMapping("/addcourse")
+//    public String postCourse(@Valid @ModelAttribute("newCourse") Course course, BindingResult bindingResult, Model model)
+//    {
 //
-//        newCourse.setStudents(personRepo.findAll());
+//        if(bindingResult.hasErrors())
+//        {
+//            return "courseform";
+//        }
 //
-//        System.out.println("////////" + newCourse.getStudents().iterator().next().getUuid());
+//        courseRepo.save(course);
 //
-//        model.addAttribute("newCourse", newCourse);
+//        System.out.println("when postMapping form, will the auto generated ID show up:    " +course.getCourseId());
 //
-//        courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().next().getUuid();
-
-        //return courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().hasNext();
-
-    }
-
-    @PostMapping("/addstudentstocourse/{id}")
-    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds", required=false) Long[] checkedstudentsId,
-                                      @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
-    {
-
-        Course newCourse= courseRepo.findOne(courseId);
-
-//        System.out.println("Step1=========");
+//        courseId.setCourseId(course.getCourseId());
 //
-//        System.out.println(checkedstudentsId[0]);
-
-        if(checkedstudentsId.length!=0) {
-
-            for (long studentId : checkedstudentsId) {
-                System.out.println("+++++++++" + studentId);
-                newCourse.addPersontoCourse(personRepo.findOne(studentId));
-
-            }
-            courseRepo.save(newCourse);
-
-        }
-
-        long courseToGoTo = newCourse.getCourseId();
-
+//        System.out.println("==========component testing ========" + courseId.getCourseId());
+//
+//        return "courseconfirm";
+//    }
+//
+//
+//    @GetMapping("/loadcourse")
+//    public @ResponseBody String loadcourse()
+//    {
+//
+//        Course course1 = new Course();
+//        course1.setCourseCode("Java001");
+//        course1.setInstructor("Dr.Eric Ryan");
+//        course1.setCredit(3.0);
+//        courseRepo.save(course1);
+//
+//        Course course2 = new Course();
+//        course2.setCourseCode("Statistics001");
+//        course2.setInstructor("Dr.Carol Levy");
+//        course2.setCredit(3.5);
+//        courseRepo.save(course2);
+//
+//        Course course3 = new Course();
+//        course3.setCourseCode("Mineralogy001");
+//        course3.setInstructor("Dr.Ahmed");
+//        course3.setCredit(3.0);
+//        courseRepo.save(course3);
+//
+//        Course course4 = new Course();
+//        course4.setCourseCode("Python001");
+//        course4.setInstructor("TBA");
+//        course4.setCredit(2.5);
+//        courseRepo.save(course4);
+//
+////        Person personN= new Person();
+////        personN.setFirstName("Grace");
+////        personN.setCourseReg(true);
+////        personN.setUuid(9L);
+//
+//        return "courseloaded";
+//    }
+//
+//    @GetMapping("/addstudentstocourse/{id}")
+//    public String addstudentstocourse(@PathVariable("id") long courseId, Model model)
+//    {
+//        //try if the session variable will work here
+//
+//        System.out.println("--------"+courseId);
+////        System.out.println("add studnets to course Id testing =======" + courseId.getCourseId());
+//        Course newCourse= courseRepo.findOne(courseId);
+//
+//
+//        model.addAttribute("newCourse",newCourse);
+//        System.out.println("here0==========" + newCourse.getCourseId());
+//
+//
+//        Iterable<Person> allstudents = personRepo.findAll();
+//
+//        ArrayList<Person> allstudent = (ArrayList<Person>) allstudents;
+//
+//
+//        System.out.println("here==========");
+//
+//        model.addAttribute("allstudents",allstudent );
+//
+//        System.out.println(allstudents.iterator().next().getUuid());
+//        System.out.println(allstudents.iterator().next().getFirstName());
 //        System.out.println(allstudents.iterator().next().getLastName());
-//
 //        System.out.println(allstudents.iterator().next().isCourseReg());
 //
-//        for (Person p:allstudents)
-//        {
+//        System.out.println("here2==========");
 //
-//            System.out.println(p.isCourseReg());
-////            if (p.isCourseReg()==true){
-////                newCourse.addPersontoCourse(p);
-////            }
+////      model.addAllAttributes("checkedstudentsId", long [] checkedstudentsId);
+//
+//        return "addstudenttocourseform";
+//
+////        long course1Id = 0L;
+////        long course2Id = 0L;
+////        long course3Id = 0L;
+////        long course4Id = 0L;
+////        long course5Id= 0L;
+////
+////        newCourse.getStudents().iterator().next().setUuid(course1Id);
+////        newCourse.getStudents().iterator().next().setUuid(course2Id);
+////        newCourse.getStudents().iterator().next().setUuid(course3Id);
+////        newCourse.getStudents().iterator().next().setUuid(course4Id);
+////        newCourse.getStudents().iterator().next().setUuid(course5Id);
+////
+////        newCourse.setStudents(personRepo.findAll());
+////
+////        System.out.println("////////" + newCourse.getStudents().iterator().next().getUuid());
+////
+////        model.addAttribute("newCourse", newCourse);
+////
+////        courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().next().getUuid();
+//
+//        //return courseRepo.findOne(courseId.getCourseId()).getStudents().iterator().hasNext();
+//
+//    }
+//
+//    @PostMapping("/addstudentstocourse/{id}")
+//    public String poststudenttocourse(@PathVariable("id") long courseId, @RequestParam(value="studentsIds", required=false) Long[] checkedstudentsId,
+//                                      @ModelAttribute ("allstudents") ArrayList<Person> allstudent,  Model model)
+//    {
+//
+//        Course newCourse= courseRepo.findOne(courseId);
+//
+////        System.out.println("Step1=========");
+////
+////        System.out.println(checkedstudentsId[0]);
+//
+//        if(checkedstudentsId.length!=0) {
+//
+//            for (long studentId : checkedstudentsId) {
+//                System.out.println("+++++++++" + studentId);
+//                newCourse.addPersontoCourse(personRepo.findOne(studentId));
+//
+//            }
+//            courseRepo.save(newCourse);
 //
 //        }
 //
-//        courseRepo.save(newCourse);
+//        long courseToGoTo = newCourse.getCourseId();
 //
-//        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
-
-        return "redirect:/onecourselist/" + courseId;
-    }
-
-    @GetMapping("/onecourselist/{id}")
-    public String listOnecourse(@PathVariable("id") long courseId, Model model)
-    {
-        model.addAttribute("course", courseRepo.findOne(courseId));
-        return "onecourselist";
-
-    }
-
-
-
-    @GetMapping("/listallcourses")
-    public String listcourse(Model model)
-    {
-        model.addAttribute("allcourses", courseRepo.findAll());
-        return "listallcourses";
-    }
+////        System.out.println(allstudents.iterator().next().getLastName());
+////
+////        System.out.println(allstudents.iterator().next().isCourseReg());
+////
+////        for (Person p:allstudents)
+////        {
+////
+////            System.out.println(p.isCourseReg());
+//////            if (p.isCourseReg()==true){
+//////                newCourse.addPersontoCourse(p);
+//////            }
+////
+////        }
+////
+////        courseRepo.save(newCourse);
+////
+////        System.out.println("testing======="  +newCourse.getStudents().iterator().next().getUuid());
+//
+//        return "redirect:/onecourselist/" + courseId;
+//    }
+//
+//    @GetMapping("/onecourselist/{id}")
+//    public String listOnecourse(@PathVariable("id") long courseId, Model model)
+//    {
+//        model.addAttribute("course", courseRepo.findOne(courseId));
+//        return "onecourselist";
+//
+//    }
+//
+//
+//
+//    @GetMapping("/listallcourses")
+//    public String listcourse(Model model)
+//    {
+//        model.addAttribute("allcourses", courseRepo.findAll());
+//        return "listallcourses";
+//    }
 
 
 //    @GetMapping("/addperson")
@@ -912,6 +842,8 @@ public class MainController {
 //        return "addedutopersonform";
 //    }
 
+
+    //using Pricipal is much convinient now
     @GetMapping("/addeducationtoperson")
     public String addedutopersonpricipal(Principal p, Model model)
     {
@@ -925,7 +857,7 @@ public class MainController {
     }
 
     @PostMapping("/addeducationtoperson")
-    public String postEdutoPersonP(Principal p,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult, Model model) {
+    public String postEdutoPersonP(Principal p,  @ModelAttribute("neweducation") Education education, BindingResult bindingResult) {
 
 
         if (bindingResult.hasErrors()) {
@@ -1034,7 +966,7 @@ public class MainController {
 //    }
 
     @PostMapping("/addexptoperson")
-    public String postExptoPerson(Principal p,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult, Model model){
+    public String postExptoPerson(Principal p,  @ModelAttribute("newexperience") Experience experience, BindingResult bindingResult){
 
         if(bindingResult.hasErrors())
         {
@@ -1077,6 +1009,7 @@ public class MainController {
     }
 
 
+    // after listing all resume of all users, this allow perople to see details of each resume
     @GetMapping("/displayoneprofile/{id}")
     public String displayOneProfile(@PathVariable("id") long personId, Model model)
     {
@@ -1195,9 +1128,12 @@ public class MainController {
 //
 //    }
 
+
+    //listing out names/email of all resume, allow perople to check details for each resume through another route
     @GetMapping("/listnames")
     public String listNames(Model model){
 
+        // in the resume listing, only list out the people who has role as jobseeker!
         Iterable<Person> allperson = personRepo.findAllByRoles_roleName("JOBSEEKER");
 
         model.addAttribute("allperson", allperson);
@@ -1206,18 +1142,18 @@ public class MainController {
 
     // this two methods work, even without change the connection between edu/person/, skill/person, exp/person
     // the connection stays the same in database
-    @RequestMapping("/updateper/{id}")
-    public String updateper(@PathVariable("id") long uuid, Model model){
-        model.addAttribute("newperson", personRepo.findOne(uuid));
-        return "addperson";
-    }
-
-
-    @RequestMapping("/deleteper/{id}")
-    public String delper(@PathVariable("id") long uuid){
-        personRepo.delete(uuid);
-        return "redirect:/listnames";
-    }
+//    @RequestMapping("/updateper/{id}")
+//    public String updateper(@PathVariable("id") long uuid, Model model){
+//        model.addAttribute("newperson", personRepo.findOne(uuid));
+//        return "addperson";
+//    }
+//
+//
+//    @RequestMapping("/deleteper/{id}")
+//    public String delper(@PathVariable("id") long uuid){
+//        personRepo.delete(uuid);
+//        return "redirect:/listnames";
+//    }
 
 
     //update and remove education, both works!!!
@@ -1243,6 +1179,7 @@ public class MainController {
     public String deledu(@PathVariable("id") long educationId, Model model){
 
         Education deleteedu = educationRepo.findOne(educationId);
+        //have to remove relationship with person class first before deleting from the repository
         Person oneperson = deleteedu.getPerson();
         long personToGoTo = oneperson.getUuid();
         oneperson.removeEdu(deleteedu);
@@ -1252,34 +1189,34 @@ public class MainController {
 
 
 
-    // update and remove skills!!!!!
-//    @RequestMapping("/updatesk/{id}")
-//    public String updatesk(@PathVariable("id") long skillId, Model model){
-//
-//        Skill updateskill = skillRepo.findOne(skillId);
-//
-//        Person oneperson = updateskill.getPerson();
-//
-//        model.addAttribute("oneperson", oneperson);
-//
-//        model.addAttribute("newskill", updateskill);
-//        return "addskilltopersonform";
-//    }
-//
-//    // remove skills, same as edu, remove from person first!!!!!
-//    @RequestMapping("/deletesk/{id}")
-//    public String delsk(@PathVariable("id") long skillId){
-//
-//
-//        Skill deleteskil = skillRepo.findOne(skillId);
-//        Person oneperson = deleteskil.getPerson();
-//        long personToGoTo = oneperson.getUuid();
-//
-//        oneperson.removeSkl(deleteskil);
-//
-//        skillRepo.delete(skillId);
-//        return "redirect:/displayoneprofile/" + personToGoTo;
-//    }
+     //update and remove skills from many to many relationship!!!!! under testing!!!
+    @RequestMapping("/updatesk/{id}")
+    public String updatesk(Principal p, @PathVariable("id") long skillId, Model model){
+
+        Skill updateskill = skillRepo.findOne(skillId);
+
+        model.addAttribute("allskills", skillRepo.findAll());
+
+        return "addskillstopersonformP";
+
+    }
+
+    // remove skills, same as edu, remove from person first!!!!!
+    @RequestMapping("/deletesk/{id}")
+    public String delsk(Principal p, @PathVariable("id") long skillId){
+
+
+        Skill deleteskil = skillRepo.findOne(skillId);
+        Person oneperson = personRepo.findByUsername(p.getName());
+
+        //many to many, just to remove relations, don't delete either skill/person from the repo
+        deleteskil.removePerson(oneperson);
+        oneperson.removeSkl(deleteskil);
+
+        long personToGoTo = oneperson.getUuid();
+
+        return "redirect:/displayoneprofile/" + personToGoTo;
+    }
 
     @RequestMapping("/updateexp/{id}")
     public String updateexp(@PathVariable("id") long experienceId, Model model){
