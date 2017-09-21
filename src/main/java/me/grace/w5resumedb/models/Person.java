@@ -76,7 +76,6 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Collection<Role> roles;
 
-
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<Job> jobs;
 
