@@ -1,17 +1,15 @@
-# WeekSixChallenge
+WeekSevenChallenge
 
 
-new reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+
+Deployed: https://aqueous-beyond-46945.herokuapp.com
 
 
-check update at:   
-https://aqueous-beyond-46945.herokuapp.com
 
 
-https://fierce-retreat-33138.herokuapp.com
+reference:      
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range    
 
-
-reference:    
 https://coderanch.com/t/674850/framework/bind-thymeleaf-checkbox-boolean-variable
 
 https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it
