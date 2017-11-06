@@ -8,8 +8,8 @@ Recruiters and seekers can update their postings and search for people, jobs, co
 
 Experience this app live on Heroku: https://resume-database.herokuapp.com/login       
 
-Log in with my test job seeker account: jobseeker/pass     
-or log in with a test recruiter account: recruiter/pass       
+Log in with my test job seeker account: jobseeker/pass         
+or log in with a test recruiter account: recruiter/pass             
 Also, You are welcome to sign up as a new recruiter and/or job seeker.   
 
 
