@@ -1,16 +1,17 @@
 
-A solo project for the Java Web Developer Boot Camp (seventh week). It is a LinkedIn clone that has roles for recruiters and job seekers.    
+A solo project for the Java Web Developer Boot Camp (seventh week).     
+It is a LinkedIn clone that has roles for recruiters and job seekers. 
+    
 Job seekers can create their own online resume by entering work experiences, educational achievements, skills, and personal information. After each new post, the job database is automatically searched, and any job posting that match any of the skills for the job that was just posted are displayed to job seeker on home page as a notification. Recruiters can log in and post job listings. 
 
 Recruiters and seekers can update their postings and search for people, jobs, companies, and schools. All data is saved to a PostgreSQL relational database.
 
-Experience this app live on Heroku: https://resume-database.herokuapp.com/login     
+Experience this app live on Heroku: https://resume-database.herokuapp.com/login       
 
-You are welcome to sign up as a new recruiter and/or job seeker. If you don't want to create new accounts.     
+Log in with my test job seeker account: jobseeker/pass     
+or log in with a test recruiter account: recruiter/pass       
+Also, You are welcome to sign up as a new recruiter and/or job seeker.   
 
-Log in with my test job seeker account: jobseeker/pass
-or log in with a test recruiter account: recruiter/pass
-Feel free to play around, all I ask is that you do not delete too many items, because that will make it less interesting for other folks who use the app.
 
 
 Reference:      
